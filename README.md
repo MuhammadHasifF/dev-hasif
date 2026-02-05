@@ -1,4 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Hasif — Portfolio
+
+A sleek, dark, scroll-driven portfolio built like a product: projects + case studies + a time-based timeline.
+
+## Tech
+
+- Next.js (App Router) + TypeScript
+- Tailwind CSS v4 (CSS-first) + design tokens
+- Framer Motion (reveals + scroll-driven scenes)
+- MDX case studies (`content/case-studies/*.mdx`)
+
+## Edit your content
+
+- Site identity + links: `src/site.config.ts`
+- Projects data: `src/content/projects.ts`
+- Timeline chapters: `src/content/timeline.ts`
+- Case studies (MDX): `content/case-studies/*.mdx`
+
+## Getting started
+
+```bash
+npm install
+npm run dev
+```
+
+Open `http://localhost:3000`.
+
+## Build & lint
+
+```bash
+npm run lint
+npm run build
+```
+
+## Deploy for free (Vercel)
+
+1. Push this folder to a GitHub repo.
+2. Go to Vercel → “Add New Project” → import the repo.
+3. Keep defaults (Next.js). Vercel will auto-build and host a free `*.vercel.app` domain.
+
+## Optional: free contact form (Formspree)
+
+If you want a real form instead of email links:
+
+1. Create a Formspree form (free tier).
+2. Set `NEXT_PUBLIC_FORMSPREE_FORM_ID` in Vercel project env vars.
+3. The contact page will post to `https://formspree.io/f/<id>`.
 
 ## Getting Started
 
