@@ -1,4 +1,5 @@
 import { Hero } from "@/components/hero/hero";
+import { JsonLd } from "@/components/seo/json-ld";
 import { Marquee } from "@/components/sections/marquee";
 import { AboutTeaser } from "@/components/sections/about-teaser";
 import { ProjectsBento } from "@/components/sections/projects-bento";
@@ -11,6 +12,7 @@ import { ContactInline } from "@/components/sections/contact-inline";
 export default function HomePage() {
   return (
     <>
+      <JsonLd />
       <Hero />
       <Marquee />
       <AboutTeaser />
