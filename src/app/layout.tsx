@@ -12,6 +12,7 @@ import { GrainOverlay } from "@/components/layout/grain-overlay";
 import { SmoothScroll } from "@/components/layout/smooth-scroll";
 import { CustomCursor } from "@/components/layout/custom-cursor";
 import { SettingsProvider } from "@/components/layout/settings-provider";
+import { Konami } from "@/components/layout/konami";
 import "@/styles/globals.css";
 
 const geistSans = Geist({
@@ -98,6 +99,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <ScrollProgress />
             <Nav />
             <CommandPalette />
+            <Konami />
             <main id="main" className="relative">
               {children}
             </main>
