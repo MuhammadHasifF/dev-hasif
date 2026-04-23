@@ -2,15 +2,6 @@
 
 import { ThemeProvider as NextThemesProvider, type ThemeProviderProps } from "next-themes";
 
-export function ThemeProvider(props: ThemeProviderProps) {
-  return (
-    <NextThemesProvider
-      attribute="data-theme"
-      defaultTheme="obsidian"
-      disableTransitionOnChange
-      enableSystem={false}
-      themes={["obsidian", "graphite", "light"]}
-      {...props}
-    />
-  );
+export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
+  return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
 }
