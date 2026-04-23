@@ -1,36 +1,32 @@
 import Link from "next/link";
 
-import { ButtonLink } from "@/components/ui/button";
-
 export default function NotFound() {
   return (
-    <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 py-20">
-      <div className="space-y-2">
-        <p className="text-sm text-muted-foreground">404</p>
-        <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-          Page not found
-        </h1>
-        <p className="text-pretty text-base leading-7 text-muted-foreground sm:text-lg">
-          This route doesn’t exist yet. Head back to the homepage or explore the
-          projects list.
-        </p>
+    <div className="relative mx-auto flex min-h-[calc(100vh-56px)] max-w-6xl flex-col items-center justify-center px-4 pt-14 text-center sm:px-6">
+      <div className="select-none font-display text-[28vw] leading-none tracking-tight text-[var(--color-bg-2)]">
+        404
       </div>
-
-      <div className="flex flex-col gap-3 sm:flex-row">
-        <ButtonLink href="/" size="lg">
-          Home
-        </ButtonLink>
-        <ButtonLink href="/projects" variant="secondary" size="lg">
-          Projects
-        </ButtonLink>
-        <Link
-          href="/case-studies"
-          className="inline-flex h-12 items-center justify-center rounded-full border border-border/70 px-6 text-base font-medium text-foreground transition hover:bg-card/50"
-        >
-          Case studies
-        </Link>
+      <div className="-mt-8 max-w-lg">
+        <h1 className="font-display text-4xl text-[var(--color-text-0)]">Page off the map.</h1>
+        <p className="mt-3 text-[var(--color-text-1)]">
+          The route you&rsquo;re after doesn&rsquo;t exist — yet. Head home and try
+          another path.
+        </p>
+        <div className="mt-6 flex items-center justify-center gap-2">
+          <Link
+            href="/"
+            className="inline-flex h-10 items-center rounded-full bg-[var(--color-text-0)] px-5 text-sm font-medium text-[var(--color-bg-0)] hover:opacity-90"
+          >
+            Take me home
+          </Link>
+          <Link
+            href="/work"
+            className="inline-flex h-10 items-center rounded-full border border-[var(--color-border)] bg-[var(--color-bg-1)] px-5 text-sm text-[var(--color-text-0)] hover:border-[var(--color-accent)]"
+          >
+            See the work
+          </Link>
+        </div>
       </div>
     </div>
   );
 }
-

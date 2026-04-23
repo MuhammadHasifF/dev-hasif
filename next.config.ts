@@ -1,7 +1,17 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  reactStrictMode: true,
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "logo.clearbit.com" },
+      { protocol: "https", hostname: "avatars.githubusercontent.com" },
+    ],
+  },
+  experimental: {
+    optimizePackageImports: ["lucide-react", "framer-motion"],
+  },
+  transpilePackages: ["three"],
 };
 
 export default nextConfig;
