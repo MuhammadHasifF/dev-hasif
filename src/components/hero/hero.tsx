@@ -19,7 +19,17 @@ export function Hero() {
     <section className="relative flex min-h-[100svh] w-full items-center overflow-hidden">
       {/* Background WebGL layer */}
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <HeroCanvas />
+        {!reduce && <HeroCanvas />}
+        {reduce && (
+          <div
+            aria-hidden="true"
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(circle at 30% 40%, color-mix(in oklab, var(--color-accent) 30%, transparent), transparent 55%), radial-gradient(circle at 70% 70%, color-mix(in oklab, var(--color-accent-2) 25%, transparent), transparent 55%)",
+            }}
+          />
+        )}
         <div
           aria-hidden="true"
           className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,transparent_0%,var(--color-bg-0)_70%)]"
