@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { projectCategories, projects, type ProjectCategory } from "@/content/projects";
@@ -73,18 +73,7 @@ export function ProjectsGrid() {
                 exit={{ opacity: 0, y: 12 }}
                 transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
               >
-                <Link
-                  href={`/work/${p.slug}`}
-                  className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-1)] p-5 transition-colors hover:border-[var(--color-accent)]/60"
-                >
-                  <div
-                    aria-hidden="true"
-                    className={cn(
-                      "pointer-events-none absolute inset-0 -z-10 bg-gradient-to-br opacity-0 transition-opacity duration-500 group-hover:opacity-100",
-                      p.hue ?? "from-[var(--color-accent)] to-[var(--color-accent-2)]"
-                    )}
-                    style={{ maskImage: "radial-gradient(ellipse at top left, black 30%, transparent 70%)" }}
-                  />
+                <SpotlightCardLink href={`/work/${p.slug}`} hue={p.hue}>
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex items-center gap-2">
                       <OrgLogo orgKey={p.orgKey} size="md" />
@@ -102,12 +91,58 @@ export function ProjectsGrid() {
                     <span>{p.year}</span>
                     <span>{p.org}</span>
                   </div>
-                </Link>
+                </SpotlightCardLink>
               </motion.div>
             ))}
           </AnimatePresence>
         </div>
       </LayoutGroup>
     </div>
+  );
+}
+
+function SpotlightCardLink({
+  href,
+  hue,
+  children,
+}: {
+  href: string;
+  hue?: string;
+  children: React.ReactNode;
+}) {
+  const ref = useRef<HTMLAnchorElement>(null);
+  const onMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const el = ref.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    el.style.setProperty("--mx", `${e.clientX - r.left}px`);
+    el.style.setProperty("--my", `${e.clientY - r.top}px`);
+  };
+  return (
+    <Link
+      ref={ref}
+      href={href}
+      onMouseMove={onMove}
+      className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-1)] p-5 transition-colors hover:border-[var(--color-accent)]/60"
+      style={{ ["--mx" as string]: "50%", ["--my" as string]: "50%" } as React.CSSProperties}
+    >
+      <div
+        aria-hidden="true"
+        className={cn(
+          "pointer-events-none absolute inset-0 -z-10 bg-gradient-to-br opacity-0 transition-opacity duration-500 group-hover:opacity-100",
+          hue ?? "from-[var(--color-accent)] to-[var(--color-accent-2)]",
+        )}
+        style={{ maskImage: "radial-gradient(ellipse at top left, black 30%, transparent 70%)" }}
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+        style={{
+          background:
+            "radial-gradient(220px circle at var(--mx) var(--my), color-mix(in oklab, var(--color-accent) 22%, transparent), transparent 60%)",
+        }}
+      />
+      {children}
+    </Link>
   );
 }

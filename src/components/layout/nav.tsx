@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { Command, Menu, X } from "lucide-react";
 import { siteConfig } from "@/../site.config";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
+import { Magnetic } from "@/components/primitives/magnetic";
 import { cn } from "@/lib/utils";
 
 export function Nav() {
@@ -55,21 +56,22 @@ export function Nav() {
               pathname === item.href ||
               (item.href.length > 1 && pathname.startsWith(item.href));
             return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "relative rounded-full px-3 py-1.5 text-sm transition",
-                  active
-                    ? "text-[var(--color-text-0)]"
-                    : "text-[var(--color-text-1)] hover:text-[var(--color-text-0)]"
-                )}
-              >
-                {active && (
-                  <span className="absolute inset-0 -z-10 rounded-full bg-[var(--color-bg-2)]" />
-                )}
-                {item.label}
-              </Link>
+              <Magnetic key={item.href} strength={0.18}>
+                <Link
+                  href={item.href}
+                  className={cn(
+                    "relative inline-flex rounded-full px-3 py-1.5 text-sm transition",
+                    active
+                      ? "text-[var(--color-text-0)]"
+                      : "text-[var(--color-text-1)] hover:text-[var(--color-text-0)]"
+                  )}
+                >
+                  {active && (
+                    <span className="absolute inset-0 -z-10 rounded-full bg-[var(--color-bg-2)]" />
+                  )}
+                  {item.label}
+                </Link>
+              </Magnetic>
             );
           })}
         </div>

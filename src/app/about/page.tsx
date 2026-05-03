@@ -4,6 +4,8 @@ import { OrgLogo } from "@/components/primitives/org-tag";
 import { education } from "@/content/education";
 import { leadership } from "@/content/awards";
 import { Shield, GraduationCap, Share2 } from "lucide-react";
+import { PageBackground } from "@/components/layout/page-background";
+import { PullQuote } from "@/components/sections/pull-quote";
 
 export const metadata: Metadata = {
   title: "About",
@@ -32,6 +34,7 @@ const values = [
 export default function AboutPage() {
   return (
     <>
+      <PageBackground variant="about" />
       <Section
         eyebrow="About"
         title={<>A long answer<br/>to a short question.</>}
@@ -51,11 +54,11 @@ export default function AboutPage() {
               understanding of stakeholder needs, cross-agency collaboration,
               and applied machine learning.
             </p>
-            <blockquote className="border-l-2 border-[var(--color-accent)] pl-4 italic text-[var(--color-text-1)]">
+            <PullQuote>
               Known for leading teams under pressure, adapting quickly in
               dynamic environments, and communicating complex ideas with
               clarity.
-            </blockquote>
+            </PullQuote>
             <p>
               Committed to delivering secure, scalable, and data-informed
               solutions across sectors. Currently a research engineer on open

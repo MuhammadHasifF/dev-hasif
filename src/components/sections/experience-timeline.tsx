@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useRef, useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { experience } from "@/content/experience";
 import { Section } from "@/components/primitives/section";
@@ -11,6 +11,12 @@ import { cn } from "@/lib/utils";
 
 export function ExperienceTimeline() {
   const [open, setOpen] = useState<string | null>(experience[0]?.company ?? null);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: wrapRef,
+    offset: ["start 80%", "end 30%"],
+  });
+  const lineHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
   return (
     <Section
@@ -19,15 +25,29 @@ export function ExperienceTimeline() {
       title={<>Six roles. Six<br/>very different playbooks.</>}
       intro="From research engineering to a Security Operations Center to a national Police Force — I've shipped across the stack and the chain of command."
     >
-      <div className="relative">
+      <div ref={wrapRef} className="relative">
         <div
           aria-hidden="true"
           className="absolute left-[18px] top-0 h-full w-px md:left-1/2 md:-translate-x-1/2"
           style={{
             background:
-              "linear-gradient(var(--color-border), color-mix(in oklab, var(--color-accent) 35%, transparent), var(--color-border))",
+              "linear-gradient(var(--color-border), color-mix(in oklab, var(--color-border) 80%, transparent), var(--color-border))",
           }}
         />
+        <motion.div
+          aria-hidden="true"
+          style={{ height: lineHeight }}
+          className="absolute left-[18px] top-0 w-px origin-top md:left-1/2 md:-translate-x-1/2"
+        >
+          <div
+            className="h-full w-full"
+            style={{
+              background:
+                "linear-gradient(to bottom, transparent, var(--color-accent), var(--color-accent-2))",
+              boxShadow: "0 0 12px color-mix(in oklab, var(--color-accent) 60%, transparent)",
+            }}
+          />
+        </motion.div>
         <ol className="space-y-10 md:space-y-16">
           {experience.map((r, i) => {
             const isLeft = i % 2 === 0;

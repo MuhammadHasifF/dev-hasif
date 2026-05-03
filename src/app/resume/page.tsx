@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Section } from "@/components/primitives/section";
 import { Download, FileText } from "lucide-react";
+import { PageBackground } from "@/components/layout/page-background";
 
 export const metadata: Metadata = {
   title: "Resume",
@@ -9,6 +10,8 @@ export const metadata: Metadata = {
 
 export default function ResumePage() {
   return (
+    <>
+    <PageBackground variant="resume" />
     <Section
       eyebrow="Resume"
       title={<>Condensed into<br/>a single page.</>}
@@ -49,5 +52,6 @@ export default function ResumePage() {
         </object>
       </div>
     </Section>
+    </>
   );
 }

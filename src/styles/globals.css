@@ -28,6 +28,7 @@
   --animate-marquee-reverse: marquee-reverse 40s linear infinite;
   --animate-shimmer: shimmer 2.4s linear infinite;
   --animate-float: float 6s ease-in-out infinite;
+  --animate-mesh-breathe: meshBreathe 18s ease-in-out infinite;
 
   @keyframes marquee {
     from { transform: translateX(0); }
@@ -44,6 +45,19 @@
   @keyframes float {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-8px); }
+  }
+  @keyframes meshBreathe {
+    0%, 100% { transform: scale(1) translate(0, 0); }
+    33% { transform: scale(1.08) translate(2%, -1%); }
+    66% { transform: scale(0.96) translate(-2%, 1%); }
+  }
+  @keyframes scanline {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100%); }
+  }
+  @keyframes drawLine {
+    from { stroke-dashoffset: 1; }
+    to { stroke-dashoffset: 0; }
   }
 }
 

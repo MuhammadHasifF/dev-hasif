@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Section } from "@/components/primitives/section";
 import { Feather } from "lucide-react";
+import { PageBackground } from "@/components/layout/page-background";
 
 export const metadata: Metadata = {
   title: "Writing",
@@ -9,6 +10,8 @@ export const metadata: Metadata = {
 
 export default function WritingPage() {
   return (
+    <>
+    <PageBackground variant="writing" />
     <Section eyebrow="Writing" title={<>Notes in progress.</>}>
       <div className="flex flex-col items-center gap-4 rounded-3xl border border-dashed border-[var(--color-border)] bg-[var(--color-bg-1)]/50 px-6 py-20 text-center">
         <Feather className="h-8 w-8 text-[var(--color-text-2)]" />
@@ -28,5 +31,6 @@ export default function WritingPage() {
         </p>
       </div>
     </Section>
+    </>
   );
 }

@@ -13,6 +13,8 @@ import { SmoothScroll } from "@/components/layout/smooth-scroll";
 import { CustomCursor } from "@/components/layout/custom-cursor";
 import { SettingsProvider } from "@/components/layout/settings-provider";
 import { Konami } from "@/components/layout/konami";
+import { PageTransition } from "@/components/layout/page-transition";
+import { SectionPill } from "@/components/layout/section-pill";
 import "@/styles/globals.css";
 
 const geistSans = Geist({
@@ -100,8 +102,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Nav />
             <CommandPalette />
             <Konami />
+            <SectionPill />
             <main id="main" className="relative">
-              {children}
+              <PageTransition>{children}</PageTransition>
             </main>
             <Footer />
           </SettingsProvider>
