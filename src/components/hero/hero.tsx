@@ -3,7 +3,8 @@
 import { ArrowDown, ArrowRight, MapPin } from "lucide-react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 import { Magnetic } from "@/components/primitives/magnetic";
 import { siteConfig } from "@/../site.config";
 
@@ -14,11 +15,25 @@ const HeroCanvas = dynamic(() => import("@/components/hero/hero-canvas").then((m
 
 export function Hero() {
   const reduce = useReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  const canvasScale = useTransform(scrollYProgress, [0, 1], [1, 0.6]);
+  const canvasY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const canvasOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  const titleY = useTransform(scrollYProgress, [0, 1], ["0%", "-20%"]);
+  const subY = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]);
+  const titleOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
   return (
-    <section className="relative flex min-h-[100svh] w-full items-center overflow-hidden">
+    <section ref={sectionRef} className="relative flex min-h-[100svh] w-full items-center overflow-hidden">
       {/* Background WebGL layer */}
-      <div className="pointer-events-none absolute inset-0 -z-10">
+      <motion.div
+        style={reduce ? undefined : { scale: canvasScale, y: canvasY, opacity: canvasOpacity }}
+        className="pointer-events-none absolute inset-0 -z-10"
+      >
         {!reduce && <HeroCanvas />}
         {reduce && (
           <div
@@ -45,9 +60,12 @@ export function Hero() {
               "radial-gradient(ellipse 80% 60% at 50% 40%, black 20%, transparent 80%)",
           }}
         />
-      </div>
+      </motion.div>
 
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 pt-28 sm:px-6 md:pt-24">
+      <motion.div
+        style={reduce ? undefined : { y: titleY, opacity: titleOpacity }}
+        className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 pt-28 sm:px-6 md:pt-24"
+      >
         <motion.div
           initial={reduce ? false : { opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -117,7 +135,20 @@ export function Hero() {
           <ArrowDown className="h-3 w-3 animate-bounce" />
           Scroll to explore
         </motion.div>
-      </div>
+      </motion.div>
+      {/* Subtle parallax tagline strip behind the section bottom */}
+      {!reduce && (
+        <motion.div
+          aria-hidden="true"
+          style={{ y: subY }}
+          className="pointer-events-none absolute bottom-6 left-0 right-0 mx-auto w-full max-w-6xl px-4 sm:px-6"
+        >
+          <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.3em] text-[var(--color-text-2)]/60">
+            <span>R3CAP · SPF · HTX · SIT</span>
+            <span>SG / 2026</span>
+          </div>
+        </motion.div>
+      )}
     </section>
   );
 }

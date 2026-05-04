@@ -3,6 +3,7 @@ import { Section } from "@/components/primitives/section";
 import { ContactInline } from "@/components/sections/contact-inline";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { siteConfig } from "@/../site.config";
+import { PageBackground } from "@/components/layout/page-background";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <>
+      <PageBackground variant="contact" />
       <Section
         eyebrow="Contact"
         title={<>Say hello.</>}

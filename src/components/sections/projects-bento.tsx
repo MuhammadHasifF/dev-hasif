@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, LayoutGroup } from "framer-motion";
 import { projects, projectCategories, type ProjectCategory } from "@/content/projects";
 import { Section } from "@/components/primitives/section";
@@ -69,23 +69,7 @@ export function ProjectsBento() {
                 transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
                 className={cn("group", bentoSize[i % 8] ?? "md:col-span-3 md:row-span-1")}
               >
-                <Link
-                  href={`/work/${p.slug}`}
-                  className="relative flex h-full min-h-[170px] flex-col justify-between overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-1)] p-6 transition-colors hover:border-[var(--color-accent)]/60"
-                >
-                  <div
-                    aria-hidden="true"
-                    className={cn(
-                      "absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 group-hover:opacity-100",
-                      "bg-gradient-to-br",
-                      p.hue ?? "from-[var(--color-accent)] to-[var(--color-accent-2)]"
-                    )}
-                    style={{ maskImage: "radial-gradient(ellipse at top left, black 30%, transparent 70%)" }}
-                  />
-                  <div
-                    aria-hidden="true"
-                    className="absolute inset-0 -z-10 opacity-[0.04] bg-[radial-gradient(circle_at_1px_1px,var(--color-text-0)_1px,transparent_1px)] [background-size:14px_14px]"
-                  />
+                <BentoCardLink href={`/work/${p.slug}`} hue={p.hue}>
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-2">
                       <OrgLogo orgKey={p.orgKey} size="md" />
@@ -113,7 +97,7 @@ export function ProjectsBento() {
                     <span>{p.year}</span>
                     <span>{p.org}</span>
                   </div>
-                </Link>
+                </BentoCardLink>
               </motion.div>
             ))}
           </AnimatePresence>
@@ -129,5 +113,56 @@ export function ProjectsBento() {
         </Link>
       </div>
     </Section>
+  );
+}
+
+function BentoCardLink({
+  href,
+  hue,
+  children,
+}: {
+  href: string;
+  hue?: string;
+  children: React.ReactNode;
+}) {
+  const ref = useRef<HTMLAnchorElement>(null);
+  const onMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const el = ref.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    el.style.setProperty("--mx", `${e.clientX - r.left}px`);
+    el.style.setProperty("--my", `${e.clientY - r.top}px`);
+  };
+  return (
+    <Link
+      ref={ref}
+      href={href}
+      onMouseMove={onMove}
+      className="group/card relative flex h-full min-h-[170px] flex-col justify-between overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-1)] p-6 transition-colors hover:border-[var(--color-accent)]/60"
+      style={{ ["--mx" as string]: "50%", ["--my" as string]: "50%" } as React.CSSProperties}
+    >
+      <div
+        aria-hidden="true"
+        className={cn(
+          "absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 group-hover/card:opacity-100",
+          "bg-gradient-to-br",
+          hue ?? "from-[var(--color-accent)] to-[var(--color-accent-2)]",
+        )}
+        style={{ maskImage: "radial-gradient(ellipse at top left, black 30%, transparent 70%)" }}
+      />
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 -z-10 opacity-[0.04] bg-[radial-gradient(circle_at_1px_1px,var(--color-text-0)_1px,transparent_1px)] [background-size:14px_14px]"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-200 group-hover/card:opacity-100"
+        style={{
+          background:
+            "radial-gradient(220px circle at var(--mx) var(--my), color-mix(in oklab, var(--color-accent) 22%, transparent), transparent 60%)",
+        }}
+      />
+      {children}
+    </Link>
   );
 }
