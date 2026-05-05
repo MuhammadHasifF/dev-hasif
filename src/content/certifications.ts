@@ -8,25 +8,25 @@ export type Certification = {
 export const certifications: Certification[] = [
   {
     title: "RPA Developers Training Course (UiPath Studio)",
-    issuer: "simplifynext",
+    issuer: "SimplifyNext",
     orgKey: "simplifynext",
     date: "02/2025",
   },
   {
-    title: "Senior Officer Course",
+    title: "Senior Officer Course (80th Batch)",
     issuer: "Singapore Police Force",
     orgKey: "spf",
     date: "11/2024",
   },
   {
-    title: "Police Basic Course",
+    title: "Police Operational Basic Course",
     issuer: "Singapore Police Force",
     orgKey: "spf",
     date: "01/2024",
   },
   {
     title: "CS50: Introduction to Computer Science",
-    issuer: "Harvard University",
+    issuer: "Harvard University (edX)",
     orgKey: "harvard",
     date: "03/2023",
   },
@@ -37,7 +37,7 @@ export const certifications: Certification[] = [
     date: "01/2023",
   },
   {
-    title: "Python for Data Science and ML Bootcamp",
+    title: "Python for Data Science and Machine Learning Bootcamp",
     issuer: "Udemy",
     orgKey: "udemy",
     date: "01/2023",
@@ -50,14 +50,20 @@ export const certifications: Certification[] = [
   },
   {
     title: "HTML Essential Training",
-    issuer: "LinkedIn",
+    issuer: "LinkedIn Learning",
     orgKey: "linkedin",
     date: "03/2022",
   },
   {
     title: "Python Data Structures & Algorithms",
-    issuer: "LinkedIn",
+    issuer: "LinkedIn Learning",
     orgKey: "linkedin",
     date: "03/2022",
+  },
+  {
+    title: "Food Hygiene Certificate",
+    issuer: "Singapore Food Agency",
+    orgKey: "sfa",
+    date: "11/2019",
   },
 ];

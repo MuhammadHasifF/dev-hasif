@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Section } from "@/components/primitives/section";
 import { OrgLogo } from "@/components/primitives/org-tag";
 import { education } from "@/content/education";
@@ -110,6 +111,38 @@ export default function AboutPage() {
               <h3 className="mt-4 font-display text-xl text-[var(--color-text-0)]">{v.title}</h3>
               <p className="mt-2 text-sm text-[var(--color-text-1)]">{v.body}</p>
             </div>
+          ))}
+        </div>
+      </Section>
+
+      <Section eyebrow="Frames" title="In motion">
+        <div className="grid gap-4 md:grid-cols-3">
+          {[
+            { src: "/me/bamboo-forest.jpg", caption: "Arashiyama Bamboo Grove, Kyoto", alt: "Hasif standing in front of a bamboo grove" },
+            { src: "/me/pagoda.jpg", caption: "Hōkan-ji Pagoda, Higashiyama", alt: "Hasif looking up at a five-story pagoda" },
+            { src: "/me/uniform.jpg", caption: "Officer Cadet Course, ceremonial dress", alt: "Hasif in SPF officer cadet ceremonial dress" },
+          ].map((p) => (
+            <figure
+              key={p.src}
+              className="group relative overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-1)]"
+            >
+              <div className="relative aspect-[4/5] w-full overflow-hidden">
+                <Image
+                  src={p.src}
+                  alt={p.alt}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.04]"
+                />
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[var(--color-bg-0)]/85 via-transparent to-transparent"
+                />
+              </div>
+              <figcaption className="absolute bottom-3 left-4 right-4 font-mono text-[11px] uppercase tracking-widest text-[var(--color-text-0)]">
+                {p.caption}
+              </figcaption>
+            </figure>
           ))}
         </div>
       </Section>

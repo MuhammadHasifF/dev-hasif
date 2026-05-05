@@ -15,6 +15,7 @@ import { SettingsProvider } from "@/components/layout/settings-provider";
 import { Konami } from "@/components/layout/konami";
 import { PageTransition } from "@/components/layout/page-transition";
 import { SectionPill } from "@/components/layout/section-pill";
+import { BambooBackground } from "@/components/layout/bamboo-background";
 import "@/styles/globals.css";
 
 const geistSans = Geist({
@@ -36,8 +37,8 @@ const instrumentSerif = Instrument_Serif({
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#0a0a0b" },
-    { media: "(prefers-color-scheme: light)", color: "#fafafa" },
+    { media: "(prefers-color-scheme: dark)", color: "#0c0a08" },
+    { media: "(prefers-color-scheme: light)", color: "#f5efe0" },
   ],
   width: "device-width",
   initialScale: 1,
@@ -96,6 +97,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               Skip to content
             </a>
             <SmoothScroll />
+            <BambooBackground />
             <GrainOverlay />
             <CustomCursor />
             <ScrollProgress />

@@ -3,22 +3,24 @@ export type OrgEntry = {
   name: string;
   short?: string;
   domain?: string;
+  /** Local logo path under /public if available — preferred over Clearbit. */
+  localLogo?: string;
   /** Whether the logo should be inverted in dark mode (for dark-on-white marks) */
   invertOnDark?: boolean;
 };
 
 export const orgs: Record<string, OrgEntry> = {
-  sit: { key: "sit", name: "Singapore Institute of Technology", short: "SIT", domain: "singaporetech.edu.sg" },
-  spf: { key: "spf", name: "Singapore Police Force", short: "SPF", domain: "police.gov.sg" },
-  htx: { key: "htx", name: "HTX (Home Team Science & Technology Agency)", short: "HTX", domain: "htx.gov.sg" },
-  mom: { key: "mom", name: "Ministry of Manpower", short: "MOM", domain: "mom.gov.sg" },
-  deloitte: { key: "deloitte", name: "Deloitte", short: "Deloitte", domain: "deloitte.com" },
+  sit: { key: "sit", name: "Singapore Institute of Technology", short: "SIT", domain: "singaporetech.edu.sg", localLogo: "/orgs/sit.png" },
+  spf: { key: "spf", name: "Singapore Police Force", short: "SPF", domain: "police.gov.sg", localLogo: "/orgs/spf.png" },
+  htx: { key: "htx", name: "HTX (Home Team Science & Technology Agency)", short: "HTX", domain: "htx.gov.sg", localLogo: "/orgs/htx.png" },
+  mom: { key: "mom", name: "Ministry of Manpower", short: "MOM", domain: "mom.gov.sg", localLogo: "/orgs/mom.jpeg" },
+  deloitte: { key: "deloitte", name: "Deloitte", short: "Deloitte", domain: "deloitte.com", localLogo: "/orgs/deloitte.png" },
   hitachi: { key: "hitachi", name: "Hitachi", short: "Hitachi", domain: "hitachi.com" },
-  "temasek-poly": { key: "temasek-poly", name: "Temasek Polytechnic", short: "TP", domain: "tp.edu.sg" },
+  "temasek-poly": { key: "temasek-poly", name: "Temasek Polytechnic", short: "TP", domain: "tp.edu.sg", localLogo: "/orgs/tp.jpg" },
   "al-arabiah": { key: "al-arabiah", name: "Al-Arabiah Institution", short: "AAI", domain: "al-arabiah.edu.sg" },
   "eunos-primary": { key: "eunos-primary", name: "Eunos Primary School", short: "EPS", domain: "eunospri.moe.edu.sg" },
   uipath: { key: "uipath", name: "UiPath", short: "UiPath", domain: "uipath.com" },
-  simplifynext: { key: "simplifynext", name: "simplifynext", short: "SN", domain: "simplifynext.com" },
+  simplifynext: { key: "simplifynext", name: "SimplifyNext", short: "SN", domain: "simplifynext.com" },
   harvard: { key: "harvard", name: "Harvard University", short: "Harvard", domain: "harvard.edu" },
   udemy: { key: "udemy", name: "Udemy", short: "Udemy", domain: "udemy.com" },
   linkedin: { key: "linkedin", name: "LinkedIn", short: "LI", domain: "linkedin.com" },
@@ -26,6 +28,7 @@ export const orgs: Record<string, OrgEntry> = {
   muis: { key: "muis", name: "MUIS", short: "MUIS", domain: "muis.gov.sg" },
   govtech: { key: "govtech", name: "GovTech Singapore", short: "GovTech", domain: "tech.gov.sg" },
   github: { key: "github", name: "GitHub", short: "GH", domain: "github.com" },
+  sfa: { key: "sfa", name: "Singapore Food Agency", short: "SFA", domain: "sfa.gov.sg" },
 };
 
 // Deterministic hue from a string (HSL)
