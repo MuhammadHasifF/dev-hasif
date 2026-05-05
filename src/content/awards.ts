@@ -15,12 +15,13 @@ export const awards: Award[] = [
 ];
 
 export const leadership = [
-  "Vice Chairperson (Officer Cadet Course)",
-  "Squad Person In-Charge (POBC)",
-  "Class Treasurer (Polytechnic)",
-  "IITSC Subcommittee (Polytechnic)",
-  "Executive Student Leader (Secondary)",
-  "STEM & Badminton Club (Secondary)",
-  "Class Monitor (Primary)",
-  "Art Club (Primary)",
+  "Vice Chairperson, Officer Cadet Course",
+  "19-day SPF Leadership Development Course (Outward Bound Singapore)",
+  "Squad Person In-Charge, Police Officer Basic Course",
+  "Class Treasurer, Polytechnic",
+  "Subcommittee, Infocommunication Technology Study Club (IITSC), Polytechnic",
+  "Executive Student Leader, Secondary School",
+  "STEM Club & Badminton Club, Secondary School",
+  "Class Monitor, Primary School",
+  "Art Club, Primary School",
 ];

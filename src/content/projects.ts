@@ -20,7 +20,7 @@ export type Project = {
   outcomes?: string[];
   links?: { label: string; href: string }[];
   featured?: boolean;
-  hue?: string; // tailwind gradient hint
+  hue?: string;
 };
 
 export const projects: Project[] = [
@@ -30,7 +30,7 @@ export const projects: Project[] = [
     tagline:
       "Open-source platform for near real-time 3D reconstruction and collaborative scene authoring.",
     description:
-      "Agile research-oriented work extending R3CAP (formerly demoConstruct): progressive 3D reconstruction, WebXR rendering, real-time cloud sync, and next-gen reconstruction + segmentation engines.",
+      "Agile research-oriented work extending R3CAP (formerly demoConstruct) at SIT — progressive 3D reconstruction, WebXR rendering, real-time mesh replacement, cloud sync, and integration of next-gen reconstruction + segmentation engines (auto-labeling).",
     year: "2024 – 2025",
     org: "Singapore Institute of Technology",
     orgKey: "sit",
@@ -38,7 +38,7 @@ export const projects: Project[] = [
     tags: ["3D", "WebXR", "Research"],
     stack: ["Python", "Babylon.js", "WebXR", "GCP"],
     outcomes: [
-      "Contributed to publications at CHI '25 and DIS '26",
+      "Backed publications at CHI '25 and DIS '26",
       "Shipped frontend + backend feature set for open-source release",
       "Integrated next-gen 3D reconstruction + segmentation engines",
     ],
@@ -51,7 +51,7 @@ export const projects: Project[] = [
     tagline:
       "RPA pipeline that cut manual effort across Singapore's 2025 polling operations.",
     description:
-      "Designed and deployed UiPath automation for polling workflows across SPF operations, replacing repetitive manual processes during GE2025.",
+      "Designed and deployed UiPath automation for backend polling logistics during GE2025 — replacing repetitive manual workflows and standardizing reporting for SPF operations.",
     year: "2025",
     org: "Singapore Police Force",
     orgKey: "spf",
@@ -71,7 +71,7 @@ export const projects: Project[] = [
     tagline:
       "Real-time geospatial personnel monitoring for high-security operations.",
     description:
-      "Co-built a live geospatial tracker with HTX for high-security deployments, integrating real-time feeds with ArcGIS dashboards used by command staff.",
+      "Co-developed a personnel movement monitoring system with HTX using geospatial data — improving real-time visibility and coordination for command staff during high-security operations.",
     year: "2024 – 2025",
     org: "HTX × SPF",
     orgKey: "htx",
@@ -89,9 +89,9 @@ export const projects: Project[] = [
     slug: "geospatial-dashboards",
     title: "Geospatial Operations Dashboards",
     tagline:
-      "ArcGIS dashboards surfacing operational state for decision makers.",
+      "ArcGIS dashboards + map layers visualizing deployments for command leadership.",
     description:
-      "Designed ArcGIS dashboards that merged live operations data with spatial context, used by leadership during national events.",
+      "Designed and deployed interactive ArcGIS dashboards merging live operations data with spatial context — used by leadership to enhance situational awareness during national events.",
     year: "2024 – 2025",
     org: "Singapore Police Force",
     orgKey: "spf",
@@ -101,12 +101,27 @@ export const projects: Project[] = [
     hue: "from-[var(--color-accent)] to-[var(--color-accent-3)]",
   },
   {
+    slug: "voteq-platform",
+    title: "VoteQ × ArcGIS Spatial Analytics",
+    tagline:
+      "Integrated GovTech's VoteQ with ArcGIS for crowd monitoring + resource allocation.",
+    description:
+      "Worked alongside GovTech to integrate ArcGIS-based spatial analytics into the VoteQ platform — sharpening crowd monitoring and resource allocation ahead of GE2025.",
+    year: "2025",
+    org: "GovTech × SPF",
+    orgKey: "govtech",
+    category: "Government",
+    tags: ["Gov", "Geospatial"],
+    stack: ["ArcGIS", "Web", "REST APIs"],
+    hue: "from-[var(--color-accent)] to-[var(--color-text-1)]",
+  },
+  {
     slug: "soc-automation",
     title: "SOC Automation & Reporting",
     tagline:
       "Python tooling that freed SOC analysts from repetitive reporting.",
     description:
-      "Scripted daily/weekly SOC reports and live dashboards for HTX's Security Operations Center, replacing manual spreadsheet exports.",
+      "Scripted SOC report and dashboard generation for HTX's Security Operations Center — improving operational visibility and accelerating insights delivery during incident response and threat hunting.",
     year: "2024",
     org: "HTX",
     orgKey: "htx",
@@ -115,10 +130,29 @@ export const projects: Project[] = [
     stack: ["Python", "SIEM", "Pandas"],
     impact: [
       "Automated SOC reporting pipeline",
-      "Supported incident response, DFIR, and threat hunting",
+      "Supported incident response, DFIR, and proactive threat hunting",
     ],
     featured: true,
     hue: "from-[var(--color-accent-2)] to-[var(--color-accent-3)]",
+  },
+  {
+    slug: "time-series-forecasting",
+    title: "Time-Series Forecasting (ARIMA + Boosting)",
+    tagline:
+      "Forecasting pipeline blending ARIMA with gradient-boosted trees.",
+    description:
+      "Built during my Deloitte engagement and grounded in my Temasek Polytechnic capstone — ARIMA enhanced with feature engineering, alongside XGBoost/LightGBM in scikit-learn workflows. ETL automation, hyperparameter search, and cross-validation backed end-to-end model handover.",
+    year: "2022 – 2023",
+    org: "Deloitte",
+    orgKey: "deloitte",
+    category: "Data",
+    tags: ["Forecasting", "ML"],
+    stack: ["Python", "ARIMA", "XGBoost", "LightGBM", "scikit-learn"],
+    outcomes: [
+      "Proposal-to-deploy consulting engagement",
+      "Automated ETL + modelling pipeline handed over to client team",
+    ],
+    hue: "from-[var(--color-accent-3)] to-[var(--color-accent-2)]",
   },
   {
     slug: "papers-by-hasif",
@@ -139,40 +173,6 @@ export const projects: Project[] = [
       },
     ],
     hue: "from-[var(--color-text-1)] to-[var(--color-accent)]",
-  },
-  {
-    slug: "time-series-forecasting",
-    title: "Time-Series Forecasting (ARIMA + Boosting)",
-    tagline:
-      "End-to-end forecasting pipeline blending ARIMA with gradient boosted trees.",
-    description:
-      "Built during my Deloitte internship — a forecasting workflow mixing classical ARIMA with XGBoost/LightGBM, backed by ETL automation and model evaluation pipelines.",
-    year: "2022 – 2023",
-    org: "Deloitte",
-    orgKey: "deloitte",
-    category: "Data",
-    tags: ["Forecasting", "ML"],
-    stack: ["Python", "ARIMA", "XGBoost", "LightGBM", "scikit-learn"],
-    outcomes: [
-      "Proposal-to-deploy consulting engagement",
-      "Automated ETL + modelling pipeline handed over to client team",
-    ],
-    hue: "from-[var(--color-accent-3)] to-[var(--color-accent-2)]",
-  },
-  {
-    slug: "voteq-platform",
-    title: "VoteQ Platform Enhancement",
-    tagline:
-      "Collaborated with GovTech to harden the VoteQ operations platform.",
-    description:
-      "Worked alongside GovTech engineers to refine the VoteQ platform, contributing usability and reliability improvements ahead of GE2025.",
-    year: "2025",
-    org: "GovTech × SPF",
-    orgKey: "govtech",
-    category: "Government",
-    tags: ["Gov", "Product"],
-    stack: ["Web", "REST APIs"],
-    hue: "from-[var(--color-accent)] to-[var(--color-text-1)]",
   },
 ];
 
