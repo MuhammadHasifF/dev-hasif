@@ -11,7 +11,7 @@ import { PullQuote } from "@/components/sections/pull-quote";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Long-form bio for Muhammad Hasif — research engineering, government operations, cybersecurity, and applied AI.",
+    "Long-form bio for Muhammad Hasif. Research engineering, government operations, cybersecurity, and applied AI.",
 };
 
 const values = [
@@ -37,8 +37,11 @@ export default function AboutPage() {
     <>
       <PageBackground variant="about" />
       <Section
-        eyebrow="About"
-        title={<>A long answer<br/>to a short question.</>}
+        eyebrow="ABOUT"
+        index={1}
+        total={5}
+        stamp="// LONG VERSION"
+        title={["A long answer", "to a short question."]}
         intro="Who I am, what I care about, and where I've been."
       >
         <div className="grid gap-12 md:grid-cols-3">
@@ -95,7 +98,7 @@ export default function AboutPage() {
         </div>
       </Section>
 
-      <Section eyebrow="Values" title="How I work">
+      <Section eyebrow="VALUES" index={2} total={5} stamp="// PRINCIPLES" title={["How I work."]}>
         <div className="grid gap-4 md:grid-cols-3">
           {values.map((v) => (
             <div
@@ -115,7 +118,7 @@ export default function AboutPage() {
         </div>
       </Section>
 
-      <Section eyebrow="Frames" title="In motion">
+      <Section eyebrow="FRAMES" index={3} total={5} stamp="// FIELD NOTES" title={["In motion."]}>
         <div className="grid gap-4 md:grid-cols-3">
           {[
             { src: "/me/bamboo-forest.jpg", caption: "Arashiyama Bamboo Grove, Kyoto", alt: "Hasif standing in front of a bamboo grove" },
@@ -147,7 +150,7 @@ export default function AboutPage() {
         </div>
       </Section>
 
-      <Section eyebrow="Education" title="Schools">
+      <Section eyebrow="EDUCATION" index={4} total={5} stamp="// SCHOOLS" title={["Schools."]}>
         <ol className="hud-panel divide-y divide-[var(--color-border)] overflow-hidden">
           {education.map((e) => (
             <li key={e.school + e.credential} className="flex items-start gap-4 px-5 py-5">
@@ -163,7 +166,7 @@ export default function AboutPage() {
         </ol>
       </Section>
 
-      <Section eyebrow="Leadership" title="Along the way">
+      <Section eyebrow="LEADERSHIP" index={5} total={5} stamp="// ROLES" title={["Along the way."]}>
         <ul className="grid gap-2 md:grid-cols-2">
           {leadership.map((l) => (
             <li

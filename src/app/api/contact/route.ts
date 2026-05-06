@@ -32,7 +32,7 @@ export async function POST(req: Request) {
   const rl = rateLimit(ip);
   if (!rl.ok) {
     return NextResponse.json(
-      { error: "Too many messages — try again in a few minutes." },
+      { error: "Too many messages. Try again in a few minutes." },
       { status: 429 }
     );
   }
@@ -66,13 +66,13 @@ export async function POST(req: Request) {
     console.warn("[contact] RESEND_API_KEY missing — logging payload instead of sending:");
     console.warn(JSON.stringify({ from: data.email, name: data.name, message: data.message }, null, 2));
     return NextResponse.json(
-      { ok: true, dev: true, note: "Dev stub — configure RESEND_API_KEY to send real emails." }
+      { ok: true, dev: true, note: "Dev stub. Configure RESEND_API_KEY to send real emails." }
     );
   }
 
   const resend = new Resend(apiKey);
 
-  const subject = `Portfolio contact — ${data.name}`;
+  const subject = `Portfolio contact · ${data.name}`;
   const html = `
     <div style="font-family:ui-sans-serif,system-ui,sans-serif;background:#0a0a0b;color:#f5f5f7;padding:24px">
       <h2 style="margin:0 0 8px">${escape(data.name)} <span style="color:#a1a1aa;font-weight:400">(${escape(data.email)})</span></h2>

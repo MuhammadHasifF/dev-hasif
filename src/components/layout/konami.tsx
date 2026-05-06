@@ -55,7 +55,7 @@ export function Konami() {
         role="status"
         className="fixed bottom-6 left-1/2 z-[96] -translate-x-1/2 rounded-full border border-[var(--color-accent)] bg-[var(--color-bg-0)]/90 px-4 py-2 font-mono text-xs text-[var(--color-text-0)] shadow-glow"
       >
-        ↑ ↑ ↓ ↓ ← → ← → B A — you found it. ✦
+        ↑ ↑ ↓ ↓ ← → ← → B A · you found it. ✦
       </div>
       <style>{`@keyframes spin { from { transform: rotate(0deg) } to { transform: rotate(360deg) } }`}</style>
     </>

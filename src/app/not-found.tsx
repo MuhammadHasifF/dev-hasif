@@ -15,7 +15,7 @@ export default function NotFound() {
           </div>
           <h1 className="font-display text-4xl text-[var(--color-text-0)]">Page off the map.</h1>
           <p className="mt-3 text-[var(--color-text-1)]">
-            The route you&rsquo;re after doesn&rsquo;t exist — yet. Move your
+            The route you&rsquo;re after doesn&rsquo;t exist. Yet. Move your
             cursor through the digits, then head home.
           </p>
           <div className="mt-6 flex items-center justify-center gap-2">

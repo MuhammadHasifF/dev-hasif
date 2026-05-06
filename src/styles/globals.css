@@ -4,58 +4,63 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
-  --font-display: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-inter), var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-display: var(--font-space-grotesk), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 
   /* ──────────────────────────────────────────────────────────────────
-     CYBER / TERMINAL OS — pure-black bases, electric cyan single accent.
-     amber for status; magenta + red reserved for signal/error only.
+     CYBERPUNK CITY · DARK HORROR
+     Locked monochrome system — pure black bases, cool white type,
+     a single electric cyan glow for power-on signal.
      ────────────────────────────────────────────────────────────────── */
-  --color-bg-0: #04070d;
-  --color-bg-1: #080d18;
-  --color-bg-2: #0e1525;
-  --color-bg-3: #131b2e;
-  --color-border: #1c2538;
-  --color-border-strong: #2a3552;
-  --color-text-0: #e6edf3;
-  --color-text-1: #8b97aa;
-  --color-text-2: #5a6478;
+  --color-bg-0: #05060a;        /* base — near-black, 1% blue cast */
+  --color-bg-1: #0a0c12;        /* surface */
+  --color-bg-2: #11141b;        /* elevated panel */
+  --color-bg-3: #181c28;        /* hover surface */
+  --color-border: #1c2030;
+  --color-border-strong: #2a3042;
+  --color-text-0: #e8ecf2;      /* primary, cool white */
+  --color-text-1: #8b94a8;      /* body */
+  --color-text-2: #5a6378;      /* dim, eyebrows + stamps */
 
-  --color-accent:    #22e7ff;   /* electric cyan — primary */
-  --color-accent-2:  #00b8d4;   /* deeper cyan */
-  --color-accent-3:  #ff2d6f;   /* magenta — signal/highlight only */
-  --color-success:   #9aff5e;   /* lime */
-  --color-warning:   #ffb84a;   /* amber */
+  --color-accent:    #00e5ff;   /* electric cyan — sole accent */
+  --color-accent-2:  #00b8d4;   /* deeper cyan, gradients */
+  --color-accent-3:  #ff2d6f;   /* magenta — error/signal only */
+  --color-success:   #5dff9a;
+  --color-warning:   #ffb84a;
   --color-danger:    #ff3d5a;
 
   --ease-apple: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-quart: cubic-bezier(0.65, 0, 0.35, 1);
 
-  --animate-marquee: marquee 40s linear infinite;
-  --animate-marquee-reverse: marquee-reverse 40s linear infinite;
-  --animate-grid-drift: gridDrift 60s linear infinite;
-  --animate-conic-spin: conicSpin 80s linear infinite;
-  --animate-conic-spin-reverse: conicSpin 120s linear infinite reverse;
-  --animate-scan: scan 8s linear infinite;
-  --animate-pulse-soft: pulseSoft 3.6s ease-in-out infinite;
-  --animate-blink: blink 1.4s steps(2, end) infinite;
-  --animate-flicker: flicker 6s linear infinite;
+  --animate-marquee:           marquee 50s linear infinite;
+  --animate-marquee-reverse:   marquee-reverse 50s linear infinite;
+  --animate-grid-drift:        gridDrift 80s linear infinite;
+  --animate-conic-spin:        conicSpin 120s linear infinite;
+  --animate-conic-spin-reverse: conicSpin 180s linear infinite reverse;
+  --animate-scan:              scan 11s linear infinite;
+  --animate-pulse-soft:        pulseSoft 3.6s ease-in-out infinite;
+  --animate-pulse-ring:        pulseRing 1.8s ease-out infinite;
+  --animate-blink:             blink 1.4s steps(2, end) infinite;
+  --animate-flicker:           flicker 6s linear infinite;
+  --animate-line-draw:         lineDraw 1s var(--ease-out-expo) forwards;
 
   @keyframes marquee {
     from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
+    to   { transform: translateX(-50%); }
   }
   @keyframes marquee-reverse {
     from { transform: translateX(-50%); }
-    to { transform: translateX(0); }
+    to   { transform: translateX(0); }
   }
   @keyframes gridDrift {
-    from { background-position: 0 0, 0 0; }
-    to { background-position: 64px 64px, 64px 64px; }
+    from { background-position: 0 0; }
+    to   { background-position: 80px 80px; }
   }
   @keyframes conicSpin {
     from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    to   { transform: rotate(360deg); }
   }
   @keyframes scan {
     0%   { transform: translateY(-110%); }
@@ -64,6 +69,10 @@
   @keyframes pulseSoft {
     0%, 100% { opacity: 0.55; }
     50%      { opacity: 1; }
+  }
+  @keyframes pulseRing {
+    0%   { box-shadow: 0 0 0 0 color-mix(in oklab, var(--color-accent) 50%, transparent); }
+    100% { box-shadow: 0 0 0 12px transparent; }
   }
   @keyframes blink {
     0%, 60% { opacity: 1; }
@@ -76,9 +85,9 @@
     95% { opacity: 0.85; }
     96% { opacity: 1; }
   }
-  @keyframes drawLine {
-    from { stroke-dashoffset: 1; }
-    to   { stroke-dashoffset: 0; }
+  @keyframes lineDraw {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
   }
 }
 
@@ -98,7 +107,6 @@
   html {
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
-    /* Native smooth scroll — no Lenis rAF needed */
     scroll-behavior: smooth;
   }
   body {
@@ -115,11 +123,11 @@
   :focus-visible {
     outline: 1px solid var(--color-accent);
     outline-offset: 3px;
-    border-radius: 2px;
+    border-radius: 0;
   }
   button, a, [role="button"] { cursor: pointer; }
   h1, h2, h3, h4, h5, h6 {
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
     font-weight: 600;
   }
 }
@@ -129,90 +137,71 @@
   .text-balance { text-wrap: balance; }
   .text-pretty  { text-wrap: pretty; }
 
-  /* ── HUD glyph helpers ── */
-  .glyph-mono {
-    font-family: var(--font-mono);
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    font-size: 10px;
-  }
-
-  /* ── Backgrounds (CSS-only, GPU-cheap) ── */
-
-  /* Drifting dot-matrix; one composited layer */
+  /* ── Backgrounds ── */
   .bg-cyber-grid {
     background-image:
-      linear-gradient(to right, color-mix(in oklab, var(--color-accent) 10%, transparent) 1px, transparent 1px),
-      linear-gradient(to bottom, color-mix(in oklab, var(--color-accent) 10%, transparent) 1px, transparent 1px);
-    background-size: 64px 64px, 64px 64px;
+      linear-gradient(to right, color-mix(in oklab, var(--color-text-0) 5%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in oklab, var(--color-text-0) 5%, transparent) 1px, transparent 1px);
+    background-size: 80px 80px;
   }
   .bg-cyber-dots {
     background-image:
-      radial-gradient(circle at 1px 1px, color-mix(in oklab, var(--color-text-0) 18%, transparent) 1px, transparent 0);
-    background-size: 22px 22px;
+      radial-gradient(circle at 1px 1px, color-mix(in oklab, var(--color-text-0) 12%, transparent) 1px, transparent 0);
+    background-size: 24px 24px;
   }
-
-  /* Scanline overlay */
   .bg-scanlines {
     background-image: repeating-linear-gradient(
       to bottom,
       transparent 0 2px,
-      color-mix(in oklab, var(--color-accent) 6%, transparent) 2px 3px
+      color-mix(in oklab, var(--color-accent) 3%, transparent) 2px 3px
     );
   }
-
-  /* Pre-baked SVG noise — same as before, just darker tint */
   .bg-noise {
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
   }
 
-  .mask-fade-x {
-    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-  }
-  .mask-fade-y {
-    mask-image: linear-gradient(to bottom, transparent, black 5%, black 95%, transparent);
-  }
+  .mask-fade-x { mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent); }
+  .mask-fade-y { mask-image: linear-gradient(to bottom, transparent, black 5%, black 95%, transparent); }
 
-  /* ── Tactical / HUD panel ── */
-  .hud-panel {
+  /* ── Animated hairline divider ── */
+  .hairline {
     position: relative;
-    border: 1px solid var(--color-border);
-    background:
-      linear-gradient(180deg,
-        color-mix(in oklab, var(--color-bg-1) 88%, transparent) 0%,
-        color-mix(in oklab, var(--color-bg-2) 92%, transparent) 100%);
-    border-radius: 2px;
-    backdrop-filter: blur(6px);
-    transition: border-color 0.3s var(--ease-apple), box-shadow 0.3s var(--ease-apple);
+    height: 1px;
+    width: 100%;
+    background: var(--color-border);
+    overflow: hidden;
   }
-  /* Corner brackets — 4 L-shaped marks at each corner */
-  .hud-panel::before {
+  .hairline::after {
     content: "";
     position: absolute;
     inset: 0;
-    pointer-events: none;
-    border-radius: inherit;
-    background:
-      linear-gradient(to right,  var(--color-accent) 12px, transparent 12px) top    left  / 12px 1px no-repeat,
-      linear-gradient(to bottom, var(--color-accent) 12px, transparent 12px) top    left  / 1px 12px no-repeat,
-      linear-gradient(to right,  var(--color-accent) 12px, transparent 12px) top    right / 12px 1px no-repeat,
-      linear-gradient(to bottom, var(--color-accent) 12px, transparent 12px) top    right / 1px 12px no-repeat,
-      linear-gradient(to right,  var(--color-accent) 12px, transparent 12px) bottom left  / 12px 1px no-repeat,
-      linear-gradient(to bottom, var(--color-accent) 12px, transparent 12px) bottom left  / 1px 12px no-repeat,
-      linear-gradient(to right,  var(--color-accent) 12px, transparent 12px) bottom right / 12px 1px no-repeat,
-      linear-gradient(to bottom, var(--color-accent) 12px, transparent 12px) bottom right / 1px 12px no-repeat;
-    opacity: 0.55;
-    transition: opacity 0.3s var(--ease-apple);
+    background: linear-gradient(to right, transparent, var(--color-accent), transparent);
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: var(--animate-line-draw);
+    animation-play-state: paused;
   }
-  .hud-panel:hover::before { opacity: 1; }
-  .hud-panel-hover:hover {
-    border-color: color-mix(in oklab, var(--color-accent) 60%, var(--color-border));
+  .hairline.in-view::after { animation-play-state: running; }
+
+  /* ── Panel: minimal, no corner brackets ── */
+  .panel {
+    position: relative;
+    border: 1px solid var(--color-border);
+    background: color-mix(in oklab, var(--color-bg-1) 92%, transparent);
+    backdrop-filter: blur(8px);
+    border-radius: 0;
+    transition: border-color 0.4s var(--ease-out-expo), background 0.4s var(--ease-out-expo);
+  }
+  .panel:hover { border-color: color-mix(in oklab, var(--color-accent) 40%, var(--color-border)); }
+
+  .panel-glow:hover {
+    border-color: var(--color-accent);
     box-shadow:
-      inset 0 0 0 1px color-mix(in oklab, var(--color-accent) 18%, transparent),
-      0 0 32px -6px color-mix(in oklab, var(--color-accent) 35%, transparent);
+      inset 0 0 0 1px color-mix(in oklab, var(--color-accent) 14%, transparent),
+      0 0 36px -8px color-mix(in oklab, var(--color-accent) 32%, transparent);
   }
 
-  /* ── HUD chip — mono CAPS with leading bracket ── */
+  /* ── HUD chip — mono CAPS with leading bracket (kept for backward compat) ── */
   .hud-chip {
     display: inline-flex;
     align-items: center;
@@ -220,84 +209,166 @@
     border: 1px solid color-mix(in oklab, var(--color-accent) 30%, var(--color-border));
     background: color-mix(in oklab, var(--color-bg-2) 80%, transparent);
     padding: 2px 8px;
-    border-radius: 2px;
+    border-radius: 0;
     font-family: var(--font-mono);
     font-size: 10px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--color-text-1);
   }
-  .hud-chip::before {
-    content: "›";
-    color: var(--color-accent);
-    font-weight: 700;
-  }
+  .hud-chip::before { content: "›"; color: var(--color-accent); font-weight: 700; }
 
-  /* ── HUD button ── */
-  .hud-btn {
+  /* ── HUD button (alias to .panel-cta) ── */
+  .hud-btn,
+  .panel-cta {
     position: relative;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    height: 40px;
-    padding: 0 18px;
+    gap: 10px;
+    height: 44px;
+    padding: 0 22px;
     font-family: var(--font-mono);
     font-size: 11px;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--color-text-0);
-    border: 1px solid color-mix(in oklab, var(--color-accent) 50%, var(--color-border));
+    border: 1px solid var(--color-border-strong);
+    background: var(--color-bg-1);
+    border-radius: 0;
+    transition: background 0.4s var(--ease-out-expo),
+                border-color 0.4s var(--ease-out-expo),
+                box-shadow 0.4s var(--ease-out-expo),
+                color 0.4s var(--ease-out-expo);
+  }
+  .hud-btn:hover,
+  .panel-cta:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
     background: color-mix(in oklab, var(--color-accent) 6%, var(--color-bg-1));
-    border-radius: 2px;
-    transition: background 0.3s var(--ease-apple), border-color 0.3s var(--ease-apple), box-shadow 0.3s var(--ease-apple);
+    box-shadow: 0 0 32px -6px color-mix(in oklab, var(--color-accent) 60%, transparent);
   }
-  .hud-btn:hover {
-    background: color-mix(in oklab, var(--color-accent) 14%, var(--color-bg-1));
-    border-color: var(--color-accent);
-    box-shadow: 0 0 24px -4px color-mix(in oklab, var(--color-accent) 60%, transparent);
-  }
-  .hud-btn-primary {
+  .hud-btn-primary,
+  .panel-cta-primary {
     background: var(--color-accent);
-    color: #021018;
+    color: #00080c;
     border-color: var(--color-accent);
   }
-  .hud-btn-primary:hover {
+  .hud-btn-primary:hover,
+  .panel-cta-primary:hover {
     background: color-mix(in oklab, var(--color-accent) 88%, white);
-    box-shadow: 0 0 32px -2px color-mix(in oklab, var(--color-accent) 65%, transparent);
+    color: #00080c;
+    box-shadow: 0 0 40px -4px color-mix(in oklab, var(--color-accent) 70%, transparent);
+  }
+
+  /* Diagonal arrow lift for ArrowLink hover */
+  .arrow-lift {
+    transition: transform 0.4s var(--ease-out-expo);
+  }
+  .group:hover .arrow-lift,
+  .arrow-lift-host:hover .arrow-lift {
+    transform: translate(4px, -4px);
   }
 
   /* ── Glow text ── */
-  .glow-text { color: var(--color-accent); text-shadow: 0 0 14px color-mix(in oklab, var(--color-accent) 50%, transparent); }
+  .glow-text {
+    color: var(--color-accent);
+    text-shadow: 0 0 18px color-mix(in oklab, var(--color-accent) 50%, transparent);
+  }
   .gradient-text {
-    background: linear-gradient(120deg, var(--color-text-0) 0%, var(--color-text-0) 32%, var(--color-accent) 70%, color-mix(in oklab, var(--color-accent) 60%, white) 100%);
+    background: linear-gradient(120deg, var(--color-text-0) 0%, var(--color-text-0) 38%, var(--color-accent) 78%, color-mix(in oklab, var(--color-accent) 60%, white) 100%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
-  /* glass — kept for nav backdrop */
+  /* ── Status dot with pulsing ring ── */
+  .status-dot {
+    position: relative;
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--color-accent);
+    box-shadow: 0 0 0 0 color-mix(in oklab, var(--color-accent) 50%, transparent);
+    animation: var(--animate-pulse-ring);
+  }
+
+  /* ── Masked-line text reveal (CSS-only, JS adds .in-view) ── */
+  .reveal-line {
+    overflow: hidden;
+    display: block;
+  }
+  .reveal-line > span {
+    display: inline-block;
+    transform: translateY(110%);
+    transition: transform 0.9s var(--ease-out-expo);
+  }
+  .reveal-line.in-view > span { transform: translateY(0); }
+
+  /* ── Section header bar (top of every section) ── */
+  .section-bar {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 16px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-text-2);
+  }
+
+  /* ── Vertical accent bar (for sticky chapter rail) ── */
+  .accent-rail {
+    position: relative;
+  }
+  .accent-rail::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--color-border);
+  }
+  .accent-rail::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1px;
+    height: var(--rail, 0%);
+    background: var(--color-accent);
+    box-shadow: 0 0 12px color-mix(in oklab, var(--color-accent) 50%, transparent);
+    transition: height 0.2s linear;
+  }
+
+  /* ── Glass nav backdrop ── */
   .glass {
-    backdrop-filter: saturate(160%) blur(12px);
+    backdrop-filter: saturate(160%) blur(14px);
     background: color-mix(in oklab, var(--color-bg-0) 78%, transparent);
   }
   .border-dim { border-color: var(--color-border); }
   .shadow-glow {
     box-shadow:
-      0 0 0 1px color-mix(in oklab, var(--color-accent) 28%, transparent),
-      0 18px 56px -20px color-mix(in oklab, var(--color-accent) 35%, transparent);
-  }
-  .shadow-glow-warm {
-    box-shadow:
-      0 0 0 1px color-mix(in oklab, var(--color-warning) 32%, transparent),
-      0 22px 60px -20px color-mix(in oklab, var(--color-warning) 38%, transparent);
+      0 0 0 1px color-mix(in oklab, var(--color-accent) 22%, transparent),
+      0 18px 56px -20px color-mix(in oklab, var(--color-accent) 32%, transparent);
   }
 
-  /* Terminal caret */
+  /* ── Terminal caret ── */
   .caret::after {
     content: "_";
     margin-left: 2px;
     color: var(--color-accent);
     animation: var(--animate-blink);
+  }
+
+  /* ── Glyph mono ── */
+  .glyph-mono {
+    font-family: var(--font-mono);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-size: 10px;
   }
 }
 
@@ -308,13 +379,14 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+  .reveal-line > span { transform: translateY(0) !important; }
 }
 
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: var(--color-bg-0); }
 ::-webkit-scrollbar-thumb {
-  background: color-mix(in oklab, var(--color-accent) 18%, var(--color-bg-3));
+  background: color-mix(in oklab, var(--color-accent) 22%, var(--color-bg-3));
   border-radius: 0;
   border: 2px solid var(--color-bg-0);
 }
-::-webkit-scrollbar-thumb:hover { background: color-mix(in oklab, var(--color-accent) 50%, var(--color-bg-3)); }
+::-webkit-scrollbar-thumb:hover { background: color-mix(in oklab, var(--color-accent) 60%, var(--color-bg-3)); }

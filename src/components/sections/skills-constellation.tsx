@@ -15,9 +15,12 @@ export function SkillsConstellation() {
   return (
     <Section
       id="skills"
-      eyebrow="Skills · 04"
-      title={<>A toolkit<br/>across the stack.</>}
-      intro="Filter by group to highlight the cluster. Each cell is a discrete capability — not a marketing word."
+      eyebrow="SKILLS"
+      index={5}
+      total={8}
+      stamp="// STACK"
+      title={["A toolkit", "across the stack."]}
+      intro="Filter by group to highlight the cluster. Each cell is a discrete capability, not a marketing word."
     >
       <div className="mb-6 flex flex-wrap gap-2">
         <FilterChip

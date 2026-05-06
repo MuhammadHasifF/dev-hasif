@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { useRef } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
 import { projects } from "@/content/projects";
 import { Section } from "@/components/primitives/section";
+import { DiagonalArrow } from "@/components/primitives/diagonal-arrow";
 
 const featured = projects.filter((p) => p.featured).slice(0, 5);
 
@@ -22,7 +22,13 @@ export function FeaturedRail() {
 
   if (reduce) {
     return (
-      <Section eyebrow="Featured" title="Selected work">
+      <Section
+        eyebrow="FEATURED"
+        index={2}
+        total={8}
+        stamp="// CASE FILES"
+        title={["Selected work."]}
+      >
         <div className="grid gap-4 md:grid-cols-2">
           {featured.map((p) => (
             <FeaturedCard key={p.slug} project={p} />
@@ -68,9 +74,9 @@ export function FeaturedRail() {
               <span className="font-display text-3xl text-[var(--color-text-0)] md:text-4xl">
                 See every project
               </span>
-              <span className="inline-flex items-center gap-2 text-sm text-[var(--color-text-1)] transition-colors group-hover:text-[var(--color-accent)]">
+              <span className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--color-text-1)] transition-colors group-hover:text-[var(--color-accent)]">
                 Browse the full grid
-                <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <DiagonalArrow />
               </span>
             </Link>
           </div>
@@ -88,9 +94,10 @@ function FeaturedCard({ project: p }: { project: (typeof projects)[number] }) {
     >
       <div
         aria-hidden="true"
-        className={`pointer-events-none absolute inset-0 bg-gradient-to-br opacity-0 transition-opacity duration-500 group-hover:opacity-30 ${p.hue ?? "from-[var(--color-accent)] to-[var(--color-accent-2)]"}`}
+        className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full opacity-0 blur-3xl transition-opacity duration-700 group-hover:opacity-40"
+        style={{ background: "var(--color-accent)" }}
       />
-      <div className="absolute inset-0 bg-noise opacity-[0.03] mix-blend-overlay" />
+      <div className="absolute inset-0 bg-noise opacity-[0.04] mix-blend-overlay" />
       <div className="relative flex h-full flex-col">
         <div className="flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--color-text-2)]">
           <span>{p.category}</span>
@@ -112,9 +119,9 @@ function FeaturedCard({ project: p }: { project: (typeof projects)[number] }) {
             </span>
           ))}
         </div>
-        <div className="mt-6 inline-flex items-center gap-2 text-sm text-[var(--color-text-0)]">
+        <div className="mt-6 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--color-text-0)]">
           Read case study
-          <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          <DiagonalArrow />
         </div>
       </div>
     </Link>

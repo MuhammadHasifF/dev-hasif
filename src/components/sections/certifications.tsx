@@ -10,9 +10,12 @@ export function CertificationsAwards() {
   return (
     <Section
       id="credentials"
-      eyebrow="Credentials"
-      title={<>Certifications<br/>&amp; recognitions.</>}
-      intro="The paper trail — certifications, awards, and honors earned along the way."
+      eyebrow="CREDENTIALS"
+      index={6}
+      total={8}
+      stamp="// PAPER TRAIL"
+      title={["Certifications", "& recognitions."]}
+      intro="The paper trail. Certifications, awards, and honors earned along the way."
     >
       <div className="grid gap-10 md:grid-cols-5">
         <div className="md:col-span-3">

@@ -1,17 +1,5 @@
 "use client";
 
-/**
- * CYBER-GRID — global ambient backdrop, CSS-only.
- *
- *  - drifting dotted grid (background-position keyframes, GPU-cheap)
- *  - one rotating conic gradient (60–80s, transform on a single element)
- *  - thin scan beam descending the viewport every 8s
- *  - faint scanlines + vignette
- *  - cursor-follow spotlight using a CSS variable updated on mousemove
- *    (hover-capable devices only; reduced-motion respected)
- *
- * No requestAnimationFrame loops. No canvas. No WebGL.
- */
 import { useEffect, useRef } from "react";
 
 export function CyberGrid() {
@@ -50,64 +38,55 @@ export function CyberGrid() {
       className="pointer-events-none fixed inset-0 -z-20 overflow-hidden"
       style={
         {
-          backgroundColor: "var(--color-bg-0)",
+          backgroundColor: "#000",
           ["--mx" as string]: "50vw",
           ["--my" as string]: "50vh",
         } as React.CSSProperties
       }
     >
-      {/* Drifting grid — 64×64 cells, slow translate via background-position keyframes */}
       <div
-        className="absolute inset-0 bg-cyber-grid opacity-[0.55] motion-reduce:opacity-30"
+        className="absolute inset-0 bg-cyber-grid opacity-[0.22] motion-reduce:opacity-15"
         style={{ animation: "var(--animate-grid-drift)" }}
       />
-      {/* Rotating conic glow — single transform, GPU-composited */}
       <div
-        className="absolute left-1/2 top-1/2 h-[160vmax] w-[160vmax] -translate-x-1/2 -translate-y-1/2 opacity-[0.35] motion-reduce:opacity-15 will-change-transform"
+        className="absolute left-1/2 top-1/2 h-[180vmax] w-[180vmax] -translate-x-1/2 -translate-y-1/2 opacity-[0.18] motion-reduce:opacity-8 will-change-transform"
         style={{
           background:
-            "conic-gradient(from 0deg at 50% 50%, transparent 0deg, color-mix(in oklab, var(--color-accent) 24%, transparent) 60deg, transparent 120deg, color-mix(in oklab, var(--color-accent-3) 14%, transparent) 220deg, transparent 280deg, color-mix(in oklab, var(--color-accent) 20%, transparent) 340deg, transparent 360deg)",
-          filter: "blur(60px)",
+            "conic-gradient(from 0deg at 50% 50%, transparent 0deg, color-mix(in oklab, var(--color-accent) 14%, transparent) 70deg, transparent 140deg, transparent 220deg, color-mix(in oklab, var(--color-accent) 10%, transparent) 320deg, transparent 360deg)",
+          filter: "blur(80px)",
           animation: "var(--animate-conic-spin)",
         }}
       />
-      {/* Counter-rotating second conic for depth */}
-      <div
-        className="absolute left-1/2 top-1/2 h-[120vmax] w-[120vmax] -translate-x-1/2 -translate-y-1/2 opacity-[0.18] motion-reduce:hidden will-change-transform"
-        style={{
-          background:
-            "conic-gradient(from 90deg at 50% 50%, transparent 0deg, color-mix(in oklab, var(--color-accent-2) 30%, transparent) 90deg, transparent 180deg, color-mix(in oklab, var(--color-accent) 24%, transparent) 270deg, transparent 360deg)",
-          filter: "blur(80px)",
-          animation: "var(--animate-conic-spin-reverse)",
-        }}
-      />
-      {/* Cursor-follow spotlight */}
       <div
         className="absolute inset-0 motion-reduce:hidden"
         style={{
           background:
-            "radial-gradient(560px circle at var(--mx) var(--my), color-mix(in oklab, var(--color-accent) 16%, transparent), transparent 60%)",
+            "radial-gradient(420px circle at var(--mx) var(--my), color-mix(in oklab, var(--color-accent) 9%, transparent), transparent 70%)",
         }}
       />
-      {/* Descending scan beam */}
       <div
-        className="absolute inset-x-0 top-0 h-[40vh] motion-reduce:hidden"
+        className="absolute inset-x-0 top-0 h-[36vh] motion-reduce:hidden"
         style={{
           background:
-            "linear-gradient(to bottom, transparent, color-mix(in oklab, var(--color-accent) 22%, transparent) 40%, color-mix(in oklab, var(--color-accent) 8%, transparent) 60%, transparent)",
+            "linear-gradient(to bottom, transparent, color-mix(in oklab, var(--color-accent) 10%, transparent) 50%, transparent)",
           mixBlendMode: "screen",
-          opacity: 0.22,
+          opacity: 0.12,
           animation: "var(--animate-scan)",
         }}
       />
-      {/* Scanlines overlay */}
-      <div className="absolute inset-0 bg-scanlines opacity-[0.18] mix-blend-overlay" />
-      {/* Bottom vignette for legibility */}
+      <div className="absolute inset-0 bg-scanlines opacity-[0.28] mix-blend-overlay" />
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(120% 80% at 50% 50%, transparent 45%, color-mix(in oklab, var(--color-bg-0) 95%, transparent))",
+            "radial-gradient(120% 90% at 50% 35%, transparent 35%, rgba(0,0,0,0.55) 75%, rgba(0,0,0,0.92) 100%)",
+        }}
+      />
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(to bottom, rgba(0,0,0,0.35), transparent 25%, transparent 70%, rgba(0,0,0,0.6))",
         }}
       />
     </div>
