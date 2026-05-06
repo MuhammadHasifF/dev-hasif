@@ -18,8 +18,8 @@ export const experience: Role[] = [
     orgKey: "sit",
     title: "Research Engineer / Developer (Student)",
     type: "Full-Time",
-    start: "06/2024",
-    end: "08/2025",
+    start: "09/2024",
+    end: "12/2025",
     location: "Singapore",
     summary:
       "Agile research-oriented team enhancing R3CAP, an open-source platform for near real-time 3D reconstruction and collaborative scene authoring (formerly demoConstruct). Progressive 3D reconstruction, WebXR, real-time rendering, and cloud services for accessible digital twin creation.",
@@ -36,8 +36,8 @@ export const experience: Role[] = [
     orgKey: "spf",
     title: "Section Leader, Operations Department",
     type: "National Service",
-    start: "09/2024",
-    end: "12/2025",
+    start: "06/2024",
+    end: "08/2025",
     location: "Singapore",
     summary:
       "Officer-level role supporting national operations through data-driven planning, geospatial analytics, and workflow automation across SPF, HTX, and GovTech for high-security and large-scale public events.",

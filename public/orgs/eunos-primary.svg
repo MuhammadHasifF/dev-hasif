@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" fill="#0E3A6B"/>
+  <circle cx="32" cy="26" r="12" fill="#FFC72C"/>
+  <path d="M32 14 L34 22 L42 22 L36 27 L38 35 L32 30 L26 35 L28 27 L22 22 L30 22 Z" fill="#E63946"/>
+  <text x="32" y="52" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="10" fill="#fff">EUNOS PRI</text>
+</svg>

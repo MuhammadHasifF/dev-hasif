@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Section } from "@/components/primitives/section";
@@ -43,35 +44,50 @@ export function AboutTeaser() {
         </Reveal>
 
         <Reveal delay={0.1}>
-          <div className="hud-panel relative aspect-[4/5] overflow-hidden p-0">
+          <figure className="hud-panel relative aspect-[4/5] overflow-hidden p-0">
+            <Image
+              src="/me/pagoda.jpg"
+              alt="Hōkan-ji Pagoda, Higashiyama, Kyoto"
+              fill
+              sizes="(max-width: 768px) 100vw, 40vw"
+              className="object-cover"
+              priority={false}
+            />
             <div
               aria-hidden="true"
               className="absolute inset-0"
               style={{
                 background:
-                  "radial-gradient(circle at 30% 20%, color-mix(in oklab, var(--color-accent) 28%, transparent), transparent 60%), radial-gradient(circle at 70% 80%, color-mix(in oklab, var(--color-accent-2) 22%, transparent), transparent 65%)",
+                  "linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.45) 70%, rgba(0,0,0,0.85) 100%)",
               }}
             />
-            <div className="absolute inset-0 bg-scanlines opacity-40" />
-            <div className="absolute inset-0 bg-noise opacity-[0.04] mix-blend-overlay" />
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 mix-blend-overlay"
+              style={{
+                background:
+                  "radial-gradient(60% 80% at 70% 90%, color-mix(in oklab, var(--color-accent) 32%, transparent) 0%, transparent 60%)",
+              }}
+            />
+            <div className="absolute inset-0 bg-scanlines opacity-25" />
 
-            <div className="absolute right-6 top-6 text-right">
+            <div className="absolute right-5 top-5 text-right">
               <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-text-2)]">
                 ID · 001
               </div>
-              <div className="mt-1 font-display text-6xl leading-none text-[var(--color-text-0)]">
+              <div className="mt-1 font-display text-5xl leading-none text-[var(--color-text-0)]">
                 H<span className="text-[var(--color-accent)]">.</span>
               </div>
             </div>
 
-            <div className="absolute left-6 bottom-6 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-text-1)]">
+            <figcaption className="absolute left-5 bottom-5 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-text-1)]">
               <div className="flex items-center gap-2">
                 <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-accent)] shadow-[0_0_8px_var(--color-accent)]" />
-                <span>MHMD HASIF</span>
+                <span>HŌKAN-JI · KYOTO</span>
               </div>
               <div className="mt-1 text-[var(--color-text-2)]">SG · NODE_2026</div>
-            </div>
-          </div>
+            </figcaption>
+          </figure>
         </Reveal>
       </div>
     </Section>
