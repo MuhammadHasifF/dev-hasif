@@ -105,7 +105,7 @@ export default async function CaseStudyPage({ params }: Params) {
             </div>
             <div className="mt-1 text-sm text-[var(--color-text-1)]">{next.tagline}</div>
           </div>
-          <div className="inline-flex h-12 items-center gap-2 rounded-sm border border-[var(--color-accent)] bg-[var(--color-accent)] px-6 font-mono text-[11px] uppercase tracking-[0.18em] text-black transition-[box-shadow,gap] group-hover:gap-3 group-hover:shadow-[0_0_24px_-4px_var(--color-accent)]">
+          <div className="inline-flex h-12 items-center gap-2 rounded-sm border border-[var(--color-accent)] bg-[var(--color-accent)] px-6 font-mono text-[11px] uppercase tracking-[0.18em] text-white transition-[box-shadow,gap] group-hover:gap-3 group-hover:shadow-[0_0_24px_-4px_var(--color-accent)]">
             Read <ArrowRight className="h-4 w-4" />
           </div>
         </Link>

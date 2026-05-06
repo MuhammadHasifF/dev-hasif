@@ -9,23 +9,23 @@
   --font-display: var(--font-space-grotesk), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 
   /* ──────────────────────────────────────────────────────────────────
-     CYBERPUNK CITY · DARK HORROR
-     Locked monochrome system — pure black bases, cool white type,
-     a single electric cyan glow for power-on signal.
+     CYBERPUNK CITY · NIGHT-RED
+     Pure black bases, cool grey-white type, single neon-red glow for
+     all signal. Inspired by Balaskas, q-industrial, foe.design.
      ────────────────────────────────────────────────────────────────── */
-  --color-bg-0: #05060a;        /* base — near-black, 1% blue cast */
-  --color-bg-1: #0a0c12;        /* surface */
-  --color-bg-2: #11141b;        /* elevated panel */
-  --color-bg-3: #181c28;        /* hover surface */
-  --color-border: #1c2030;
-  --color-border-strong: #2a3042;
-  --color-text-0: #e8ecf2;      /* primary, cool white */
-  --color-text-1: #8b94a8;      /* body */
-  --color-text-2: #5a6378;      /* dim, eyebrows + stamps */
+  --color-bg-0: #030305;        /* base, near-pure black */
+  --color-bg-1: #07080c;        /* surface */
+  --color-bg-2: #0c0d12;        /* elevated panel */
+  --color-bg-3: #14151c;        /* hover surface */
+  --color-border: #1a1b22;
+  --color-border-strong: #2a2b35;
+  --color-text-0: #efeff3;
+  --color-text-1: #8a8b95;
+  --color-text-2: #54555f;
 
-  --color-accent:    #00e5ff;   /* electric cyan — sole accent */
-  --color-accent-2:  #00b8d4;   /* deeper cyan, gradients */
-  --color-accent-3:  #ff2d6f;   /* magenta — error/signal only */
+  --color-accent:    #ff1e3c;   /* neon red, sole accent */
+  --color-accent-2:  #c71530;   /* deeper red, gradients */
+  --color-accent-3:  #ff5560;   /* hot pink-red glow */
   --color-success:   #5dff9a;
   --color-warning:   #ffb84a;
   --color-danger:    #ff3d5a;
@@ -250,13 +250,13 @@
   .hud-btn-primary,
   .panel-cta-primary {
     background: var(--color-accent);
-    color: #00080c;
+    color: #fff;
     border-color: var(--color-accent);
   }
   .hud-btn-primary:hover,
   .panel-cta-primary:hover {
     background: color-mix(in oklab, var(--color-accent) 88%, white);
-    color: #00080c;
+    color: #fff;
     box-shadow: 0 0 40px -4px color-mix(in oklab, var(--color-accent) 70%, transparent);
   }
 

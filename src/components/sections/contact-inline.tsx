@@ -102,7 +102,7 @@ export function ContactInline() {
               "group inline-flex h-10 items-center gap-2 rounded-sm border px-5 font-mono text-[11px] uppercase tracking-[0.18em] transition-[transform,background-color,border-color,color,box-shadow] duration-300 ease-[var(--ease-apple)] active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50",
               status === "success"
                 ? "border-[var(--color-success)] bg-[var(--color-success)] text-black"
-                : "border-[var(--color-accent)] bg-[var(--color-accent)] text-black hover:shadow-[0_0_24px_-4px_var(--color-accent)]"
+                : "border-[var(--color-accent)] bg-[var(--color-accent)] text-white hover:shadow-[0_0_24px_-4px_var(--color-accent)]"
             )}
           >
             {status === "loading" && <Loader2 className="h-4 w-4 animate-spin" />}
