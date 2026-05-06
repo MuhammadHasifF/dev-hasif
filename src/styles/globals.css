@@ -8,34 +8,38 @@
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
   --font-display: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
 
-  /* zen-dark + warm vibey: warm-black bases, jade + gold + warm coral accents */
-  --color-bg-0: #0c0a08;
-  --color-bg-1: #15110d;
-  --color-bg-2: #1f1a14;
-  --color-bg-3: #2a2319;
-  --color-border: #332b22;
-  --color-text-0: #ede5d3;
-  --color-text-1: #a8a094;
-  --color-text-2: #6a6557;
-  --color-accent: #3a9b7a;     /* deep jade */
-  --color-accent-2: #c9a857;   /* warm gold */
-  --color-accent-3: #d97757;   /* warm coral / torii orange */
-  --color-success: #4ade80;
-  --color-warning: #f5b942;
+  /* ──────────────────────────────────────────────────────────────────
+     CYBER / TERMINAL OS — pure-black bases, electric cyan single accent.
+     amber for status; magenta + red reserved for signal/error only.
+     ────────────────────────────────────────────────────────────────── */
+  --color-bg-0: #04070d;
+  --color-bg-1: #080d18;
+  --color-bg-2: #0e1525;
+  --color-bg-3: #131b2e;
+  --color-border: #1c2538;
+  --color-border-strong: #2a3552;
+  --color-text-0: #e6edf3;
+  --color-text-1: #8b97aa;
+  --color-text-2: #5a6478;
+
+  --color-accent:    #22e7ff;   /* electric cyan — primary */
+  --color-accent-2:  #00b8d4;   /* deeper cyan */
+  --color-accent-3:  #ff2d6f;   /* magenta — signal/highlight only */
+  --color-success:   #9aff5e;   /* lime */
+  --color-warning:   #ffb84a;   /* amber */
+  --color-danger:    #ff3d5a;
 
   --ease-apple: cubic-bezier(0.32, 0.72, 0, 1);
 
   --animate-marquee: marquee 40s linear infinite;
   --animate-marquee-reverse: marquee-reverse 40s linear infinite;
-  --animate-shimmer: shimmer 2.4s linear infinite;
-  --animate-float: float 6s ease-in-out infinite;
-  --animate-mesh-breathe: meshBreathe 18s ease-in-out infinite;
-  --animate-bamboo-sway-a: bambooSwayA 11s ease-in-out infinite;
-  --animate-bamboo-sway-b: bambooSwayB 17s ease-in-out infinite;
-  --animate-bamboo-sway-c: bambooSwayC 23s ease-in-out infinite;
-  --animate-ripple: ripple 6s ease-out infinite;
-  --animate-drift: drift 24s linear infinite;
-  --animate-ink-breathe: inkBreathe 14s ease-in-out infinite;
+  --animate-grid-drift: gridDrift 60s linear infinite;
+  --animate-conic-spin: conicSpin 80s linear infinite;
+  --animate-conic-spin-reverse: conicSpin 120s linear infinite reverse;
+  --animate-scan: scan 8s linear infinite;
+  --animate-pulse-soft: pulseSoft 3.6s ease-in-out infinite;
+  --animate-blink: blink 1.4s steps(2, end) infinite;
+  --animate-flicker: flicker 6s linear infinite;
 
   @keyframes marquee {
     from { transform: translateX(0); }
@@ -45,78 +49,41 @@
     from { transform: translateX(-50%); }
     to { transform: translateX(0); }
   }
-  @keyframes shimmer {
-    from { background-position: -200% 0; }
-    to { background-position: 200% 0; }
+  @keyframes gridDrift {
+    from { background-position: 0 0, 0 0; }
+    to { background-position: 64px 64px, 64px 64px; }
   }
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
+  @keyframes conicSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
   }
-  @keyframes meshBreathe {
-    0%, 100% { transform: scale(1) translate(0, 0); }
-    33% { transform: scale(1.08) translate(2%, -1%); }
-    66% { transform: scale(0.96) translate(-2%, 1%); }
+  @keyframes scan {
+    0%   { transform: translateY(-110%); }
+    100% { transform: translateY(110vh); }
   }
-  @keyframes bambooSwayA {
-    0%, 100% { transform: translateX(var(--cursor-x, 0)) rotate(-0.4deg); }
-    50% { transform: translateX(calc(var(--cursor-x, 0) + 6px)) rotate(0.6deg); }
+  @keyframes pulseSoft {
+    0%, 100% { opacity: 0.55; }
+    50%      { opacity: 1; }
   }
-  @keyframes bambooSwayB {
-    0%, 100% { transform: translateX(var(--cursor-x-mid, 0)) rotate(0.5deg); }
-    50% { transform: translateX(calc(var(--cursor-x-mid, 0) - 8px)) rotate(-0.7deg); }
+  @keyframes blink {
+    0%, 60% { opacity: 1; }
+    61%, 100% { opacity: 0; }
   }
-  @keyframes bambooSwayC {
-    0%, 100% { transform: translateX(var(--cursor-x-near, 0)) rotate(-0.3deg); }
-    50% { transform: translateX(calc(var(--cursor-x-near, 0) + 10px)) rotate(0.4deg); }
-  }
-  @keyframes ripple {
-    0% { transform: scale(0.4); opacity: 0.6; }
-    100% { transform: scale(2.4); opacity: 0; }
-  }
-  @keyframes drift {
-    0% { transform: translate(0, 0); }
-    100% { transform: translate(40px, -60px); }
-  }
-  @keyframes inkBreathe {
-    0%, 100% { transform: scale(1); opacity: 0.55; }
-    50% { transform: scale(1.06); opacity: 0.9; }
-  }
-  @keyframes scanline {
-    0% { transform: translateY(-100%); }
-    100% { transform: translateY(100%); }
+  @keyframes flicker {
+    0%, 92%, 100% { opacity: 1; }
+    93% { opacity: 0.92; }
+    94% { opacity: 1; }
+    95% { opacity: 0.85; }
+    96% { opacity: 1; }
   }
   @keyframes drawLine {
     from { stroke-dashoffset: 1; }
-    to { stroke-dashoffset: 0; }
+    to   { stroke-dashoffset: 0; }
   }
 }
 
 :root {
   color-scheme: dark;
-  --color-bg-0: #0c0a08;
-  --color-bg-1: #15110d;
-  --color-bg-2: #1f1a14;
-  --color-bg-3: #2a2319;
-  --color-border: #332b22;
-  --color-text-0: #ede5d3;
-  --color-text-1: #a8a094;
-  --color-text-2: #6a6557;
-}
-
-.light {
-  color-scheme: light;
-  --color-bg-0: #f5efe0;
-  --color-bg-1: #fbf6e8;
-  --color-bg-2: #ede5d3;
-  --color-bg-3: #dcd0b8;
-  --color-border: #cebfa0;
-  --color-text-0: #2a2319;
-  --color-text-1: #5a4f3e;
-  --color-text-2: #8a8070;
-  --color-accent: #2d7a5e;
-  --color-accent-2: #8a6f30;
-  --color-accent-3: #b85f3f;
 }
 
 .high-contrast {
@@ -131,6 +98,8 @@
   html {
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    /* Native smooth scroll — no Lenis rAF needed */
+    scroll-behavior: smooth;
   }
   body {
     background-color: var(--color-bg-0);
@@ -140,13 +109,13 @@
     overflow-x: hidden;
   }
   ::selection {
-    background-color: color-mix(in oklab, var(--color-accent) 40%, transparent);
+    background-color: color-mix(in oklab, var(--color-accent) 36%, transparent);
     color: var(--color-text-0);
   }
   :focus-visible {
-    outline: 2px solid var(--color-accent);
+    outline: 1px solid var(--color-accent);
     outline-offset: 3px;
-    border-radius: 4px;
+    border-radius: 2px;
   }
   button, a, [role="button"] { cursor: pointer; }
   h1, h2, h3, h4, h5, h6 {
@@ -158,106 +127,103 @@
 @layer utilities {
   .font-display { font-family: var(--font-display); }
   .text-balance { text-wrap: balance; }
-  .text-pretty { text-wrap: pretty; }
+  .text-pretty  { text-wrap: pretty; }
 
+  /* ── HUD glyph helpers ── */
+  .glyph-mono {
+    font-family: var(--font-mono);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-size: 10px;
+  }
+
+  /* ── Backgrounds (CSS-only, GPU-cheap) ── */
+
+  /* Drifting dot-matrix; one composited layer */
+  .bg-cyber-grid {
+    background-image:
+      linear-gradient(to right, color-mix(in oklab, var(--color-accent) 10%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in oklab, var(--color-accent) 10%, transparent) 1px, transparent 1px);
+    background-size: 64px 64px, 64px 64px;
+  }
+  .bg-cyber-dots {
+    background-image:
+      radial-gradient(circle at 1px 1px, color-mix(in oklab, var(--color-text-0) 18%, transparent) 1px, transparent 0);
+    background-size: 22px 22px;
+  }
+
+  /* Scanline overlay */
+  .bg-scanlines {
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0 2px,
+      color-mix(in oklab, var(--color-accent) 6%, transparent) 2px 3px
+    );
+  }
+
+  /* Pre-baked SVG noise — same as before, just darker tint */
   .bg-noise {
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
   }
-  .bg-rice-paper {
-    background-image:
-      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='p'><feTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.92 0 0 0 0 0.85 0 0 0 0 0.7 0 0 0 0.18 0'/></filter><rect width='100%25' height='100%25' filter='url(%23p)'/></svg>");
-  }
+
   .mask-fade-x {
     mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
   }
   .mask-fade-y {
     mask-image: linear-gradient(to bottom, transparent, black 5%, black 95%, transparent);
   }
-  .glass {
-    backdrop-filter: saturate(160%) blur(14px);
-    background: color-mix(in oklab, var(--color-bg-0) 72%, transparent);
-  }
-  .gradient-text {
-    background: linear-gradient(120deg, var(--color-text-0) 0%, var(--color-text-0) 38%, var(--color-accent-2) 60%, var(--color-accent) 92%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  .border-dim { border-color: var(--color-border); }
-  .shadow-glow {
-    box-shadow: 0 0 0 1px color-mix(in oklab, var(--color-accent) 28%, transparent),
-      0 20px 60px -20px color-mix(in oklab, var(--color-accent) 30%, transparent);
-  }
-  .shadow-glow-warm {
-    box-shadow: 0 0 0 1px color-mix(in oklab, var(--color-accent-2) 32%, transparent),
-      0 24px 64px -20px color-mix(in oklab, var(--color-accent-2) 35%, transparent);
-  }
 
-  /* sci-fi tech panel — sharp corners, corner brackets, faint scanlines */
-  .tech-panel {
+  /* ── Tactical / HUD panel ── */
+  .hud-panel {
     position: relative;
-    border: 1px solid color-mix(in oklab, var(--color-accent-2) 22%, var(--color-border));
+    border: 1px solid var(--color-border);
     background:
       linear-gradient(180deg,
-        color-mix(in oklab, var(--color-bg-1) 92%, transparent) 0%,
+        color-mix(in oklab, var(--color-bg-1) 88%, transparent) 0%,
         color-mix(in oklab, var(--color-bg-2) 92%, transparent) 100%);
-    border-radius: 4px;
-    backdrop-filter: blur(8px);
-    box-shadow:
-      inset 0 0 0 1px color-mix(in oklab, var(--color-accent) 6%, transparent),
-      0 16px 40px -24px rgba(0, 0, 0, 0.6);
+    border-radius: 2px;
+    backdrop-filter: blur(6px);
+    transition: border-color 0.3s var(--ease-apple), box-shadow 0.3s var(--ease-apple);
   }
-  .tech-panel::before {
+  /* Corner brackets — 4 L-shaped marks at each corner */
+  .hud-panel::before {
     content: "";
     position: absolute;
     inset: 0;
     pointer-events: none;
     border-radius: inherit;
     background:
-      linear-gradient(to right, var(--color-accent-2) 14px, transparent 14px) top left/14px 1px no-repeat,
-      linear-gradient(to bottom, var(--color-accent-2) 14px, transparent 14px) top left/1px 14px no-repeat,
-      linear-gradient(to right, var(--color-accent-2) 14px, transparent 14px) top right/14px 1px no-repeat,
-      linear-gradient(to bottom, var(--color-accent-2) 14px, transparent 14px) top right/1px 14px no-repeat,
-      linear-gradient(to right, var(--color-accent-2) 14px, transparent 14px) bottom left/14px 1px no-repeat,
-      linear-gradient(to bottom, var(--color-accent-2) 14px, transparent 14px) bottom left/1px 14px no-repeat,
-      linear-gradient(to right, var(--color-accent-2) 14px, transparent 14px) bottom right/14px 1px no-repeat,
-      linear-gradient(to bottom, var(--color-accent-2) 14px, transparent 14px) bottom right/1px 14px no-repeat;
-    opacity: 0.7;
+      linear-gradient(to right,  var(--color-accent) 12px, transparent 12px) top    left  / 12px 1px no-repeat,
+      linear-gradient(to bottom, var(--color-accent) 12px, transparent 12px) top    left  / 1px 12px no-repeat,
+      linear-gradient(to right,  var(--color-accent) 12px, transparent 12px) top    right / 12px 1px no-repeat,
+      linear-gradient(to bottom, var(--color-accent) 12px, transparent 12px) top    right / 1px 12px no-repeat,
+      linear-gradient(to right,  var(--color-accent) 12px, transparent 12px) bottom left  / 12px 1px no-repeat,
+      linear-gradient(to bottom, var(--color-accent) 12px, transparent 12px) bottom left  / 1px 12px no-repeat,
+      linear-gradient(to right,  var(--color-accent) 12px, transparent 12px) bottom right / 12px 1px no-repeat,
+      linear-gradient(to bottom, var(--color-accent) 12px, transparent 12px) bottom right / 1px 12px no-repeat;
+    opacity: 0.55;
+    transition: opacity 0.3s var(--ease-apple);
   }
-  .tech-panel::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    border-radius: inherit;
-    background: repeating-linear-gradient(
-      to bottom,
-      transparent 0 2px,
-      color-mix(in oklab, var(--color-accent-2) 10%, transparent) 2px 3px
-    );
-    opacity: 0.06;
-    mix-blend-mode: overlay;
-  }
-  .tech-panel-hover:hover {
-    border-color: color-mix(in oklab, var(--color-accent) 55%, var(--color-border));
+  .hud-panel:hover::before { opacity: 1; }
+  .hud-panel-hover:hover {
+    border-color: color-mix(in oklab, var(--color-accent) 60%, var(--color-border));
     box-shadow:
       inset 0 0 0 1px color-mix(in oklab, var(--color-accent) 18%, transparent),
-      0 0 32px -8px color-mix(in oklab, var(--color-accent) 28%, transparent),
-      0 24px 60px -24px rgba(0, 0, 0, 0.7);
+      0 0 32px -6px color-mix(in oklab, var(--color-accent) 35%, transparent);
   }
 
-  /* HUD chip — monospaced micro label with bracket */
+  /* ── HUD chip — mono CAPS with leading bracket ── */
   .hud-chip {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    border: 1px solid color-mix(in oklab, var(--color-accent-2) 32%, var(--color-border));
+    border: 1px solid color-mix(in oklab, var(--color-accent) 30%, var(--color-border));
     background: color-mix(in oklab, var(--color-bg-2) 80%, transparent);
     padding: 2px 8px;
     border-radius: 2px;
     font-family: var(--font-mono);
     font-size: 10px;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--color-text-1);
   }
@@ -265,6 +231,73 @@
     content: "›";
     color: var(--color-accent);
     font-weight: 700;
+  }
+
+  /* ── HUD button ── */
+  .hud-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 40px;
+    padding: 0 18px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-text-0);
+    border: 1px solid color-mix(in oklab, var(--color-accent) 50%, var(--color-border));
+    background: color-mix(in oklab, var(--color-accent) 6%, var(--color-bg-1));
+    border-radius: 2px;
+    transition: background 0.3s var(--ease-apple), border-color 0.3s var(--ease-apple), box-shadow 0.3s var(--ease-apple);
+  }
+  .hud-btn:hover {
+    background: color-mix(in oklab, var(--color-accent) 14%, var(--color-bg-1));
+    border-color: var(--color-accent);
+    box-shadow: 0 0 24px -4px color-mix(in oklab, var(--color-accent) 60%, transparent);
+  }
+  .hud-btn-primary {
+    background: var(--color-accent);
+    color: #021018;
+    border-color: var(--color-accent);
+  }
+  .hud-btn-primary:hover {
+    background: color-mix(in oklab, var(--color-accent) 88%, white);
+    box-shadow: 0 0 32px -2px color-mix(in oklab, var(--color-accent) 65%, transparent);
+  }
+
+  /* ── Glow text ── */
+  .glow-text { color: var(--color-accent); text-shadow: 0 0 14px color-mix(in oklab, var(--color-accent) 50%, transparent); }
+  .gradient-text {
+    background: linear-gradient(120deg, var(--color-text-0) 0%, var(--color-text-0) 32%, var(--color-accent) 70%, color-mix(in oklab, var(--color-accent) 60%, white) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* glass — kept for nav backdrop */
+  .glass {
+    backdrop-filter: saturate(160%) blur(12px);
+    background: color-mix(in oklab, var(--color-bg-0) 78%, transparent);
+  }
+  .border-dim { border-color: var(--color-border); }
+  .shadow-glow {
+    box-shadow:
+      0 0 0 1px color-mix(in oklab, var(--color-accent) 28%, transparent),
+      0 18px 56px -20px color-mix(in oklab, var(--color-accent) 35%, transparent);
+  }
+  .shadow-glow-warm {
+    box-shadow:
+      0 0 0 1px color-mix(in oklab, var(--color-warning) 32%, transparent),
+      0 22px 60px -20px color-mix(in oklab, var(--color-warning) 38%, transparent);
+  }
+
+  /* Terminal caret */
+  .caret::after {
+    content: "_";
+    margin-left: 2px;
+    color: var(--color-accent);
+    animation: var(--animate-blink);
   }
 }
 
@@ -280,8 +313,8 @@
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: var(--color-bg-0); }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-bg-3);
-  border-radius: 999px;
+  background: color-mix(in oklab, var(--color-accent) 18%, var(--color-bg-3));
+  border-radius: 0;
   border: 2px solid var(--color-bg-0);
 }
-::-webkit-scrollbar-thumb:hover { background: color-mix(in oklab, var(--color-accent) 40%, var(--color-bg-3)); }
+::-webkit-scrollbar-thumb:hover { background: color-mix(in oklab, var(--color-accent) 50%, var(--color-bg-3)); }

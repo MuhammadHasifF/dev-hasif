@@ -107,7 +107,7 @@ export function ProjectsBento() {
       <div className="mt-10 flex justify-center">
         <Link
           href="/work"
-          className="inline-flex h-10 items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-1)] px-5 text-sm text-[var(--color-text-0)] hover:border-[var(--color-accent)]"
+          className="inline-flex h-10 items-center gap-2 rounded-sm border border-[var(--color-accent)]/50 bg-[color:color-mix(in_oklab,var(--color-accent)_6%,var(--color-bg-1))] px-5 font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--color-text-0)] transition-[border-color,background-color,box-shadow] hover:border-[var(--color-accent)] hover:bg-[color:color-mix(in_oklab,var(--color-accent)_14%,var(--color-bg-1))] hover:shadow-[0_0_24px_-4px_color-mix(in_oklab,var(--color-accent)_60%,transparent)]"
         >
           All projects <ArrowUpRight className="h-4 w-4" />
         </Link>
@@ -138,7 +138,7 @@ function BentoCardLink({
       ref={ref}
       href={href}
       onMouseMove={onMove}
-      className="tech-panel tech-panel-hover group/card relative flex h-full min-h-[170px] flex-col justify-between overflow-hidden p-6 transition-colors"
+      className="hud-panel hud-panel-hover group/card relative flex h-full min-h-[170px] flex-col justify-between overflow-hidden p-6 transition-colors"
       style={{ ["--mx" as string]: "50%", ["--my" as string]: "50%" } as React.CSSProperties}
     >
       <div

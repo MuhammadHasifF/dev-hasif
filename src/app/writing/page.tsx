@@ -13,7 +13,7 @@ export default function WritingPage() {
     <>
     <PageBackground variant="writing" />
     <Section eyebrow="Writing" title={<>Notes in progress.</>}>
-      <div className="flex flex-col items-center gap-4 rounded-3xl border border-dashed border-[var(--color-border)] bg-[var(--color-bg-1)]/50 px-6 py-20 text-center">
+      <div className="hud-panel flex flex-col items-center gap-4 px-6 py-20 text-center">
         <Feather className="h-8 w-8 text-[var(--color-text-2)]" />
         <h2 className="font-display text-2xl text-[var(--color-text-0)]">Nothing published yet</h2>
         <p className="max-w-lg text-sm text-[var(--color-text-1)]">

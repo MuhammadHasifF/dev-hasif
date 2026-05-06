@@ -2,7 +2,6 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
-import { cn } from "@/lib/utils";
 
 type Project = {
   title: string;
@@ -76,20 +75,23 @@ export function CaseStory({ project: p }: { project: Project }) {
         <div className="sticky top-24 flex flex-col items-center justify-center">
           <motion.div
             style={{ rotate: visualRotate, filter: visualFilter }}
-            className="tech-panel relative aspect-square w-[88%] overflow-hidden"
+            className="hud-panel relative aspect-square w-[88%] overflow-hidden p-0"
           >
             <div
               aria-hidden="true"
-              className={cn(
-                "absolute inset-0 bg-gradient-to-br opacity-40",
-                p.hue ?? "from-[var(--color-accent)] to-[var(--color-accent-2)]",
-              )}
+              className="absolute inset-0"
+              style={{
+                background:
+                  "conic-gradient(from 0deg, color-mix(in oklab, var(--color-accent) 22%, transparent), transparent 30%, color-mix(in oklab, var(--color-accent-2) 18%, transparent), transparent 65%, color-mix(in oklab, var(--color-accent) 22%, transparent))",
+              }}
             />
-            <div className="absolute inset-0 bg-noise opacity-20 mix-blend-overlay" />
-            <div className="absolute inset-4 border border-[var(--color-border)]/50" />
-            <div className="absolute inset-8 border border-[var(--color-border)]/30" />
-            <div className="absolute bottom-3 left-4 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-text-0)]/80">
-              {p.title}
+            <div className="absolute inset-0 bg-scanlines opacity-30" />
+            <div className="absolute inset-0 bg-noise opacity-[0.04] mix-blend-overlay" />
+            <div className="absolute inset-4 border border-[var(--color-accent)]/30" />
+            <div className="absolute inset-8 border border-[var(--color-accent)]/15" />
+            <div className="absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--color-accent)] shadow-[0_0_12px_var(--color-accent)]" />
+            <div className="absolute bottom-3 left-4 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-text-0)]/80">
+              <span className="text-[var(--color-accent)]">›</span> {p.title}
             </div>
           </motion.div>
           <div className="mt-6 flex flex-wrap justify-center gap-1.5 px-6">

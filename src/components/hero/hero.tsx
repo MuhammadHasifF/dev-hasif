@@ -2,16 +2,10 @@
 
 import { ArrowDown, ArrowRight, MapPin } from "lucide-react";
 import Link from "next/link";
-import dynamic from "next/dynamic";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { Magnetic } from "@/components/primitives/magnetic";
 import { siteConfig } from "@/../site.config";
-
-const HeroCanvas = dynamic(() => import("@/components/hero/hero-canvas").then((m) => m.HeroCanvas), {
-  ssr: false,
-  loading: () => null,
-});
 
 export function Hero() {
   const reduce = useReducedMotion();
@@ -20,65 +14,58 @@ export function Hero() {
     target: sectionRef,
     offset: ["start start", "end start"],
   });
-  const canvasScale = useTransform(scrollYProgress, [0, 1], [1, 0.6]);
-  const canvasY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const canvasOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
   const titleY = useTransform(scrollYProgress, [0, 1], ["0%", "-20%"]);
-  const subY = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]);
   const titleOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
   return (
-    <section ref={sectionRef} className="relative flex min-h-[100svh] w-full items-center overflow-hidden">
-      {/* Background WebGL layer */}
-      <motion.div
-        style={reduce ? undefined : { scale: canvasScale, y: canvasY, opacity: canvasOpacity }}
-        className="pointer-events-none absolute inset-0 -z-10"
-      >
-        {!reduce && <HeroCanvas />}
-        {reduce && (
-          <div
-            aria-hidden="true"
-            className="absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(circle at 30% 40%, color-mix(in oklab, var(--color-accent) 30%, transparent), transparent 55%), radial-gradient(circle at 70% 70%, color-mix(in oklab, var(--color-accent-2) 25%, transparent), transparent 55%)",
-            }}
-          />
-        )}
+    <section
+      ref={sectionRef}
+      className="relative flex min-h-[100svh] w-full items-center overflow-hidden"
+    >
+      {/* HUD background — CSS-only, GPU-cheap */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        {/* large glow disc behind the title */}
         <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,transparent_0%,var(--color-bg-0)_70%)]"
-        />
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 opacity-30"
+          className="absolute left-1/2 top-1/2 h-[80vmin] w-[80vmin] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-50 motion-reduce:opacity-25"
           style={{
-            backgroundImage:
-              "linear-gradient(var(--color-border) 1px, transparent 1px), linear-gradient(90deg, var(--color-border) 1px, transparent 1px)",
-            backgroundSize: "64px 64px",
-            maskImage:
-              "radial-gradient(ellipse 80% 60% at 50% 40%, black 20%, transparent 80%)",
+            background:
+              "radial-gradient(circle, color-mix(in oklab, var(--color-accent) 30%, transparent), transparent 60%)",
+            filter: "blur(60px)",
           }}
         />
-      </motion.div>
+        {/* dotted grid + scanlines */}
+        <div className="absolute inset-0 bg-cyber-dots opacity-[0.35]" />
+        {/* heavy vignette mask so it dies at edges */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse 80% 70% at 50% 50%, transparent 30%, var(--color-bg-0) 100%)",
+          }}
+        />
+        {/* corner brackets */}
+        <CornerBrackets />
+      </div>
 
       <motion.div
         style={reduce ? undefined : { y: titleY, opacity: titleOpacity }}
         className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 pt-28 sm:px-6 md:pt-24"
       >
+        {/* SYS label */}
         <motion.div
           initial={reduce ? false : { opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, ease: [0.32, 0.72, 0, 1] }}
-          className="flex items-center gap-3 font-mono text-xs text-[var(--color-text-1)]"
+          className="flex flex-wrap items-center gap-3 font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-text-1)]"
         >
+          <span className="hud-chip">SYS · ONLINE</span>
           <span className="relative flex h-2 w-2">
             <span className="absolute inset-0 animate-ping rounded-full bg-[var(--color-success)] opacity-60" />
             <span className="relative h-2 w-2 rounded-full bg-[var(--color-success)]" />
           </span>
           <span>Available for research &amp; engineering roles</span>
           <span className="text-[var(--color-text-2)]">·</span>
-          <MapPin className="h-3 w-3" />
+          <MapPin className="h-3 w-3 text-[var(--color-accent)]" />
           <span>Singapore</span>
         </motion.div>
 
@@ -89,7 +76,7 @@ export function Hero() {
           className="font-display text-[14vw] leading-[0.88] tracking-tight text-[var(--color-text-0)] md:text-[11vw] lg:text-[9.5rem]"
         >
           <span className="block">Muhammad</span>
-          <span className="block gradient-text">Hasif.</span>
+          <span className="block gradient-text">Hasif<span className="text-[var(--color-accent)]">.</span></span>
         </motion.h1>
 
         <motion.p
@@ -108,47 +95,67 @@ export function Hero() {
           className="flex flex-wrap items-center gap-3"
         >
           <Magnetic>
-            <Link
-              href="/work"
-              className="group inline-flex h-12 items-center gap-2 rounded-full bg-[var(--color-text-0)] px-6 text-sm font-medium text-[var(--color-bg-0)] transition hover:opacity-90"
-            >
+            <Link href="/work" className="hud-btn hud-btn-primary">
               View work
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              <ArrowRight className="h-4 w-4" />
             </Link>
           </Magnetic>
           <Magnetic>
-            <Link
-              href="/contact"
-              className="inline-flex h-12 items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-1)] px-6 text-sm text-[var(--color-text-0)] transition hover:border-[var(--color-accent)]"
-            >
+            <Link href="/contact" className="hud-btn">
               Get in touch
             </Link>
           </Magnetic>
         </motion.div>
 
+        {/* HUD bottom strip */}
         <motion.div
           initial={reduce ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.8 }}
-          className="mt-10 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--color-text-2)]"
+          className="mt-10 grid grid-cols-2 gap-3 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-text-2)] sm:grid-cols-4"
         >
-          <ArrowDown className="h-3 w-3 animate-bounce" />
+          <HudCell k="NODE" v="r3cap-01" />
+          <HudCell k="ROLE" v="research-eng" />
+          <HudCell k="LOC"  v="sg/01.367N" />
+          <HudCell k="VER"  v="v2.6.0" />
+        </motion.div>
+
+        <motion.div
+          initial={reduce ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 1.1 }}
+          className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-text-2)]"
+        >
+          <ArrowDown className="h-3 w-3 animate-bounce text-[var(--color-accent)]" />
           Scroll to explore
         </motion.div>
       </motion.div>
-      {/* Subtle parallax tagline strip behind the section bottom */}
-      {!reduce && (
-        <motion.div
-          aria-hidden="true"
-          style={{ y: subY }}
-          className="pointer-events-none absolute bottom-6 left-0 right-0 mx-auto w-full max-w-6xl px-4 sm:px-6"
-        >
-          <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.3em] text-[var(--color-text-2)]/60">
-            <span>R3CAP · SPF · HTX · SIT</span>
-            <span>SG / 2026</span>
-          </div>
-        </motion.div>
-      )}
     </section>
+  );
+}
+
+function HudCell({ k, v }: { k: string; v: string }) {
+  return (
+    <div className="border-l border-[var(--color-border)] pl-3">
+      <div className="text-[var(--color-text-2)]">{k}</div>
+      <div className="text-[var(--color-accent)]">{v}</div>
+    </div>
+  );
+}
+
+function CornerBrackets() {
+  const arm = "absolute h-px w-12 bg-[color:color-mix(in_oklab,var(--color-accent)_50%,transparent)]";
+  const armV = "absolute w-px h-12 bg-[color:color-mix(in_oklab,var(--color-accent)_50%,transparent)]";
+  return (
+    <>
+      <div className={`${arm} top-24 left-6`} />
+      <div className={`${armV} top-24 left-6`} />
+      <div className={`${arm} top-24 right-6`} />
+      <div className={`${armV} top-24 right-6`} />
+      <div className={`${arm} bottom-6 left-6`} />
+      <div className={`${armV} bottom-6 left-6 -translate-y-12`} />
+      <div className={`${arm} bottom-6 right-6`} />
+      <div className={`${armV} bottom-6 right-6 -translate-y-12`} />
+    </>
   );
 }

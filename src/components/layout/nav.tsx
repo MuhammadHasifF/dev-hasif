@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Command, Menu, X } from "lucide-react";
 import { siteConfig } from "@/../site.config";
-import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { Magnetic } from "@/components/primitives/magnetic";
 import { cn } from "@/lib/utils";
 
@@ -45,7 +44,7 @@ export function Nav() {
           aria-label="Home"
           className="group inline-flex items-center gap-2 font-mono text-sm tracking-tight"
         >
-          <span className="relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-full ring-1 ring-[var(--color-accent-2)]/40 ring-offset-1 ring-offset-[var(--color-bg-0)]">
+          <span className="relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-full ring-1 ring-[var(--color-accent)]/50 ring-offset-1 ring-offset-[var(--color-bg-0)] shadow-[0_0_12px_-4px_var(--color-accent)]">
             <Image
               src="/me/bamboo-forest.jpg"
               alt="Hasif"
@@ -90,16 +89,15 @@ export function Nav() {
             type="button"
             onClick={openPalette}
             aria-label="Open command palette"
-            className="hidden md:inline-flex h-9 items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-1)] px-3 text-xs text-[var(--color-text-1)] hover:border-[var(--color-accent)] hover:text-[var(--color-text-0)]"
+            className="hidden md:inline-flex h-9 items-center gap-2 rounded-sm border border-[var(--color-border)] bg-[var(--color-bg-1)] px-3 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-text-1)] transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
           >
             <Command className="h-3.5 w-3.5" />
             <span>Search</span>
-            <kbd className="rounded border border-[var(--color-border)] bg-[var(--color-bg-2)] px-1.5 py-0.5 font-mono text-[10px]">⌘K</kbd>
+            <kbd className="rounded-sm border border-[var(--color-border)] bg-[var(--color-bg-2)] px-1.5 py-0.5 font-mono text-[10px]">⌘K</kbd>
           </button>
-          <ThemeToggle />
           <button
             type="button"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-bg-1)] text-[var(--color-text-1)] md:hidden"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-sm border border-[var(--color-border)] bg-[var(--color-bg-1)] text-[var(--color-text-1)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] md:hidden"
             onClick={() => setOpen((v) => !v)}
             aria-label="Toggle menu"
             aria-expanded={open}

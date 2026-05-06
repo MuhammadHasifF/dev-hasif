@@ -9,13 +9,11 @@ import { Footer } from "@/components/layout/footer";
 import { CommandPalette } from "@/components/layout/command-palette";
 import { ScrollProgress } from "@/components/layout/scroll-progress";
 import { GrainOverlay } from "@/components/layout/grain-overlay";
-import { SmoothScroll } from "@/components/layout/smooth-scroll";
-import { CustomCursor } from "@/components/layout/custom-cursor";
 import { SettingsProvider } from "@/components/layout/settings-provider";
 import { Konami } from "@/components/layout/konami";
 import { PageTransition } from "@/components/layout/page-transition";
 import { SectionPill } from "@/components/layout/section-pill";
-import { BambooBackground } from "@/components/layout/bamboo-background";
+import { CyberGrid } from "@/components/layout/cyber-grid";
 import "@/styles/globals.css";
 
 const geistSans = Geist({
@@ -36,10 +34,7 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#0c0a08" },
-    { media: "(prefers-color-scheme: light)", color: "#f5efe0" },
-  ],
+  themeColor: "#04070d",
   width: "device-width",
   initialScale: 1,
 };
@@ -88,18 +83,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable}`}
     >
       <body>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <SettingsProvider>
             <a
               href="#main"
-              className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[999] focus:rounded-md focus:bg-[var(--color-accent)] focus:px-3 focus:py-2 focus:text-white"
+              className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[999] focus:rounded-sm focus:bg-[var(--color-accent)] focus:px-3 focus:py-2 focus:text-black"
             >
               Skip to content
             </a>
-            <SmoothScroll />
-            <BambooBackground />
+            <CyberGrid />
             <GrainOverlay />
-            <CustomCursor />
             <ScrollProgress />
             <Nav />
             <CommandPalette />

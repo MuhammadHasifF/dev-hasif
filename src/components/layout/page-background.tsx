@@ -1,7 +1,3 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-import { useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 export type BackgroundVariant =
@@ -18,371 +14,160 @@ export type BackgroundVariant =
 type Props = { variant: BackgroundVariant; className?: string };
 
 /**
- * Per-route decorative motifs layered above the always-on bamboo backdrop.
- * Each variant uses a distinct zen motif tied to the page's intent so no two
- * routes share the same imagery — see HomeMotif / WorkMotif / etc. below.
+ * Per-route accent. The global CyberGrid handles the shared moving backdrop;
+ * this layer only adds a *stationary* tinted disc + faint ambience to give
+ * each page its own identity. Pure CSS, zero rAF.
  */
 export function PageBackground({ variant, className }: Props) {
-  const ref = useRef<HTMLDivElement>(null);
-  const reduce = useReducedMotion();
-
-  useEffect(() => {
-    if (reduce) return;
-    const el = ref.current;
-    if (!el) return;
-    const onMove = (e: PointerEvent) => {
-      el.style.setProperty("--mx", `${e.clientX}px`);
-      el.style.setProperty("--my", `${e.clientY}px`);
-    };
-    window.addEventListener("pointermove", onMove, { passive: true });
-    return () => window.removeEventListener("pointermove", onMove);
-  }, [reduce]);
-
+  const cfg = VARIANTS[variant];
   return (
     <div
-      ref={ref}
       aria-hidden="true"
       className={cn(
         "pointer-events-none fixed inset-0 -z-10 overflow-hidden",
         className,
       )}
-      style={
-        {
-          ["--mx" as string]: "50vw",
-          ["--my" as string]: "50vh",
-        } as React.CSSProperties
-      }
     >
-      {/* Universal cursor spotlight — warm jade tint */}
+      {/* Stationary tinted disc — anchored differently per page */}
       <div
-        className="absolute inset-0 opacity-50"
+        className="absolute rounded-full opacity-40 motion-reduce:opacity-20"
         style={{
-          background:
-            "radial-gradient(620px circle at var(--mx) var(--my), color-mix(in oklab, var(--color-accent) 16%, transparent), transparent 60%)",
+          top: cfg.top,
+          left: cfg.left,
+          right: cfg.right,
+          bottom: cfg.bottom,
+          width: cfg.size,
+          height: cfg.size,
+          background: `radial-gradient(circle, color-mix(in oklab, ${cfg.color} 40%, transparent), transparent 65%)`,
+          filter: "blur(80px)",
         }}
       />
-
-      {variant === "home" && <HomeMotif />}
-      {variant === "about" && <AboutMotif />}
-      {variant === "work" && <WorkMotif />}
-      {variant === "case" && <CaseMotif />}
-      {variant === "experience" && <ExperienceMotif />}
-      {variant === "contact" && <ContactMotif />}
-      {variant === "resume" && <ResumeMotif />}
-      {variant === "writing" && <WritingMotif />}
-      {variant === "notfound" && <NotFoundMotif />}
+      {/* Page-specific motif overlay */}
+      {cfg.motif === "circuit" && <Circuit />}
+      {cfg.motif === "rays"    && <Rays />}
+      {cfg.motif === "ripple"  && <Ripple />}
+      {cfg.motif === "code"    && <CodeRain />}
+      {cfg.motif === "compass" && <Compass />}
     </div>
   );
 }
 
-/* ---------------- Home — rising warm sun + drifting embers ---------------- */
-function HomeMotif() {
+const VARIANTS: Record<
+  BackgroundVariant,
+  {
+    color: string;
+    top?: string; left?: string; right?: string; bottom?: string;
+    size: string;
+    motif: "circuit" | "rays" | "ripple" | "code" | "compass" | "none";
+  }
+> = {
+  home:      { color: "var(--color-accent)",   top: "8%",  left: "50%", size: "720px",  motif: "none" },
+  about:     { color: "var(--color-accent-3)", top: "18%", right: "8%", size: "560px",  motif: "circuit" },
+  work:      { color: "var(--color-accent)",   top: "12%", left: "10%", size: "520px",  motif: "compass" },
+  case:      { color: "var(--color-accent-2)", top: "0%",  left: "50%", size: "640px",  motif: "rays" },
+  experience:{ color: "var(--color-warning)",  bottom: "10%", left: "50%", size: "640px", motif: "rays" },
+  contact:   { color: "var(--color-accent)",   top: "30%", left: "50%", size: "520px",  motif: "ripple" },
+  resume:    { color: "var(--color-accent-2)", top: "10%", left: "50%", size: "560px",  motif: "code" },
+  writing:   { color: "var(--color-accent-3)", top: "20%", left: "20%", size: "480px",  motif: "code" },
+  notfound:  { color: "var(--color-danger)",   top: "30%", left: "50%", size: "560px",  motif: "rays" },
+};
+
+/* ── circuit traces ── */
+function Circuit() {
   return (
-    <>
-      <div
-        className="absolute left-1/2 top-[8%] h-[680px] w-[680px] -translate-x-1/2 rounded-full blur-3xl opacity-35 motion-reduce:opacity-20"
-        style={{
-          background:
-            "radial-gradient(circle, color-mix(in oklab, var(--color-accent-2) 70%, transparent), transparent 65%)",
-          animation: "var(--animate-ink-breathe)",
-        }}
-      />
-      <div
-        className="absolute -left-32 bottom-[18%] h-[420px] w-[420px] rounded-full blur-3xl opacity-25 motion-reduce:hidden"
-        style={{
-          background:
-            "radial-gradient(circle, color-mix(in oklab, var(--color-accent) 65%, transparent), transparent 70%)",
-          animation: "float 14s ease-in-out infinite",
-        }}
-      />
-      <Embers />
-    </>
+    <svg
+      className="absolute right-[6%] top-[14%] h-[420px] w-[420px] opacity-30 motion-reduce:opacity-15"
+      viewBox="0 0 200 200"
+      fill="none"
+      stroke="currentColor"
+      style={{ color: "var(--color-accent)" }}
+    >
+      <g strokeWidth="0.6">
+        <path d="M10 40 L70 40 L70 80 L130 80 L130 30 L190 30" strokeDasharray="2 2" />
+        <path d="M10 120 L60 120 L60 160 L120 160 L120 110 L190 110" strokeDasharray="2 2" />
+        <circle cx="70" cy="80" r="2" fill="currentColor" />
+        <circle cx="130" cy="80" r="2" fill="currentColor" />
+        <circle cx="120" cy="160" r="2" fill="currentColor" />
+        <circle cx="60" cy="120" r="2" fill="currentColor" />
+      </g>
+      <g stroke="var(--color-accent-3)" strokeWidth="0.4" opacity="0.5">
+        <path d="M10 70 L40 70 L40 100 L100 100" strokeDasharray="1 3" />
+      </g>
+    </svg>
   );
 }
 
-function Embers() {
-  // gold dust drifting upward — pure CSS, deterministic positions
-  const dots = Array.from({ length: 22 }, (_, i) => i);
+/* ── rising rays — sun-rays from a pivot ── */
+function Rays() {
   return (
-    <div className="absolute inset-0 motion-reduce:hidden">
-      {dots.map((i) => {
-        const left = (i * 4.7 + 7) % 100;
-        const delay = (i * 0.31) % 6;
-        const dur = 14 + (i % 6) * 2;
-        const size = 1.5 + (i % 4) * 0.6;
-        return (
-          <span
-            key={i}
-            className="absolute rounded-full"
-            style={{
-              left: `${left}%`,
-              bottom: "-10px",
-              width: size,
-              height: size,
-              background:
-                "color-mix(in oklab, var(--color-accent-2) 80%, transparent)",
-              opacity: 0.55,
-              filter: "blur(0.4px)",
-              animation: `drift ${dur}s linear ${delay}s infinite, float ${dur / 2}s ease-in-out ${delay}s infinite`,
-              transform: "translateY(-100vh)",
-            }}
-          />
-        );
-      })}
-    </div>
+    <div
+      className="absolute inset-0 opacity-[0.08] motion-reduce:opacity-[0.04]"
+      style={{
+        backgroundImage:
+          "repeating-conic-gradient(from 200deg at 50% 0%, color-mix(in oklab, var(--color-accent) 50%, transparent) 0deg 1.6deg, transparent 1.6deg 14deg)",
+        maskImage: "radial-gradient(60% 80% at 50% 0%, black, transparent 80%)",
+        WebkitMaskImage: "radial-gradient(60% 80% at 50% 0%, black, transparent 80%)",
+      }}
+    />
   );
 }
 
-/* ---------------- About — concentric ink-wash circles + warm mesh ---------------- */
-function AboutMotif() {
+/* ── concentric rings — hover spotlight target ── */
+function Ripple() {
   return (
-    <>
-      <div
-        className="absolute inset-0 opacity-50 motion-reduce:opacity-25"
-        style={{
-          background:
-            "radial-gradient(40% 50% at 22% 32%, color-mix(in oklab, var(--color-accent-3) 28%, transparent), transparent 70%), radial-gradient(50% 60% at 80% 70%, color-mix(in oklab, var(--color-accent) 24%, transparent), transparent 70%), radial-gradient(60% 60% at 60% 18%, color-mix(in oklab, var(--color-accent-2) 22%, transparent), transparent 70%)",
-          animation: "var(--animate-mesh-breathe)",
-          filter: "blur(50px)",
-        }}
-      />
-      {/* enso-style ink rings */}
-      <svg
-        className="absolute right-[8%] top-[18%] h-[420px] w-[420px] opacity-25 motion-reduce:opacity-15"
-        viewBox="0 0 200 200"
-        fill="none"
-      >
-        {[80, 64, 48, 32].map((r, i) => (
-          <circle
-            key={r}
-            cx="100"
-            cy="100"
-            r={r}
-            stroke="var(--color-accent-2)"
-            strokeWidth={0.6 + i * 0.3}
-            strokeDasharray={`${r * 0.85} ${r * 0.45}`}
-            strokeLinecap="round"
-            style={{
-              transformOrigin: "center",
-              animation: `bambooSwayA ${22 + i * 6}s ease-in-out infinite`,
-              opacity: 0.7 - i * 0.12,
-            }}
-          />
-        ))}
-      </svg>
-    </>
-  );
-}
-
-/* ---------------- Work — shoji screen lattice + cursor reveal ---------------- */
-function WorkMotif() {
-  return (
-    <>
-      <div
-        className="absolute inset-0 opacity-[0.18]"
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, color-mix(in oklab, var(--color-accent-2) 60%, transparent) 1px, transparent 1px), linear-gradient(to bottom, color-mix(in oklab, var(--color-accent-2) 60%, transparent) 1px, transparent 1px)",
-          backgroundSize: "72px 56px",
-          maskImage:
-            "radial-gradient(420px circle at var(--mx) var(--my), black 30%, transparent 70%)",
-          WebkitMaskImage:
-            "radial-gradient(420px circle at var(--mx) var(--my), black 30%, transparent 70%)",
-        }}
-      />
-      <div
-        className="absolute inset-0 opacity-[0.05]"
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, var(--color-text-2) 1px, transparent 1px), linear-gradient(to bottom, var(--color-text-2) 1px, transparent 1px)",
-          backgroundSize: "72px 56px",
-        }}
-      />
-    </>
-  );
-}
-
-/* ---------------- Case — temple roof tile pattern ---------------- */
-function CaseMotif() {
-  return (
-    <>
-      <div
-        className="absolute inset-x-0 top-0 h-[60vh] opacity-[0.08]"
-        style={{
-          backgroundImage:
-            "repeating-radial-gradient(circle at 50% 100%, transparent 0 38px, color-mix(in oklab, var(--color-accent-3) 70%, transparent) 38px 40px, transparent 40px 76px)",
-          backgroundSize: "120px 60px",
-          maskImage: "linear-gradient(to bottom, black 0%, transparent 100%)",
-          WebkitMaskImage: "linear-gradient(to bottom, black 0%, transparent 100%)",
-        }}
-      />
-      <div
-        className="absolute inset-0 opacity-[0.05]"
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, var(--color-text-2) 1px, transparent 1px)",
-          backgroundSize: "96px 100%",
-          maskImage: "linear-gradient(to bottom, transparent 0%, black 30%, transparent 100%)",
-          WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 30%, transparent 100%)",
-        }}
-      />
-    </>
-  );
-}
-
-/* ---------------- Experience — rising sun radial + horizon line ---------------- */
-function ExperienceMotif() {
-  return (
-    <>
-      <div
-        className="absolute inset-x-0 bottom-0 h-[70vh]"
-        style={{
-          background:
-            "radial-gradient(80% 100% at 50% 100%, color-mix(in oklab, var(--color-accent-3) 35%, transparent) 0%, color-mix(in oklab, var(--color-accent-2) 14%, transparent) 35%, transparent 70%)",
-          maskImage: "linear-gradient(to top, black 30%, transparent 100%)",
-          WebkitMaskImage: "linear-gradient(to top, black 30%, transparent 100%)",
-        }}
-      />
-      {/* radiating sunray slats */}
-      <div
-        className="absolute inset-x-0 bottom-[18vh] h-[60vh] opacity-[0.1]"
-        style={{
-          backgroundImage:
-            "repeating-conic-gradient(from 200deg at 50% 100%, color-mix(in oklab, var(--color-accent-2) 60%, transparent) 0deg 2deg, transparent 2deg 14deg)",
-          maskImage: "radial-gradient(60% 100% at 50% 100%, black, transparent 80%)",
-          WebkitMaskImage: "radial-gradient(60% 100% at 50% 100%, black, transparent 80%)",
-        }}
-      />
-    </>
-  );
-}
-
-/* ---------------- Contact — koi pond ripples ---------------- */
-function ContactMotif() {
-  const ripples = [0, 1, 2];
-  return (
-    <>
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(60% 80% at 50% 60%, color-mix(in oklab, var(--color-accent) 12%, transparent), transparent 70%)",
-        }}
-      />
-      <div className="absolute left-1/2 top-1/2 h-1 w-1 -translate-x-1/2 -translate-y-1/2 motion-reduce:hidden">
-        {ripples.map((r) => (
-          <span
-            key={r}
-            className="absolute left-1/2 top-1/2 block h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full border"
-            style={{
-              borderColor:
-                "color-mix(in oklab, var(--color-accent) 55%, transparent)",
-              borderWidth: 1,
-              animation: `ripple 7s ease-out ${r * 2.2}s infinite`,
-            }}
-          />
-        ))}
-      </div>
-      <div
-        className="absolute right-[8%] top-[14%] h-[260px] w-[260px] motion-reduce:hidden"
-        style={{
-          background:
-            "radial-gradient(circle, color-mix(in oklab, var(--color-accent-3) 50%, transparent), transparent 70%)",
-          filter: "blur(40px)",
-          animation: "float 12s ease-in-out infinite",
-        }}
-      />
-    </>
-  );
-}
-
-/* ---------------- Resume — rice paper texture + warm spotlight ---------------- */
-function ResumeMotif() {
-  return (
-    <>
-      <div className="absolute inset-0 bg-rice-paper opacity-30 mix-blend-screen" />
-      <div
-        className="absolute inset-x-0 top-0 h-[40vh]"
-        style={{
-          background:
-            "radial-gradient(60% 100% at 50% 0%, color-mix(in oklab, var(--color-accent-2) 22%, transparent), transparent 70%)",
-        }}
-      />
-      <div
-        className="absolute inset-0 opacity-[0.08] motion-reduce:hidden"
-        style={{
-          backgroundImage:
-            "repeating-linear-gradient(to bottom, color-mix(in oklab, var(--color-accent-2) 60%, transparent) 0 1px, transparent 1px 4px)",
-          mixBlendMode: "overlay",
-        }}
-      />
-    </>
-  );
-}
-
-/* ---------------- Writing — vertical rule guides + ink stroke ---------------- */
-function WritingMotif() {
-  return (
-    <>
-      <div
-        className="absolute inset-0 opacity-[0.06]"
-        style={{
-          backgroundImage:
-            "repeating-linear-gradient(to bottom, var(--color-text-1) 0 1px, transparent 1px 36px)",
-        }}
-      />
-      <svg
-        className="absolute right-[6%] top-[22%] h-[280px] w-[280px] opacity-25 motion-reduce:opacity-15"
-        viewBox="0 0 200 200"
-      >
-        <path
-          d="M 30 130 Q 60 50 100 120 T 170 80"
-          stroke="var(--color-accent-3)"
-          strokeWidth={3}
-          strokeLinecap="round"
-          fill="none"
-          style={{ animation: "var(--animate-ink-breathe)" }}
+    <div className="absolute left-1/2 top-1/2 h-1 w-1 -translate-x-1/2 -translate-y-1/2 motion-reduce:hidden">
+      {[0, 1, 2].map((r) => (
+        <span
+          key={r}
+          className="absolute left-1/2 top-1/2 block h-[460px] w-[460px] -translate-x-1/2 -translate-y-1/2 rounded-full border"
+          style={{
+            borderColor: "color-mix(in oklab, var(--color-accent) 50%, transparent)",
+            borderWidth: 1,
+            animation: `pulseSoft ${4 + r}s ease-in-out ${r * 0.6}s infinite`,
+            transform: `translate(-50%, -50%) scale(${0.6 + r * 0.4})`,
+          }}
         />
-      </svg>
-    </>
+      ))}
+    </div>
   );
 }
 
-/* ---------------- 404 — drifting petals ---------------- */
-function NotFoundMotif() {
-  const petals = Array.from({ length: 14 }, (_, i) => i);
+/* ── code-rain vertical streams ── */
+function CodeRain() {
   return (
-    <>
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(50% 60% at 50% 40%, color-mix(in oklab, var(--color-accent-3) 24%, transparent), transparent 70%)",
-          filter: "blur(50px)",
-        }}
-      />
-      <div className="absolute inset-0 motion-reduce:hidden">
-        {petals.map((i) => {
-          const left = (i * 7.3 + 5) % 100;
-          const delay = (i * 0.5) % 8;
-          const dur = 18 + (i % 5) * 3;
-          return (
-            <span
-              key={i}
-              className="absolute h-2 w-2 rotate-45 rounded-[1px]"
-              style={{
-                left: `${left}%`,
-                top: "-10px",
-                background:
-                  "color-mix(in oklab, var(--color-accent-3) 75%, transparent)",
-                opacity: 0.6,
-                animation: `drift ${dur}s linear ${delay}s infinite, float ${dur / 3}s ease-in-out ${delay}s infinite`,
-                transform: "translateY(110vh) rotate(45deg)",
-              }}
-            />
-          );
-        })}
-      </div>
-    </>
+    <div
+      className="absolute inset-0 opacity-[0.07] motion-reduce:hidden"
+      style={{
+        backgroundImage:
+          "repeating-linear-gradient(to bottom, color-mix(in oklab, var(--color-accent) 50%, transparent) 0 1px, transparent 1px 36px), repeating-linear-gradient(to right, color-mix(in oklab, var(--color-accent) 22%, transparent) 0 1px, transparent 1px 96px)",
+      }}
+    />
+  );
+}
+
+/* ── tactical compass ring ── */
+function Compass() {
+  return (
+    <svg
+      className="absolute right-[8%] top-[18%] h-[360px] w-[360px] opacity-[0.18] motion-reduce:opacity-[0.1]"
+      viewBox="0 0 200 200"
+      fill="none"
+      stroke="var(--color-accent)"
+      strokeWidth="0.5"
+    >
+      <circle cx="100" cy="100" r="80" />
+      <circle cx="100" cy="100" r="60" strokeDasharray="2 4" />
+      <circle cx="100" cy="100" r="40" />
+      {Array.from({ length: 12 }).map((_, i) => {
+        const a = (i * 30 * Math.PI) / 180;
+        const x1 = 100 + Math.cos(a) * 80;
+        const y1 = 100 + Math.sin(a) * 80;
+        const x2 = 100 + Math.cos(a) * 88;
+        const y2 = 100 + Math.sin(a) * 88;
+        return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} />;
+      })}
+      <line x1="100" y1="20" x2="100" y2="180" strokeDasharray="1 3" opacity="0.6" />
+      <line x1="20" y1="100" x2="180" y2="100" strokeDasharray="1 3" opacity="0.6" />
+    </svg>
   );
 }

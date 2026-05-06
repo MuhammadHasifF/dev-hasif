@@ -12,10 +12,10 @@ export function Chip({
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full border px-2.5 py-1 text-[11px] font-mono uppercase tracking-wider",
+        "inline-flex items-center rounded-sm border px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.18em]",
         tone === "accent"
-          ? "border-[var(--color-accent)]/40 bg-[color:color-mix(in_oklab,var(--color-accent)_10%,transparent)] text-[var(--color-accent)]"
-          : "border-[var(--color-border)] bg-[var(--color-bg-1)] text-[var(--color-text-1)]",
+          ? "border-[var(--color-accent)]/60 bg-[color:color-mix(in_oklab,var(--color-accent)_12%,transparent)] text-[var(--color-accent)]"
+          : "border-[var(--color-border)] bg-[var(--color-bg-2)] text-[var(--color-text-1)]",
         className
       )}
     >
