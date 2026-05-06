@@ -7,7 +7,7 @@ import { PageBackground } from "@/components/layout/page-background";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Drop a note — collaborations, roles, research, or the merely curious.",
+  description: "Drop a note. Collaborations, roles, research, or the merely curious.",
 };
 
 export default function ContactPage() {
@@ -15,8 +15,11 @@ export default function ContactPage() {
     <>
       <PageBackground variant="contact" />
       <Section
-        eyebrow="Contact"
-        title={<>Say hello.</>}
+        eyebrow="CONTACT"
+        index={1}
+        total={2}
+        stamp="// DIRECT LINES"
+        title={["Say hello."]}
         intro="For roles, research collaborations, or interesting problems."
       >
         <div className="grid gap-6 md:grid-cols-3">

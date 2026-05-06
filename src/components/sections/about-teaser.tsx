@@ -7,7 +7,13 @@ import { Reveal } from "@/components/primitives/reveal";
 
 export function AboutTeaser() {
   return (
-    <Section eyebrow="About" title={<span>Engineer. Researcher.<br/>Operator.</span>}>
+    <Section
+      eyebrow="ABOUT"
+      index={1}
+      total={8}
+      stamp="// ORIGIN"
+      title={["Engineer.", "Researcher.", "Operator."]}
+    >
       <div className="grid items-start gap-12 md:grid-cols-2">
         <Reveal>
           <p className="text-pretty text-lg leading-relaxed text-[var(--color-text-0)]/90">

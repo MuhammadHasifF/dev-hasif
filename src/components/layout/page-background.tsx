@@ -28,9 +28,8 @@ export function PageBackground({ variant, className }: Props) {
         className,
       )}
     >
-      {/* Stationary tinted disc — anchored differently per page */}
       <div
-        className="absolute rounded-full opacity-40 motion-reduce:opacity-20"
+        className="absolute rounded-full opacity-25 motion-reduce:opacity-12"
         style={{
           top: cfg.top,
           left: cfg.left,
@@ -38,8 +37,8 @@ export function PageBackground({ variant, className }: Props) {
           bottom: cfg.bottom,
           width: cfg.size,
           height: cfg.size,
-          background: `radial-gradient(circle, color-mix(in oklab, ${cfg.color} 40%, transparent), transparent 65%)`,
-          filter: "blur(80px)",
+          background: `radial-gradient(circle, color-mix(in oklab, ${cfg.color} 28%, transparent), transparent 70%)`,
+          filter: "blur(110px)",
         }}
       />
       {/* Page-specific motif overlay */}
@@ -61,15 +60,15 @@ const VARIANTS: Record<
     motif: "circuit" | "rays" | "ripple" | "code" | "compass" | "none";
   }
 > = {
-  home:      { color: "var(--color-accent)",   top: "8%",  left: "50%", size: "720px",  motif: "none" },
-  about:     { color: "var(--color-accent-3)", top: "18%", right: "8%", size: "560px",  motif: "circuit" },
-  work:      { color: "var(--color-accent)",   top: "12%", left: "10%", size: "520px",  motif: "compass" },
-  case:      { color: "var(--color-accent-2)", top: "0%",  left: "50%", size: "640px",  motif: "rays" },
-  experience:{ color: "var(--color-warning)",  bottom: "10%", left: "50%", size: "640px", motif: "rays" },
-  contact:   { color: "var(--color-accent)",   top: "30%", left: "50%", size: "520px",  motif: "ripple" },
-  resume:    { color: "var(--color-accent-2)", top: "10%", left: "50%", size: "560px",  motif: "code" },
-  writing:   { color: "var(--color-accent-3)", top: "20%", left: "20%", size: "480px",  motif: "code" },
-  notfound:  { color: "var(--color-danger)",   top: "30%", left: "50%", size: "560px",  motif: "rays" },
+  home:      { color: "var(--color-accent)", top: "8%",  left: "50%", size: "720px",  motif: "none" },
+  about:     { color: "var(--color-accent)", top: "18%", right: "8%", size: "560px",  motif: "circuit" },
+  work:      { color: "var(--color-accent)", top: "12%", left: "10%", size: "520px",  motif: "compass" },
+  case:      { color: "var(--color-accent)", top: "0%",  left: "50%", size: "640px",  motif: "rays" },
+  experience:{ color: "var(--color-accent)", bottom: "10%", left: "50%", size: "640px", motif: "rays" },
+  contact:   { color: "var(--color-accent)", top: "30%", left: "50%", size: "520px",  motif: "ripple" },
+  resume:    { color: "var(--color-accent)", top: "10%", left: "50%", size: "560px",  motif: "code" },
+  writing:   { color: "var(--color-accent)", top: "20%", left: "20%", size: "480px",  motif: "code" },
+  notfound:  { color: "var(--color-accent)", top: "30%", left: "50%", size: "560px",  motif: "rays" },
 };
 
 /* ── circuit traces ── */
@@ -90,7 +89,7 @@ function Circuit() {
         <circle cx="120" cy="160" r="2" fill="currentColor" />
         <circle cx="60" cy="120" r="2" fill="currentColor" />
       </g>
-      <g stroke="var(--color-accent-3)" strokeWidth="0.4" opacity="0.5">
+      <g strokeWidth="0.4" opacity="0.4">
         <path d="M10 70 L40 70 L40 100 L100 100" strokeDasharray="1 3" />
       </g>
     </svg>

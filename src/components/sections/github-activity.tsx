@@ -22,8 +22,11 @@ export async function GitHubActivity() {
   return (
     <Section
       id="github"
-      eyebrow="Live feed"
-      title={<>Shipping<br/>in the open.</>}
+      eyebrow="LIVE FEED"
+      index={7}
+      total={8}
+      stamp="// REPOS"
+      title={["Shipping", "in the open."]}
       intro={`Public activity from @${siteConfig.github.username}, revalidated hourly. What I've been pushing, starring, and breaking lately.`}
     >
       <div className="grid gap-6 md:grid-cols-5">

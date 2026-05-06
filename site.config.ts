@@ -2,15 +2,15 @@ export const siteConfig = {
   name: "Muhammad Hasif",
   fullName: "Muhammad Hasif Bin Mohd Faisal",
   shortName: "Hasif",
-  title: "Hasif — Research Engineer & AI Undergrad",
+  title: "Hasif · Research Engineer & AI Undergrad",
   description:
-    "Analytically driven, technically versatile — research engineer & Applied AI undergrad shipping data-informed systems across data, cybersecurity, automation, and operational technology.",
+    "Analytically driven, technically versatile. Research engineer and Applied AI undergrad shipping data-informed systems across data, cybersecurity, automation, and operational technology.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://hasif.dev",
   ogImage: "/og.png",
   tagline:
-    "Research engineer & Applied AI undergrad — building systems that move between people, data, and the physical world.",
+    "Research engineer & Applied AI undergrad. Building systems that move between people, data, and the physical world.",
   taglineAlt:
-    "Hands-on across data analysis, cybersecurity, automation, and operational technology — supporting national-level initiatives through real-time data systems, geospatial dashboards, RPA, and predictive modeling.",
+    "Hands-on across data analysis, cybersecurity, automation, and operational technology. Supporting national-level initiatives through real-time data systems, geospatial dashboards, RPA, and predictive modeling.",
   location: "Singapore 400412",
   email: "muhammad.hasif.faisal@gmail.com",
   phone: "+65 8896 6503",

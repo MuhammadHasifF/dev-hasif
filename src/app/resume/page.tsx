@@ -13,9 +13,12 @@ export default function ResumePage() {
     <>
     <PageBackground variant="resume" />
     <Section
-      eyebrow="Resume"
-      title={<>Condensed into<br/>a single page.</>}
-      intro="The PDF version. Drop your copy in /public/resume.pdf — it'll render here and be available for download."
+      eyebrow="RESUME"
+      index={1}
+      total={1}
+      stamp="// PDF"
+      title={["Condensed into", "a single page."]}
+      intro="The PDF version. Drop your copy in /public/resume.pdf and it'll render here, ready for download."
     >
       <div className="flex flex-wrap items-center gap-3">
         <a

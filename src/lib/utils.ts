@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export function formatDateRange(start: string, end?: string | null) {
   const e = end ?? "Present";
-  return `${start} — ${e}`;
+  return `${start} → ${e}`;
 }
 
 export function slugify(input: string) {

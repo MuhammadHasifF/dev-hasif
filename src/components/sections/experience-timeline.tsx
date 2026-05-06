@@ -21,9 +21,12 @@ export function ExperienceTimeline() {
   return (
     <Section
       id="experience"
-      eyebrow="Experience"
-      title={<>Six roles. Six<br/>very different playbooks.</>}
-      intro="From research engineering to a Security Operations Center to a national Police Force — I've shipped across the stack and the chain of command."
+      eyebrow="EXPERIENCE"
+      index={4}
+      total={8}
+      stamp="// TIMELINE"
+      title={["Six roles. Six", "very different playbooks."]}
+      intro="From research engineering to a Security Operations Center to a national Police Force. I've shipped across the stack and the chain of command."
     >
       <div ref={wrapRef} className="relative">
         <div
@@ -117,7 +120,7 @@ function RoleCard({
       <div className="flex flex-wrap items-center gap-2">
         <Chip>{r.type}</Chip>
         <span className="font-mono text-[11px] text-[var(--color-text-2)]">
-          {r.start} — {r.end ?? "Present"}
+          {r.start} → {r.end ?? "Present"}
         </span>
       </div>
       <h3 className="mt-3 font-display text-xl leading-tight text-[var(--color-text-0)] md:text-2xl">

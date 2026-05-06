@@ -52,9 +52,12 @@ export function ContactInline() {
   return (
     <Section
       id="contact"
-      eyebrow="Contact"
-      title={<>Open a channel.</>}
-      intro="Drop a packet — I'll respond from my actual inbox, usually within a few days."
+      eyebrow="CONTACT"
+      index={8}
+      total={8}
+      stamp="// OPEN CHANNEL"
+      title={["Open a channel."]}
+      intro="Drop a packet. I'll respond from my actual inbox, usually within a few days."
     >
       <form
         onSubmit={handleSubmit(onSubmit)}

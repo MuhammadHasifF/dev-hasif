@@ -13,14 +13,14 @@ export const education: Education[] = [
     orgKey: "sit",
     credential: "BSc (Honours), Applied Artificial Intelligence",
     end: "Expected 02/2028",
-    note: "Research engineering on R3CAP alongside studies — backed publications at CHI '25 and DIS '26.",
+    note: "Research engineering on R3CAP alongside studies. Backed publications at CHI '25 and DIS '26.",
   },
   {
     school: "Temasek Polytechnic",
     orgKey: "temasek-poly",
     credential: "Diploma, Financial Business Informatics",
     end: "04/2023",
-    note: "Major project: Time-Series Forecasting Techniques (Research Project) — carried into Deloitte engagement.",
+    note: "Major project: Time-Series Forecasting Techniques (Research Project). Carried into Deloitte engagement.",
   },
   {
     school: "Al-Arabiah Institution",

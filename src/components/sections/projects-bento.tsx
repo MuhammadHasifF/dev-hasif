@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
+import { DiagonalArrow } from "@/components/primitives/diagonal-arrow";
 import { AnimatePresence, motion, LayoutGroup } from "framer-motion";
 import { projects, projectCategories, type ProjectCategory } from "@/content/projects";
 import { Section } from "@/components/primitives/section";
@@ -31,8 +31,11 @@ export function ProjectsBento() {
   return (
     <Section
       id="work"
-      eyebrow="Selected work"
-      title={<>Built for the field,<br/>tuned for scale.</>}
+      eyebrow="ARCHIVE"
+      index={3}
+      total={8}
+      stamp="// FULL ARCHIVE"
+      title={["Built for the field,", "tuned for scale."]}
       intro="A cross-section of research engineering, government operations, cybersecurity, and data work I've led or contributed to."
     >
       <div className="mb-8 flex flex-wrap items-center gap-2">
@@ -69,13 +72,15 @@ export function ProjectsBento() {
                 transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
                 className={cn("group", bentoSize[i % 8] ?? "md:col-span-3 md:row-span-1")}
               >
-                <BentoCardLink href={`/work/${p.slug}`} hue={p.hue}>
+                <BentoCardLink href={`/work/${p.slug}`}>
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-2">
                       <OrgLogo orgKey={p.orgKey} size="md" />
                       <Chip>{p.category}</Chip>
                     </div>
-                    <ArrowUpRight className="h-4 w-4 text-[var(--color-text-2)] transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                    <span className="text-[var(--color-text-2)] transition-colors group-hover:text-[var(--color-accent)]">
+                      <DiagonalArrow />
+                    </span>
                   </div>
                   <div className="mt-6">
                     <h3 className="font-display text-xl leading-tight text-[var(--color-text-0)] md:text-2xl">
@@ -109,7 +114,7 @@ export function ProjectsBento() {
           href="/work"
           className="inline-flex h-10 items-center gap-2 rounded-sm border border-[var(--color-accent)]/50 bg-[color:color-mix(in_oklab,var(--color-accent)_6%,var(--color-bg-1))] px-5 font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--color-text-0)] transition-[border-color,background-color,box-shadow] hover:border-[var(--color-accent)] hover:bg-[color:color-mix(in_oklab,var(--color-accent)_14%,var(--color-bg-1))] hover:shadow-[0_0_24px_-4px_color-mix(in_oklab,var(--color-accent)_60%,transparent)]"
         >
-          All projects <ArrowUpRight className="h-4 w-4" />
+          All projects <DiagonalArrow />
         </Link>
       </div>
     </Section>
@@ -118,11 +123,9 @@ export function ProjectsBento() {
 
 function BentoCardLink({
   href,
-  hue,
   children,
 }: {
   href: string;
-  hue?: string;
   children: React.ReactNode;
 }) {
   const ref = useRef<HTMLAnchorElement>(null);
@@ -143,12 +146,8 @@ function BentoCardLink({
     >
       <div
         aria-hidden="true"
-        className={cn(
-          "absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 group-hover/card:opacity-100",
-          "bg-gradient-to-br",
-          hue ?? "from-[var(--color-accent)] to-[var(--color-accent-2)]",
-        )}
-        style={{ maskImage: "radial-gradient(ellipse at top left, black 30%, transparent 70%)" }}
+        className="absolute -right-12 -top-12 -z-10 h-48 w-48 rounded-full opacity-0 blur-3xl transition-opacity duration-700 group-hover/card:opacity-50"
+        style={{ background: "var(--color-accent)" }}
       />
       <div
         aria-hidden="true"

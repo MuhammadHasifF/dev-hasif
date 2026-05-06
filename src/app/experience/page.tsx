@@ -5,7 +5,7 @@ import { PageBackground } from "@/components/layout/page-background";
 
 export const metadata: Metadata = {
   title: "Experience",
-  description: "A full timeline of roles — research engineering, government, cybersecurity, data.",
+  description: "A full timeline of roles across research engineering, government, cybersecurity, and data.",
 };
 
 export default function ExperiencePage() {
@@ -13,8 +13,11 @@ export default function ExperiencePage() {
     <>
       <PageBackground variant="experience" />
       <Section
-        eyebrow="Experience"
-        title={<>The full timeline.</>}
+        eyebrow="EXPERIENCE"
+        index={1}
+        total={1}
+        stamp="// TIMELINE"
+        title={["The full timeline."]}
         intro="Every role in chronological detail. Expand a card for the highlights and the tech."
       />
       <ExperienceTimeline />

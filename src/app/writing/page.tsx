@@ -5,14 +5,20 @@ import { PageBackground } from "@/components/layout/page-background";
 
 export const metadata: Metadata = {
   title: "Writing",
-  description: "Notes, essays, and writeups — coming soon.",
+  description: "Notes, essays, and writeups. Coming soon.",
 };
 
 export default function WritingPage() {
   return (
     <>
     <PageBackground variant="writing" />
-    <Section eyebrow="Writing" title={<>Notes in progress.</>}>
+    <Section
+      eyebrow="WRITING"
+      index={1}
+      total={1}
+      stamp="// DRAFTS"
+      title={["Notes in progress."]}
+    >
       <div className="hud-panel flex flex-col items-center gap-4 px-6 py-20 text-center">
         <Feather className="h-8 w-8 text-[var(--color-text-2)]" />
         <h2 className="font-display text-2xl text-[var(--color-text-0)]">Nothing published yet</h2>

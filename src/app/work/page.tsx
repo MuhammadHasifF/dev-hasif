@@ -13,8 +13,11 @@ export default function WorkPage() {
     <>
     <PageBackground variant="work" />
     <Section
-      eyebrow="Selected work"
-      title={<>Every project,<br/>filtered your way.</>}
+      eyebrow="WORK"
+      index={1}
+      total={1}
+      stamp="// FULL ARCHIVE"
+      title={["Every project,", "filtered your way."]}
       intro="Filter by category. Click a card for the full case study."
     >
       <ProjectsGrid />
