@@ -64,45 +64,46 @@ export function CaseStory({ project: p }: { project: Project }) {
   return (
     <section
       ref={ref}
-      className="relative mx-auto max-w-6xl px-4 sm:px-6"
-      style={{ minHeight: `${sections.length * 90}vh` }}
+      className="relative mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 sm:px-6 md:grid-cols-12 md:gap-12"
     >
-      <div className="pointer-events-none sticky top-24 hidden h-[calc(100vh-6rem)] w-[40%] flex-col items-center justify-center md:flex md:float-right">
-        <motion.div
-          style={{ rotate: visualRotate, filter: visualFilter }}
-          className="relative aspect-square w-[80%] rounded-3xl border border-[var(--color-border)]"
-        >
-          <div
-            aria-hidden="true"
-            className={cn(
-              "absolute inset-0 rounded-3xl bg-gradient-to-br opacity-50",
-              p.hue ?? "from-[var(--color-accent)] to-[var(--color-accent-2)]",
-            )}
-          />
-          <div className="absolute inset-0 bg-noise opacity-20 mix-blend-overlay rounded-3xl" />
-          <div className="absolute inset-4 rounded-2xl border border-[var(--color-border)]/50" />
-          <div className="absolute inset-8 rounded-xl border border-[var(--color-border)]/30" />
-          <div className="absolute bottom-3 left-4 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-text-0)]/80">
-            {p.title}
-          </div>
-        </motion.div>
-        <div className="mt-6 flex flex-wrap justify-center gap-1.5 px-6">
-          {p.stack.slice(0, 6).map((s) => (
-            <span
-              key={s}
-              className="rounded-md border border-[var(--color-border)] bg-[var(--color-bg-2)] px-2 py-0.5 font-mono text-[10px] text-[var(--color-text-1)]"
-            >
-              {s}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      <div className="md:w-[55%]">
+      <div className="md:col-span-7">
         {sections.map((s, i) => (
           <StoryBlock key={i} section={s} progress={scrollYProgress} index={i} total={sections.length} />
         ))}
       </div>
+
+      <aside className="hidden md:col-span-5 md:block">
+        <div className="sticky top-24 flex flex-col items-center justify-center">
+          <motion.div
+            style={{ rotate: visualRotate, filter: visualFilter }}
+            className="tech-panel relative aspect-square w-[88%] overflow-hidden"
+          >
+            <div
+              aria-hidden="true"
+              className={cn(
+                "absolute inset-0 bg-gradient-to-br opacity-40",
+                p.hue ?? "from-[var(--color-accent)] to-[var(--color-accent-2)]",
+              )}
+            />
+            <div className="absolute inset-0 bg-noise opacity-20 mix-blend-overlay" />
+            <div className="absolute inset-4 border border-[var(--color-border)]/50" />
+            <div className="absolute inset-8 border border-[var(--color-border)]/30" />
+            <div className="absolute bottom-3 left-4 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-text-0)]/80">
+              {p.title}
+            </div>
+          </motion.div>
+          <div className="mt-6 flex flex-wrap justify-center gap-1.5 px-6">
+            {p.stack.slice(0, 6).map((s) => (
+              <span
+                key={s}
+                className="rounded-sm border border-[var(--color-border)] bg-[var(--color-bg-2)] px-2 py-0.5 font-mono text-[10px] text-[var(--color-text-1)]"
+              >
+                {s}
+              </span>
+            ))}
+          </div>
+        </div>
+      </aside>
     </section>
   );
 }
@@ -127,7 +128,7 @@ function StoryBlock({
   return (
     <motion.div
       style={{ opacity, x }}
-      className="flex min-h-[80vh] flex-col justify-center"
+      className="flex min-h-[60vh] flex-col justify-center py-12 first:pt-0"
     >
       <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--color-text-2)]">
         {section.eyebrow}

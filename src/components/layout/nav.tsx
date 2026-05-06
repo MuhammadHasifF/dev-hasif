@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Command, Menu, X } from "lucide-react";
@@ -44,8 +45,16 @@ export function Nav() {
           aria-label="Home"
           className="group inline-flex items-center gap-2 font-mono text-sm tracking-tight"
         >
-          <span className="relative flex h-7 w-7 items-center justify-center overflow-hidden rounded-md bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-accent-2)] text-white">
-            <span className="font-display text-base leading-none">H</span>
+          <span className="relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-full ring-1 ring-[var(--color-accent-2)]/40 ring-offset-1 ring-offset-[var(--color-bg-0)]">
+            <Image
+              src="/me/bamboo-forest.jpg"
+              alt="Hasif"
+              width={48}
+              height={48}
+              priority
+              className="h-full w-full object-cover"
+              style={{ objectPosition: "50% 30%" }}
+            />
           </span>
           <span className="hidden sm:block text-[var(--color-text-0)]">hasif<span className="text-[var(--color-accent)]">.</span>dev</span>
         </Link>

@@ -110,7 +110,7 @@ function RoleCard({
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
       className={cn(
-        "group rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-1)] p-5 text-left transition-colors hover:border-[var(--color-accent)]/60",
+        "tech-panel tech-panel-hover group p-5 text-left transition-colors",
         align === "right" && "text-left"
       )}
     >

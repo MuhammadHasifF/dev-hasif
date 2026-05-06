@@ -70,7 +70,7 @@ export default function AboutPage() {
           </div>
 
           <aside className="space-y-4">
-            <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-1)] p-5">
+            <div className="tech-panel p-5">
               <div className="mb-3 font-mono text-[11px] uppercase tracking-widest text-[var(--color-text-2)]">
                 Currently
               </div>
@@ -80,7 +80,7 @@ export default function AboutPage() {
                 <li>Writing more, shipping more, sleeping less</li>
               </ul>
             </div>
-            <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-1)] p-5">
+            <div className="tech-panel p-5">
               <div className="mb-3 font-mono text-[11px] uppercase tracking-widest text-[var(--color-text-2)]">
                 Signals
               </div>
@@ -100,7 +100,7 @@ export default function AboutPage() {
           {values.map((v) => (
             <div
               key={v.title}
-              className="group relative overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-1)] p-6 transition-colors hover:border-[var(--color-accent)]/60"
+              className="tech-panel tech-panel-hover group relative overflow-hidden p-6 transition-colors"
             >
               <div
                 aria-hidden="true"
@@ -124,7 +124,7 @@ export default function AboutPage() {
           ].map((p) => (
             <figure
               key={p.src}
-              className="group relative overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-1)]"
+              className="tech-panel group relative overflow-hidden"
             >
               <div className="relative aspect-[4/5] w-full overflow-hidden">
                 <Image
@@ -148,7 +148,7 @@ export default function AboutPage() {
       </Section>
 
       <Section eyebrow="Education" title="Schools">
-        <ol className="divide-y divide-[var(--color-border)] overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-1)]">
+        <ol className="tech-panel divide-y divide-[var(--color-border)] overflow-hidden">
           {education.map((e) => (
             <li key={e.school + e.credential} className="flex items-start gap-4 px-5 py-5">
               <OrgLogo orgKey={e.orgKey} size="lg" />
@@ -168,7 +168,7 @@ export default function AboutPage() {
           {leadership.map((l) => (
             <li
               key={l}
-              className="flex items-center gap-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-1)] px-4 py-3 text-sm text-[var(--color-text-0)]"
+              className="tech-panel flex items-center gap-3 px-4 py-3 text-sm text-[var(--color-text-0)]"
             >
               <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]" />
               {l}
