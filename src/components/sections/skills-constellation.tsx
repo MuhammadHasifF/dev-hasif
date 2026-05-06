@@ -102,7 +102,7 @@ function GridView({ activeGroup }: { activeGroup: string | null }) {
           <div
             key={g.id}
             className={cn(
-              "relative overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-1)] p-6 transition-opacity",
+              "tech-panel relative overflow-hidden p-6 transition-opacity",
               dim && "opacity-40",
             )}
           >
@@ -387,7 +387,7 @@ function ConstellationView({ activeGroup }: { activeGroup: string | null }) {
   return (
     <div
       ref={containerRef}
-      className="relative h-[640px] w-full overflow-hidden rounded-3xl border border-[var(--color-border)] bg-[var(--color-bg-1)]"
+      className="tech-panel relative h-[640px] w-full overflow-hidden"
     >
       <canvas ref={canvasRef} className="absolute inset-0" />
       {nodes.map((n, idx) => {

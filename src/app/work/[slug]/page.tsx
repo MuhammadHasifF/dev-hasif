@@ -42,7 +42,7 @@ export default async function CaseStudyPage({ params }: Params) {
 
       <Section>
         <aside className="grid gap-4 md:grid-cols-2">
-          <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-1)] p-5">
+          <div className="tech-panel p-5">
             <div className="mb-2 font-mono text-[11px] uppercase tracking-widest text-[var(--color-text-2)]">
               Stack
             </div>
@@ -57,7 +57,7 @@ export default async function CaseStudyPage({ params }: Params) {
               ))}
             </div>
           </div>
-          <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-1)] p-5">
+          <div className="tech-panel p-5">
             <div className="mb-2 font-mono text-[11px] uppercase tracking-widest text-[var(--color-text-2)]">
               Tags
             </div>
@@ -68,7 +68,7 @@ export default async function CaseStudyPage({ params }: Params) {
             </div>
           </div>
           {p.links && p.links.length > 0 && (
-            <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-1)] p-5 md:col-span-2">
+            <div className="tech-panel p-5 md:col-span-2">
               <div className="mb-2 font-mono text-[11px] uppercase tracking-widest text-[var(--color-text-2)]">
                 Links
               </div>
@@ -94,7 +94,7 @@ export default async function CaseStudyPage({ params }: Params) {
       <Section>
         <Link
           href={`/work/${next.slug}`}
-          className="group flex flex-col justify-between gap-6 overflow-hidden rounded-3xl border border-[var(--color-border)] bg-[var(--color-bg-1)] p-8 transition-colors hover:border-[var(--color-accent)]/60 md:flex-row md:items-center"
+          className="tech-panel tech-panel-hover group flex flex-col justify-between gap-6 overflow-hidden p-8 transition-colors md:flex-row md:items-center"
         >
           <div>
             <div className="font-mono text-[11px] uppercase tracking-widest text-[var(--color-text-2)]">

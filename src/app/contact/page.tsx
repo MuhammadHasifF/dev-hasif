@@ -32,7 +32,7 @@ export default function ContactPage() {
 
 function Card({ icon, title, body, href }: { icon: React.ReactNode; title: string; body: string; href?: string }) {
   const content = (
-    <div className="group rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-1)] p-6 transition-colors hover:border-[var(--color-accent)]/60">
+    <div className="tech-panel tech-panel-hover group p-6 transition-colors">
       <div className="flex items-center gap-2 text-[var(--color-accent)]">{icon}<span className="font-mono text-[11px] uppercase tracking-widest text-[var(--color-text-2)]">{title}</span></div>
       <div className="mt-3 text-lg text-[var(--color-text-0)]">{body}</div>
     </div>
