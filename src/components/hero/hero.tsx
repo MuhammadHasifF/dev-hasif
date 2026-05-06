@@ -6,6 +6,7 @@ import { MapPin } from "lucide-react";
 import { siteConfig } from "@/../site.config";
 import { ArrowLink } from "@/components/primitives/arrow-link";
 import { RevealLines } from "@/components/primitives/reveal-lines";
+import { Cityscape } from "@/components/hero/cityscape";
 
 export function Hero() {
   const reduce = useReducedMotion();
@@ -22,7 +23,7 @@ export function Hero() {
       ref={sectionRef}
       className="relative flex min-h-[100svh] w-full items-center overflow-hidden"
     >
-      <HeroBackdrop />
+      <Cityscape progress={scrollYProgress} />
 
       <motion.div
         style={reduce ? undefined : { y: titleY, opacity: titleOpacity }}
@@ -102,28 +103,3 @@ function HeroMeta({ k, v }: { k: string; v: React.ReactNode }) {
   );
 }
 
-function HeroBackdrop() {
-  return (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-      {/* Editorial halo behind H1 */}
-      <div
-        className="absolute left-1/2 top-1/2 h-[110vmin] w-[110vmin] -translate-x-1/2 -translate-y-1/2 motion-reduce:opacity-30"
-        style={{
-          background:
-            "radial-gradient(circle, color-mix(in oklab, var(--color-accent) 18%, transparent), transparent 60%)",
-          filter: "blur(80px)",
-        }}
-      />
-      {/* Sparse dot grid */}
-      <div className="absolute inset-0 bg-cyber-dots opacity-[0.25]" />
-      {/* Vignette */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 80% 70% at 50% 50%, transparent 35%, var(--color-bg-0) 100%)",
-        }}
-      />
-    </div>
-  );
-}

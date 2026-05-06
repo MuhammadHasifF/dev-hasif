@@ -106,7 +106,7 @@ function FilterChip({
       className={cn(
         "inline-flex h-8 items-center rounded-sm border px-3 font-mono text-[10px] uppercase tracking-[0.18em] transition",
         active
-          ? "text-black"
+          ? "text-white"
           : "border-[var(--color-border)] bg-[var(--color-bg-1)] text-[var(--color-text-1)] hover:text-[var(--color-text-0)]",
       )}
       style={active ? { background: color, borderColor: color } : undefined}

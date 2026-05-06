@@ -24,7 +24,7 @@ export default function ResumePage() {
         <a
           href="/resume.pdf"
           download
-          className="inline-flex h-11 items-center gap-2 rounded-sm border border-[var(--color-accent)] bg-[var(--color-accent)] px-5 font-mono text-[11px] uppercase tracking-[0.18em] text-black transition-[box-shadow,transform] hover:shadow-[0_0_24px_-4px_var(--color-accent)] active:scale-[0.98]"
+          className="inline-flex h-11 items-center gap-2 rounded-sm border border-[var(--color-accent)] bg-[var(--color-accent)] px-5 font-mono text-[11px] uppercase tracking-[0.18em] text-white transition-[box-shadow,transform] hover:shadow-[0_0_24px_-4px_var(--color-accent)] active:scale-[0.98]"
         >
           <Download className="h-4 w-4" /> Download PDF
         </a>
