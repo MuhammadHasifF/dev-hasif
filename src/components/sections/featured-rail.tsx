@@ -63,7 +63,7 @@ export function FeaturedRail() {
           <div className="shrink-0 w-[80vw] md:w-[60vw] lg:w-[44vw]">
             <Link
               href="/work"
-              className="group flex h-full min-h-[420px] flex-col items-center justify-center gap-3 rounded-3xl border border-dashed border-[var(--color-border)] bg-[var(--color-bg-1)]/50 p-12 text-center transition-colors hover:border-[var(--color-accent)] hover:bg-[var(--color-bg-1)]"
+              className="hud-panel group flex h-full min-h-[420px] flex-col items-center justify-center gap-3 p-12 text-center transition-colors hover:border-[var(--color-accent)]"
             >
               <span className="font-display text-3xl text-[var(--color-text-0)] md:text-4xl">
                 See every project
@@ -84,7 +84,7 @@ function FeaturedCard({ project: p }: { project: (typeof projects)[number] }) {
   return (
     <Link
       href={`/work/${p.slug}`}
-      className="group relative block h-full min-h-[420px] overflow-hidden rounded-3xl border border-[var(--color-border)] bg-[var(--color-bg-1)] p-8 transition-colors hover:border-[var(--color-accent)]/60"
+      className="hud-panel hud-panel-hover group relative block h-full min-h-[420px] overflow-hidden p-8 transition-colors"
     >
       <div
         aria-hidden="true"

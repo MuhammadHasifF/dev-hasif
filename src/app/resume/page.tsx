@@ -21,7 +21,7 @@ export default function ResumePage() {
         <a
           href="/resume.pdf"
           download
-          className="inline-flex h-11 items-center gap-2 rounded-full bg-[var(--color-text-0)] px-5 text-sm font-medium text-[var(--color-bg-0)] hover:opacity-90"
+          className="inline-flex h-11 items-center gap-2 rounded-sm border border-[var(--color-accent)] bg-[var(--color-accent)] px-5 font-mono text-[11px] uppercase tracking-[0.18em] text-black transition-[box-shadow,transform] hover:shadow-[0_0_24px_-4px_var(--color-accent)] active:scale-[0.98]"
         >
           <Download className="h-4 w-4" /> Download PDF
         </a>
@@ -29,12 +29,12 @@ export default function ResumePage() {
           href="/resume.pdf"
           target="_blank"
           rel="noreferrer"
-          className="inline-flex h-11 items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-1)] px-5 text-sm text-[var(--color-text-0)] hover:border-[var(--color-accent)]"
+          className="inline-flex h-11 items-center gap-2 rounded-sm border border-[var(--color-accent)]/50 bg-[color:color-mix(in_oklab,var(--color-accent)_6%,var(--color-bg-1))] px-5 font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--color-text-0)] transition-[border-color,background-color,box-shadow] hover:border-[var(--color-accent)] hover:bg-[color:color-mix(in_oklab,var(--color-accent)_14%,var(--color-bg-1))] hover:shadow-[0_0_24px_-4px_color-mix(in_oklab,var(--color-accent)_60%,transparent)]"
         >
           <FileText className="h-4 w-4" /> Open in new tab
         </a>
       </div>
-      <div className="mt-8 overflow-hidden rounded-3xl border border-[var(--color-border)] bg-[var(--color-bg-1)]">
+      <div className="mt-8 hud-panel overflow-hidden p-0">
         <object
           data="/resume.pdf"
           type="application/pdf"

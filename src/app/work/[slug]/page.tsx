@@ -42,7 +42,7 @@ export default async function CaseStudyPage({ params }: Params) {
 
       <Section>
         <aside className="grid gap-4 md:grid-cols-2">
-          <div className="tech-panel p-5">
+          <div className="hud-panel p-5">
             <div className="mb-2 font-mono text-[11px] uppercase tracking-widest text-[var(--color-text-2)]">
               Stack
             </div>
@@ -57,7 +57,7 @@ export default async function CaseStudyPage({ params }: Params) {
               ))}
             </div>
           </div>
-          <div className="tech-panel p-5">
+          <div className="hud-panel p-5">
             <div className="mb-2 font-mono text-[11px] uppercase tracking-widest text-[var(--color-text-2)]">
               Tags
             </div>
@@ -68,7 +68,7 @@ export default async function CaseStudyPage({ params }: Params) {
             </div>
           </div>
           {p.links && p.links.length > 0 && (
-            <div className="tech-panel p-5 md:col-span-2">
+            <div className="hud-panel p-5 md:col-span-2">
               <div className="mb-2 font-mono text-[11px] uppercase tracking-widest text-[var(--color-text-2)]">
                 Links
               </div>
@@ -94,7 +94,7 @@ export default async function CaseStudyPage({ params }: Params) {
       <Section>
         <Link
           href={`/work/${next.slug}`}
-          className="tech-panel tech-panel-hover group flex flex-col justify-between gap-6 overflow-hidden p-8 transition-colors md:flex-row md:items-center"
+          className="hud-panel hud-panel-hover group flex flex-col justify-between gap-6 overflow-hidden p-8 transition-colors md:flex-row md:items-center"
         >
           <div>
             <div className="font-mono text-[11px] uppercase tracking-widest text-[var(--color-text-2)]">
@@ -105,7 +105,7 @@ export default async function CaseStudyPage({ params }: Params) {
             </div>
             <div className="mt-1 text-sm text-[var(--color-text-1)]">{next.tagline}</div>
           </div>
-          <div className="inline-flex h-12 items-center gap-2 rounded-full bg-[var(--color-text-0)] px-6 text-sm font-medium text-[var(--color-bg-0)] transition group-hover:gap-3">
+          <div className="inline-flex h-12 items-center gap-2 rounded-sm border border-[var(--color-accent)] bg-[var(--color-accent)] px-6 font-mono text-[11px] uppercase tracking-[0.18em] text-black transition-[box-shadow,gap] group-hover:gap-3 group-hover:shadow-[0_0_24px_-4px_var(--color-accent)]">
             Read <ArrowRight className="h-4 w-4" />
           </div>
         </Link>

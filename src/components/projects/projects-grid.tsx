@@ -123,7 +123,7 @@ function SpotlightCardLink({
       ref={ref}
       href={href}
       onMouseMove={onMove}
-      className="tech-panel tech-panel-hover group relative flex h-full flex-col justify-between overflow-hidden p-5 transition-colors"
+      className="hud-panel hud-panel-hover group relative flex h-full flex-col justify-between overflow-hidden p-5 transition-colors"
       style={{ ["--mx" as string]: "50%", ["--my" as string]: "50%" } as React.CSSProperties}
     >
       <div

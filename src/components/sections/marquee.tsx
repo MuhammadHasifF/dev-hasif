@@ -20,10 +20,12 @@ export function Marquee() {
   return (
     <section
       aria-label="Organizations I've worked with"
-      className="relative border-y border-[var(--color-border)] bg-[var(--color-bg-1)]/40 py-10"
+      className="relative border-y border-[var(--color-border)] bg-[color:color-mix(in_oklab,var(--color-bg-1)_50%,transparent)] py-10"
     >
-      <div className="mb-4 px-4 text-center font-mono text-[10px] uppercase tracking-[0.3em] text-[var(--color-text-2)] sm:px-6">
-        Where the work has landed
+      <div className="mb-4 flex items-center justify-center gap-3 px-4 font-mono text-[10px] uppercase tracking-[0.3em] text-[var(--color-text-2)] sm:px-6">
+        <span className="h-px w-8 bg-[var(--color-accent)]/60" />
+        <span>{"// network · partners"}</span>
+        <span className="h-px w-8 bg-[var(--color-accent)]/60" />
       </div>
       <div className="mask-fade-x overflow-hidden">
         <div className="flex min-w-max gap-12 animate-[var(--animate-marquee)] hover:[animation-play-state:paused]">

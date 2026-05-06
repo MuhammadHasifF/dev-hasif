@@ -19,7 +19,7 @@ export function CertificationsAwards() {
           <div className="mb-4 font-mono text-xs uppercase tracking-widest text-[var(--color-text-2)]">
             Certifications
           </div>
-          <ol className="tech-panel divide-y divide-[var(--color-border)] overflow-hidden">
+          <ol className="hud-panel divide-y divide-[var(--color-border)] overflow-hidden">
             {certifications.map((c, i) => (
               <li key={c.title + i} className="flex items-center gap-4 px-4 py-4">
                 <OrgLogo orgKey={c.orgKey} size="md" />

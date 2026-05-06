@@ -25,9 +25,10 @@ export function Section({
       {(eyebrow || title || intro) && (
         <header className="mb-12 flex flex-col gap-4 md:mb-16">
           {eyebrow && (
-            <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-text-2)]">
-              <span className="h-px w-8 bg-[var(--color-border)]" />
-              {eyebrow}
+            <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-text-2)]">
+              <span aria-hidden="true" className="inline-block h-2 w-2 rotate-45 border border-[var(--color-accent)]" />
+              <span className="h-px w-8 bg-[var(--color-accent)]/60" />
+              <span className="text-[var(--color-accent)]">{eyebrow}</span>
             </div>
           )}
           {title && (

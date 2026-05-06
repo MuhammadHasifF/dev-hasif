@@ -22,13 +22,13 @@ export function Footer() {
           <div className="mt-6 flex flex-wrap gap-2">
             <Link
               href="/contact"
-              className="inline-flex h-10 items-center gap-2 rounded-full bg-[var(--color-text-0)] px-4 text-sm font-medium text-[var(--color-bg-0)] transition hover:opacity-90"
+              className="inline-flex h-10 items-center gap-2 rounded-sm border border-[var(--color-accent)] bg-[var(--color-accent)] px-4 font-mono text-[11px] uppercase tracking-[0.18em] text-black transition-[box-shadow,transform] hover:shadow-[0_0_24px_-4px_var(--color-accent)] active:scale-[0.98]"
             >
-              <Mail className="h-4 w-4" /> Get in touch
+              <Mail className="h-4 w-4" /> Open channel
             </Link>
             <Link
               href="/resume"
-              className="inline-flex h-10 items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-1)] px-4 text-sm text-[var(--color-text-0)] hover:border-[var(--color-accent)]"
+              className="inline-flex h-10 items-center gap-2 rounded-sm border border-[var(--color-accent)]/50 bg-[color:color-mix(in_oklab,var(--color-accent)_6%,var(--color-bg-1))] px-4 font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--color-text-0)] transition-[border-color,background-color,box-shadow] hover:border-[var(--color-accent)] hover:bg-[color:color-mix(in_oklab,var(--color-accent)_14%,var(--color-bg-1))] hover:shadow-[0_0_24px_-4px_color-mix(in_oklab,var(--color-accent)_60%,transparent)]"
             >
               <FileText className="h-4 w-4" /> Resume
             </Link>
@@ -36,7 +36,9 @@ export function Footer() {
         </div>
 
         <div>
-          <div className="mb-4 text-xs uppercase tracking-widest text-[var(--color-text-2)]">Sitemap</div>
+          <div className="mb-4 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-text-2)]">
+            <span className="h-px w-6 bg-[var(--color-accent)]/60" /> Sitemap
+          </div>
           <ul className="space-y-2 text-sm">
             {siteConfig.nav.map((i) => (
               <li key={i.href}>
@@ -52,7 +54,9 @@ export function Footer() {
         </div>
 
         <div>
-          <div className="mb-4 text-xs uppercase tracking-widest text-[var(--color-text-2)]">Elsewhere</div>
+          <div className="mb-4 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-text-2)]">
+            <span className="h-px w-6 bg-[var(--color-accent)]/60" /> Elsewhere
+          </div>
           <ul className="space-y-2 text-sm">
             <li>
               <a href={siteConfig.links.github} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-[var(--color-text-1)] transition hover:text-[var(--color-text-0)]">
@@ -79,16 +83,13 @@ export function Footer() {
       </div>
 
       <div className="border-t border-[var(--color-border)]">
-        <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-4 px-4 py-6 text-xs text-[var(--color-text-2)] sm:flex-row sm:items-center sm:px-6">
+        <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-4 px-4 py-6 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-text-2)] sm:flex-row sm:items-center sm:px-6">
           <div>
-            © {new Date().getFullYear()} {siteConfig.fullName}. Built with Next.js &amp; too much caffeine.
+            <span className="text-[var(--color-accent)]">©</span> {new Date().getFullYear()} {siteConfig.fullName} · NODE_ACTIVE
           </div>
           <div className="flex items-center gap-4">
-            <time
-              dateTime={buildTime}
-              className="font-mono"
-              title="Last deploy"
-            >
+            <time dateTime={buildTime} title="Last deploy" className="flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-accent)] shadow-[0_0_6px_var(--color-accent)]" />
               deploy · {buildTime.slice(0, 10)}
             </time>
             <SettingsMenu />

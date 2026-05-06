@@ -38,19 +38,19 @@ export function CaseHero({ project: p }: { project: Project }) {
       <motion.div
         aria-hidden="true"
         style={reduce ? undefined : { scale: bgScale, y: bgY }}
-        className={`absolute inset-0 bg-gradient-to-br opacity-30 ${p.hue ?? "from-[var(--color-accent)] to-[var(--color-accent-2)]"}`}
-      />
-      <div
-        aria-hidden="true"
         className="absolute inset-0"
-        style={{
-          maskImage: "radial-gradient(ellipse at top, black, transparent 70%)",
-          WebkitMaskImage: "radial-gradient(ellipse at top, black, transparent 70%)",
-        }}
-      />
+      >
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(60% 50% at 50% 0%, color-mix(in oklab, var(--color-accent) 18%, transparent), transparent 70%)",
+          }}
+        />
+      </motion.div>
       <div
         aria-hidden="true"
-        className="absolute inset-0 opacity-[0.06]"
+        className="absolute inset-0 opacity-[0.08]"
         style={{
           backgroundImage:
             "linear-gradient(to right, var(--color-text-2) 1px, transparent 1px), linear-gradient(to bottom, var(--color-text-2) 1px, transparent 1px)",
@@ -58,6 +58,10 @@ export function CaseHero({ project: p }: { project: Project }) {
           maskImage: "linear-gradient(to bottom, black, transparent 80%)",
           WebkitMaskImage: "linear-gradient(to bottom, black, transparent 80%)",
         }}
+      />
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/60 to-transparent"
       />
 
       <motion.div

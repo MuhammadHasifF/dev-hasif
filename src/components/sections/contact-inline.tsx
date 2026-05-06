@@ -53,15 +53,14 @@ export function ContactInline() {
     <Section
       id="contact"
       eyebrow="Contact"
-      title={<>Start a conversation.</>}
-      intro="Drop a note and I'll reply from my actual inbox — typically within a few days."
+      title={<>Open a channel.</>}
+      intro="Drop a packet — I'll respond from my actual inbox, usually within a few days."
     >
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="grid gap-4 rounded-3xl border border-[var(--color-border)] bg-[var(--color-bg-1)] p-6 md:grid-cols-2 md:p-8"
+        className="hud-panel grid gap-4 p-6 md:grid-cols-2 md:p-8"
         aria-live="polite"
       >
-        {/* Honeypot */}
         <input
           type="text"
           tabIndex={-1}
@@ -77,7 +76,7 @@ export function ContactInline() {
         <Field id="email" label="Email" error={errors.email?.message}>
           <input id="email" type="email" autoComplete="email" {...register("email")} className={inputCls(!!errors.email)} />
         </Field>
-        <Field id="company" label="Company (optional)" error={errors.company?.message}>
+        <Field id="company" label="Org (optional)" error={errors.company?.message}>
           <input id="company" autoComplete="organization" {...register("company")} className={inputCls(!!errors.company)} />
         </Field>
         <div className="md:col-span-2">
@@ -87,9 +86,9 @@ export function ContactInline() {
         </div>
 
         <div className="md:col-span-2 flex flex-wrap items-center justify-between gap-3">
-          <div className="text-xs text-[var(--color-text-2)]">
-            Or email directly at{" "}
-            <a href="mailto:muhammad.hasif.faisal@gmail.com" className="underline underline-offset-4">
+          <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-text-2)]">
+            <span className="text-[var(--color-accent)]">›</span> direct{" "}
+            <a href="mailto:muhammad.hasif.faisal@gmail.com" className="text-[var(--color-text-1)] underline-offset-4 hover:text-[var(--color-accent)] hover:underline">
               muhammad.hasif.faisal@gmail.com
             </a>
           </div>
@@ -97,28 +96,28 @@ export function ContactInline() {
             type="submit"
             disabled={status === "loading"}
             className={cn(
-              "group inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm font-medium transition",
+              "group inline-flex h-10 items-center gap-2 rounded-sm border px-5 font-mono text-[11px] uppercase tracking-[0.18em] transition-[transform,background-color,border-color,color,box-shadow] duration-300 ease-[var(--ease-apple)] active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50",
               status === "success"
-                ? "bg-[var(--color-success)] text-white"
-                : "bg-[var(--color-text-0)] text-[var(--color-bg-0)] hover:opacity-90"
+                ? "border-[var(--color-success)] bg-[var(--color-success)] text-black"
+                : "border-[var(--color-accent)] bg-[var(--color-accent)] text-black hover:shadow-[0_0_24px_-4px_var(--color-accent)]"
             )}
           >
             {status === "loading" && <Loader2 className="h-4 w-4 animate-spin" />}
             {status === "success" && <Check className="h-4 w-4" />}
             {(status === "idle" || status === "error") && <Send className="h-4 w-4" />}
             {status === "loading"
-              ? "Sending..."
+              ? "Transmitting..."
               : status === "success"
-              ? "Sent — I'll reply soon"
-              : "Send message"}
+              ? "Sent · standby"
+              : "Transmit"}
           </button>
         </div>
         {status === "error" && error && (
           <div
             role="alert"
-            className="md:col-span-2 rounded-lg border border-[var(--color-warning)]/40 bg-[color:color-mix(in_oklab,var(--color-warning)_10%,transparent)] px-3 py-2 text-sm text-[var(--color-warning)]"
+            className="md:col-span-2 border border-[var(--color-warning)]/40 bg-[color:color-mix(in_oklab,var(--color-warning)_10%,transparent)] px-3 py-2 font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--color-warning)]"
           >
-            {error}
+            ! {error}
           </div>
         )}
       </form>
@@ -139,18 +138,22 @@ function Field({
 }) {
   return (
     <label htmlFor={id} className="flex flex-col gap-1.5">
-      <span className="font-mono text-[11px] uppercase tracking-widest text-[var(--color-text-2)]">
-        {label}
+      <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-text-2)]">
+        <span className="text-[var(--color-accent)]">›</span> {label}
       </span>
       {children}
-      {error && <span className="text-xs text-[var(--color-warning)]">{error}</span>}
+      {error && (
+        <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-warning)]">
+          ! {error}
+        </span>
+      )}
     </label>
   );
 }
 
 function inputCls(hasError: boolean) {
   return cn(
-    "w-full rounded-lg border bg-[var(--color-bg-2)] px-3 py-2.5 text-sm text-[var(--color-text-0)] placeholder:text-[var(--color-text-2)] outline-none transition focus:border-[var(--color-accent)]",
+    "w-full rounded-sm border bg-[var(--color-bg-2)] px-3 py-2.5 text-sm text-[var(--color-text-0)] placeholder:text-[var(--color-text-2)] outline-none transition-[border-color,box-shadow] focus:border-[var(--color-accent)] focus:shadow-[0_0_0_1px_var(--color-accent),0_0_16px_-4px_var(--color-accent)]",
     hasError ? "border-[var(--color-warning)]" : "border-[var(--color-border)]"
   );
 }

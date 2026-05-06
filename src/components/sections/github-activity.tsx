@@ -31,7 +31,7 @@ export async function GitHubActivity() {
           <div className="mb-4 flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[var(--color-text-2)]">
             <GitCommit className="h-3 w-3" /> Recent commits
           </div>
-          <ol className="tech-panel divide-y divide-[var(--color-border)] overflow-hidden">
+          <ol className="hud-panel divide-y divide-[var(--color-border)] overflow-hidden">
             {commits.length === 0 && (
               <li className="px-4 py-6 text-sm text-[var(--color-text-1)]">
                 No public push events in the last window.

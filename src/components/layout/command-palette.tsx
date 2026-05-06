@@ -2,7 +2,6 @@
 
 import { Command } from "cmdk";
 import { useRouter } from "next/navigation";
-import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import {
   ArrowUpRight,
@@ -14,9 +13,7 @@ import {
   Info,
   Linkedin,
   Mail,
-  Moon,
   Rocket,
-  Sun,
   Terminal,
   Wrench,
 } from "lucide-react";
@@ -26,7 +23,6 @@ import { projects } from "@/content/projects";
 export function CommandPalette() {
   const [open, setOpen] = useState(false);
   const router = useRouter();
-  const { setTheme, resolvedTheme } = useTheme();
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -65,15 +61,16 @@ export function CommandPalette() {
       className="fixed inset-0 z-[90] flex items-start justify-center pt-[15vh]"
     >
       <div
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm"
+        className="fixed inset-0 bg-black/70 backdrop-blur-sm"
         onClick={() => setOpen(false)}
       />
-      <div className="relative w-[min(92vw,640px)] overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-1)] shadow-2xl">
+      <div className="hud-panel relative w-[min(92vw,640px)] overflow-hidden p-0 shadow-[0_0_60px_-10px_color-mix(in_oklab,var(--color-accent)_50%,transparent)]">
         <div className="flex items-center gap-2 border-b border-[var(--color-border)] px-4">
-          <Terminal className="h-4 w-4 text-[var(--color-text-2)]" />
+          <Terminal className="h-4 w-4 text-[var(--color-accent)]" />
+          <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-text-2)]">›</span>
           <Command.Input
-            placeholder="Type to search · navigate · copy..."
-            className="h-12 w-full bg-transparent text-sm text-[var(--color-text-0)] placeholder:text-[var(--color-text-2)] focus:outline-none"
+            placeholder="search · navigate · copy"
+            className="h-12 w-full bg-transparent font-mono text-sm text-[var(--color-text-0)] placeholder:text-[var(--color-text-2)] focus:outline-none"
           />
         </div>
         <Command.List className="max-h-[50vh] overflow-auto p-2">
@@ -103,14 +100,6 @@ export function CommandPalette() {
           </Command.Group>
 
           <Command.Group heading="Actions" className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:pb-1 [&_[cmdk-group-heading]]:pt-2 [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-widest [&_[cmdk-group-heading]]:text-[var(--color-text-2)]">
-            <Item
-              icon={resolvedTheme === "dark" ? <Sun /> : <Moon />}
-              label={`Switch to ${resolvedTheme === "dark" ? "light" : "dark"} mode`}
-              onSelect={() => {
-                setTheme(resolvedTheme === "dark" ? "light" : "dark");
-                setOpen(false);
-              }}
-            />
             <Item icon={<Copy />} label="Copy email" hint={siteConfig.email} onSelect={copyEmail} />
             <Item
               icon={<Download />}
@@ -163,13 +152,13 @@ function Item({
   return (
     <Command.Item
       onSelect={onSelect}
-      className="flex cursor-pointer items-center gap-3 rounded-md px-3 py-2.5 text-sm text-[var(--color-text-0)] aria-selected:bg-[var(--color-bg-2)] data-[selected=true]:bg-[var(--color-bg-2)]"
+      className="flex cursor-pointer items-center gap-3 rounded-sm px-3 py-2.5 text-sm text-[var(--color-text-0)] aria-selected:bg-[color:color-mix(in_oklab,var(--color-accent)_10%,var(--color-bg-2))] aria-selected:shadow-[inset_2px_0_0_var(--color-accent)] data-[selected=true]:bg-[color:color-mix(in_oklab,var(--color-accent)_10%,var(--color-bg-2))] data-[selected=true]:shadow-[inset_2px_0_0_var(--color-accent)]"
     >
-      <span className="flex h-6 w-6 items-center justify-center text-[var(--color-text-1)] [&>svg]:h-3.5 [&>svg]:w-3.5">
+      <span className="flex h-6 w-6 items-center justify-center text-[var(--color-accent)] [&>svg]:h-3.5 [&>svg]:w-3.5">
         {icon}
       </span>
       <span className="flex-1">{label}</span>
-      {hint && <span className="font-mono text-[10px] text-[var(--color-text-2)]">{hint}</span>}
+      {hint && <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-text-2)]">{hint}</span>}
     </Command.Item>
   );
 }
