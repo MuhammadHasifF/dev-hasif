@@ -294,9 +294,13 @@
   }
 
   /* ── Masked-line text reveal (CSS-only, JS adds .in-view) ── */
+  /* padding-bottom + negative margin gives descenders (y, p, g) clearance
+     inside the overflow:hidden mask without affecting layout flow. */
   .reveal-line {
     overflow: hidden;
     display: block;
+    padding-bottom: 0.22em;
+    margin-bottom: -0.22em;
   }
   .reveal-line > span {
     display: inline-block;

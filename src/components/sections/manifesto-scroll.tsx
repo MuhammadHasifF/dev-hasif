@@ -50,7 +50,9 @@ export function ManifestoScroll() {
           <h2 className="font-display whitespace-nowrap text-[clamp(120px,22vw,360px)] font-medium leading-[0.85] tracking-[-0.05em] text-transparent">
             <span
               style={{
-                WebkitTextStroke: "1px color-mix(in oklab, var(--color-text-0) 22%, transparent)",
+                WebkitTextStroke: "1px color-mix(in oklab, var(--color-text-0) 55%, transparent)",
+                filter:
+                  "drop-shadow(0 0 24px color-mix(in oklab, var(--color-text-0) 35%, transparent)) drop-shadow(0 0 60px color-mix(in oklab, var(--color-text-0) 18%, transparent))",
               }}
             >
               BUILT FOR THE FIELD
@@ -67,7 +69,9 @@ export function ManifestoScroll() {
             <span
               className="ml-12"
               style={{
-                WebkitTextStroke: "1px color-mix(in oklab, var(--color-accent) 60%, transparent)",
+                WebkitTextStroke: "1px color-mix(in oklab, var(--color-text-0) 45%, transparent)",
+                filter:
+                  "drop-shadow(0 0 18px color-mix(in oklab, var(--color-text-0) 25%, transparent))",
               }}
             >
               TUNED FOR SCALE
