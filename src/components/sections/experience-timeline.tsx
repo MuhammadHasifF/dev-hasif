@@ -59,15 +59,9 @@ export function ExperienceTimeline() {
             return (
               <li
                 key={id}
-                className={cn(
-                  "relative grid grid-cols-[44px_1fr] items-start gap-4 md:grid-cols-[1fr_44px_1fr] md:gap-10",
-                  !isLeft && "md:[&>div:first-child]:order-3"
-                )}
+                className="relative grid grid-cols-[44px_1fr] items-start gap-4 md:grid-cols-[1fr_44px_1fr] md:gap-10"
               >
-                <div className={cn("hidden md:block", isLeft ? "text-right" : "")}>
-                  {isLeft && <RoleCard r={r} isOpen={isOpen} onToggle={() => setOpen(isOpen ? null : id)} align="right" />}
-                </div>
-                <div className="relative z-10 flex h-10 w-10 items-center justify-center md:mx-auto">
+                <div className="relative z-10 flex h-10 w-10 items-center justify-center md:col-start-2 md:mx-auto">
                   <span className="absolute inset-0 rounded-full bg-[var(--color-bg-0)]" />
                   <motion.span
                     initial={{ scale: 0.6, opacity: 0 }}
@@ -79,12 +73,8 @@ export function ExperienceTimeline() {
                     <OrgLogo orgKey={r.orgKey} size="sm" />
                   </motion.span>
                 </div>
-                <div className={cn(isLeft ? "md:hidden" : "")}>
-                  {(!isLeft || true) && (
-                    <div className={cn("md:block", isLeft && "md:hidden")}>
-                      <RoleCard r={r} isOpen={isOpen} onToggle={() => setOpen(isOpen ? null : id)} align="left" />
-                    </div>
-                  )}
+                <div className={cn("min-w-0", isLeft ? "md:col-start-1 md:row-start-1" : "md:col-start-3 md:row-start-1")}>
+                  <RoleCard r={r} isOpen={isOpen} onToggle={() => setOpen(isOpen ? null : id)} align="left" />
                 </div>
               </li>
             );
