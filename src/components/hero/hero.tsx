@@ -5,8 +5,8 @@ import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion
 import { MapPin } from "lucide-react";
 import { siteConfig } from "@/../site.config";
 import { ArrowLink } from "@/components/primitives/arrow-link";
-import { RevealLines } from "@/components/primitives/reveal-lines";
 import { Cityscape } from "@/components/hero/cityscape";
+import { GlitchHeadline } from "@/components/hero/glitch-headline";
 
 export function Hero() {
   const reduce = useReducedMotion();
@@ -41,17 +41,8 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Editorial display title — masked-line reveal */}
-        <RevealLines
-          as="h1"
-          stagger={90}
-          className="font-display text-[clamp(64px,12vw,180px)] font-medium leading-[0.88] tracking-[-0.04em] text-[var(--color-text-0)]"
-        >
-          <span className="block">MUHAMMAD</span>
-          <span className="block">
-            HASIF<span className="text-[var(--color-accent)]">.</span>
-          </span>
-        </RevealLines>
+        {/* Editorial display title — masked-line reveal + cyberpunk glitch */}
+        <GlitchHeadline />
 
         {/* Two-column tagline + meta */}
         <div className="grid gap-10 border-t border-[var(--color-border)] pt-8 md:grid-cols-12 md:gap-6">
