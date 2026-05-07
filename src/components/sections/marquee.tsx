@@ -27,15 +27,37 @@ export function Marquee() {
         <span className="text-[var(--color-text-1)]">{"/// PARTNERS & ORGS"}</span>
         <span className="flex items-center gap-2">
           <span>{orgs.length.toString().padStart(2, "0")} NODES</span>
-          <span
-            aria-hidden="true"
-            className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]"
-            style={{
-              boxShadow:
-                "0 0 8px var(--color-accent), 0 0 18px color-mix(in oklab, var(--color-accent) 70%, transparent)",
-              animation: "pulseSoft 1.6s ease-in-out infinite",
-            }}
-          />
+          <span aria-hidden="true" className="relative inline-flex h-2 w-2 items-center justify-center">
+            {/* Outer expanding shockwave ring */}
+            <span
+              className="absolute inset-0 rounded-full"
+              style={{
+                background: "var(--color-accent)",
+                animation: "var(--animate-pulse-ring)",
+              }}
+            />
+            {/* Hot bloom halo */}
+            <span
+              className="absolute -inset-1 rounded-full opacity-80"
+              style={{
+                background:
+                  "radial-gradient(circle, color-mix(in oklab, var(--color-accent) 65%, transparent) 0%, transparent 70%)",
+                animation: "var(--animate-pulse-soft)",
+                filter: "blur(1.5px)",
+              }}
+            />
+            {/* Bright core */}
+            <span
+              className="relative h-1.5 w-1.5 rounded-full"
+              style={{
+                background:
+                  "radial-gradient(circle, #ffffff 0%, var(--color-accent) 55%, var(--color-accent-2) 100%)",
+                boxShadow:
+                  "0 0 6px var(--color-accent), 0 0 14px color-mix(in oklab, var(--color-accent) 80%, transparent), 0 0 28px color-mix(in oklab, var(--color-accent) 50%, transparent)",
+                animation: "var(--animate-flicker)",
+              }}
+            />
+          </span>
         </span>
       </div>
 

@@ -27,6 +27,10 @@ export function ManifestoScroll() {
   const wordOpacity = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [0, 1, 1, 0]);
   const orbit = useTransform(scrollYProgress, [0, 1], [0, 360]);
 
+  // Section-scoped hue shift: 0deg → -32deg into deep crimson as user scrolls through.
+  const hue = useTransform(scrollYProgress, [0, 1], [0, -32]);
+  const tintOpacity = useTransform(scrollYProgress, [0, 0.25, 0.7, 1], [0, 0.35, 0.55, 0.7]);
+
   return (
     <section
       ref={ref}
@@ -34,6 +38,38 @@ export function ManifestoScroll() {
       className="relative h-[260vh] w-full overflow-clip bg-[var(--color-bg-0)]"
     >
       <div className="sticky top-0 flex h-screen w-full items-center justify-center overflow-hidden">
+        {/* Section-scoped scroll-driven hue tint — magnitude.be color-shift, scoped here only */}
+        <motion.div
+          aria-hidden="true"
+          style={
+            reduce
+              ? undefined
+              : {
+                  opacity: tintOpacity,
+                  ["--mfst-hue" as string]: hue,
+                }
+          }
+          className="pointer-events-none absolute inset-0 z-0"
+        >
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(120% 80% at 50% 100%, color-mix(in oklab, var(--color-accent) 38%, transparent) 0%, transparent 70%)",
+              filter: "hue-rotate(calc(var(--mfst-hue, 0) * 1deg)) blur(8px)",
+              mixBlendMode: "screen",
+            }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(to bottom, transparent 0%, color-mix(in oklab, var(--color-accent) 14%, transparent) 60%, color-mix(in oklab, var(--color-accent) 22%, transparent) 100%)",
+              mixBlendMode: "overlay",
+              filter: "hue-rotate(calc(var(--mfst-hue, 0) * 1deg))",
+            }}
+          />
+        </motion.div>
         {/* Panorama rising from bottom (magnitude.be move) */}
         <motion.div
           style={reduce ? undefined : { y: panoramaY, scale: panoramaScale }}
