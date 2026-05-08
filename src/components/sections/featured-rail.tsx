@@ -25,6 +25,16 @@ export function FeaturedRail() {
 
   const x = useTransform(scrollYProgress, [0, 1], ["0%", "-78%"]);
 
+  // Smooth global color sweep — single hue rotates as the rail slides right-to-left.
+  const sweepHue = useTransform(scrollYProgress, [0, 1], [0, -54]);
+  const sweepX = useTransform(scrollYProgress, [0, 1], ["10%", "90%"]);
+  const sweepFilter = useTransform(sweepHue, (h) => `hue-rotate(${h}deg)`);
+  const sweepBg = useTransform(
+    sweepX,
+    (x) =>
+      `radial-gradient(60% 90% at ${x} 50%, color-mix(in oklab, var(--color-accent) 30%, transparent) 0%, color-mix(in oklab, var(--color-accent) 10%, transparent) 35%, transparent 65%)`,
+  );
+
   if (reduce) {
     return (
       <Section
@@ -52,6 +62,21 @@ export function FeaturedRail() {
       className="relative h-[400vh]"
     >
       <div className="sticky top-0 flex h-screen flex-col justify-center overflow-hidden">
+        {/* Smooth global color sweep behind the rail */}
+        <motion.div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-10"
+          style={{ background: sweepBg, filter: sweepFilter }}
+        />
+        <motion.div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-10 mix-blend-screen opacity-40"
+          style={{
+            background:
+              "linear-gradient(90deg, transparent 0%, color-mix(in oklab, var(--color-accent) 18%, transparent) 50%, transparent 100%)",
+            filter: sweepFilter,
+          }}
+        />
         <div className="mx-auto mb-6 flex w-full max-w-6xl items-end justify-between px-4 sm:px-6">
           <div>
             <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-text-2)]">
@@ -106,17 +131,13 @@ function FeaturedCardMotion({
 }) {
   const slot = index / Math.max(1, total - 1);
 
-  const hueDeg = useTransform(progress, (v) => (v - slot) * 56);
-  const stripeShift = useTransform(progress, (v) => `${v * 320}px`);
-  const stripeOpacity = useTransform(progress, (v) => {
-    const dist = Math.abs(v - slot);
-    return 0.22 + Math.max(0, 0.38 - dist * 0.55);
-  });
-  const accentTint = useTransform(progress, (v) => {
-    const dist = Math.abs(v - slot);
-    return 0.06 + Math.max(0, 0.28 - dist * 0.45);
-  });
+  // Ambient hue tracking the global sweep + a tighter spotlight peaking at this slot.
+  const hueDeg = useTransform(progress, (v) => (v - 0.5) * 60);
   const filter = useTransform(hueDeg, (h) => `hue-rotate(${h}deg)`);
+  const peakOpacity = useTransform(progress, (v) => {
+    const dist = Math.abs(v - slot);
+    return Math.max(0, 0.5 - dist * 1.4);
+  });
 
   return (
     <Link
@@ -128,26 +149,27 @@ function FeaturedCardMotion({
         className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full opacity-0 blur-3xl transition-opacity duration-700 group-hover:opacity-40"
         style={{ background: "var(--color-accent)" }}
       />
-      <motion.div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
-        style={{
-          backgroundImage:
-            "repeating-linear-gradient(115deg, transparent 0 22px, color-mix(in oklab, var(--color-accent) 22%, transparent) 22px 24px, transparent 24px 56px, color-mix(in oklab, var(--color-accent) 10%, transparent) 56px 57px)",
-          backgroundPositionX: stripeShift,
-          opacity: stripeOpacity,
-          filter,
-          mixBlendMode: "screen",
-        }}
-      />
+      {/* Ambient accent wash that soaks up the section-wide color sweep */}
       <motion.div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(140% 90% at 100% 0%, color-mix(in oklab, var(--color-accent) 38%, transparent), transparent 65%)",
-          opacity: accentTint,
+            "radial-gradient(120% 90% at 0% 100%, color-mix(in oklab, var(--color-accent) 26%, transparent), transparent 60%)",
           filter,
+          opacity: 0.55,
+        }}
+      />
+      {/* Spotlight that peaks when this card is centered */}
+      <motion.div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(60% 60% at 50% 50%, color-mix(in oklab, var(--color-accent) 36%, transparent), transparent 70%)",
+          filter,
+          opacity: peakOpacity,
+          mixBlendMode: "screen",
         }}
       />
       <div className="absolute inset-0 bg-noise opacity-[0.04] mix-blend-overlay" />

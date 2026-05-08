@@ -21,15 +21,21 @@ export function ManifestoScroll() {
     offset: ["start end", "end start"],
   });
 
-  const panoramaY = useTransform(scrollYProgress, [0, 0.5, 1], ["100%", "0%", "-30%"]);
-  const panoramaScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.15, 1, 1.05]);
+  // Pin the panorama in view longer so the burn-finale has something to silhouette.
+  const panoramaY = useTransform(scrollYProgress, [0, 0.4, 0.92, 1], ["100%", "0%", "0%", "-12%"]);
+  const panoramaScale = useTransform(scrollYProgress, [0, 0.4, 1], [1.15, 1, 1.08]);
   const wordX = useTransform(scrollYProgress, [0, 1], ["20%", "-60%"]);
-  const wordOpacity = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [0, 1, 1, 0]);
+  const wordOpacity = useTransform(scrollYProgress, [0, 0.15, 0.92, 1], [0, 1, 1, 0]);
   const orbit = useTransform(scrollYProgress, [0, 1], [0, 360]);
 
-  // Section-scoped hue shift: 0deg → -32deg into deep crimson as user scrolls through.
-  const hue = useTransform(scrollYProgress, [0, 1], [0, -32]);
-  const tintOpacity = useTransform(scrollYProgress, [0, 0.25, 0.7, 1], [0, 0.35, 0.55, 0.7]);
+  // Phase 1: subtle scroll-driven hue tint (entry → mid).
+  const tintOpacity = useTransform(scrollYProgress, [0, 0.25, 0.55, 0.65], [0, 0.32, 0.42, 0]);
+
+  // Phase 2: BURN — bright red bg ramps in, content darkens to silhouettes.
+  const burn = useTransform(scrollYProgress, [0.55, 0.95], [0, 1]);
+  const burnBgOpacity = useTransform(burn, (b) => b * 0.96);
+  const contentFilter = useTransform(burn, (b) => `brightness(${(1 - b * 0.94).toFixed(3)}) saturate(${(1 + b * 0.6).toFixed(3)})`);
+  const wordsFilter = useTransform(burn, (b) => `brightness(${(1 - b * 0.96).toFixed(3)})`);
 
   return (
     <section
@@ -38,50 +44,76 @@ export function ManifestoScroll() {
       className="relative h-[260vh] w-full overflow-clip bg-[var(--color-bg-0)]"
     >
       <div className="sticky top-0 flex h-screen w-full items-center justify-center overflow-hidden">
-        {/* Section-scoped scroll-driven hue tint — magnitude.be color-shift, scoped here only */}
+        {/* Phase 1: subtle scroll-driven crimson tint */}
         <motion.div
           aria-hidden="true"
-          style={
-            reduce
-              ? undefined
-              : {
-                  opacity: tintOpacity,
-                  ["--mfst-hue" as string]: hue,
-                }
-          }
+          style={reduce ? undefined : { opacity: tintOpacity }}
           className="pointer-events-none absolute inset-0 z-0"
         >
           <div
             className="absolute inset-0"
             style={{
               background:
-                "radial-gradient(120% 80% at 50% 100%, color-mix(in oklab, var(--color-accent) 38%, transparent) 0%, transparent 70%)",
-              filter: "hue-rotate(calc(var(--mfst-hue, 0) * 1deg)) blur(8px)",
+                "radial-gradient(120% 80% at 50% 100%, color-mix(in oklab, var(--color-accent) 32%, transparent) 0%, transparent 70%)",
               mixBlendMode: "screen",
+              filter: "blur(8px)",
             }}
           />
+        </motion.div>
+
+        {/* Phase 2: BURN — bright red bg, lit from below, ramps in over the tail */}
+        <motion.div
+          aria-hidden="true"
+          style={reduce ? undefined : { opacity: burnBgOpacity }}
+          className="pointer-events-none absolute inset-0 z-[5]"
+        >
           <div
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(to bottom, transparent 0%, color-mix(in oklab, var(--color-accent) 14%, transparent) 60%, color-mix(in oklab, var(--color-accent) 22%, transparent) 100%)",
-              mixBlendMode: "overlay",
-              filter: "hue-rotate(calc(var(--mfst-hue, 0) * 1deg))",
+                "radial-gradient(120% 100% at 50% 70%, #ff1830 0%, #d6112a 40%, #8a0a1c 80%, #2a0309 100%)",
+            }}
+          />
+          {/* hot core bloom */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(45% 55% at 50% 65%, rgba(255,90,110,0.7) 0%, rgba(255,30,60,0.35) 45%, transparent 75%)",
+              filter: "blur(40px)",
+              mixBlendMode: "screen",
+            }}
+          />
+          {/* fine scanlines on the burn for cyber texture */}
+          <div
+            className="absolute inset-0 mix-blend-overlay opacity-50"
+            style={{
+              backgroundImage:
+                "repeating-linear-gradient(to bottom, transparent 0 2px, rgba(0,0,0,0.18) 2px 3px)",
             }}
           />
         </motion.div>
-        {/* Panorama rising from bottom (magnitude.be move) */}
+
+        {/* Panorama rising from bottom (magnitude.be move) — darkens to silhouette during burn */}
         <motion.div
-          style={reduce ? undefined : { y: panoramaY, scale: panoramaScale }}
-          className="absolute inset-0 will-change-transform"
+          style={
+            reduce
+              ? undefined
+              : { y: panoramaY, scale: panoramaScale, filter: contentFilter }
+          }
+          className="absolute inset-0 z-[6] will-change-transform"
         >
           <Panorama />
         </motion.div>
 
-        {/* Giant horizontal word (foe.design move) */}
+        {/* Giant horizontal word (foe.design move) — darkens to black during burn */}
         <motion.div
-          style={reduce ? undefined : { x: wordX, opacity: wordOpacity }}
-          className="pointer-events-none absolute inset-x-0 top-[18%] flex w-[280%] items-center will-change-transform"
+          style={
+            reduce
+              ? undefined
+              : { x: wordX, opacity: wordOpacity, filter: wordsFilter }
+          }
+          className="pointer-events-none absolute inset-x-0 top-[18%] z-[7] flex w-[280%] items-center will-change-transform"
         >
           <h2 className="font-display whitespace-nowrap text-[clamp(120px,22vw,360px)] font-medium leading-[0.85] tracking-[-0.05em] text-transparent">
             <span
@@ -115,18 +147,21 @@ export function ManifestoScroll() {
           </h2>
         </motion.div>
 
-        {/* Bottom HUD index */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-8 z-20 flex items-center justify-between px-4 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-text-2)] sm:px-8">
+        {/* Bottom HUD index — also darkens during the burn */}
+        <motion.div
+          style={reduce ? undefined : { filter: wordsFilter }}
+          className="pointer-events-none absolute inset-x-0 bottom-8 z-20 flex items-center justify-between px-4 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-text-2)] sm:px-8"
+        >
           <span>
             <span className="text-[var(--color-accent)]">›</span> SECTOR 00 · MANIFEST
           </span>
           <span className="hidden md:inline">RED CHANNEL · NIGHT FEED</span>
           <span>{"// keep scrolling"}</span>
-        </div>
+        </motion.div>
 
-        {/* Orbiting object (q-industrial move) */}
+        {/* Orbiting object (q-industrial move) — darkens to silhouette during burn */}
         <motion.div
-          style={reduce ? undefined : { rotate: orbit }}
+          style={reduce ? undefined : { rotate: orbit, filter: contentFilter }}
           className="pointer-events-none absolute right-6 top-1/2 z-20 h-40 w-40 -translate-y-1/2 will-change-transform sm:right-12 md:h-56 md:w-56"
         >
           <OrbitRing />
