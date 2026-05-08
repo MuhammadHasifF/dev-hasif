@@ -83,8 +83,7 @@ export function GlitchHeadline({ className }: { className?: string }) {
         if (i >= beats) {
           setBurst(ZERO_BURST);
           setPhase("idle");
-          // schedule next
-          const wait = 2400 + Math.random() * 4200;
+          const wait = 1200 + Math.random() * 2100;
           timeouts.push(setTimeout(trigger, wait));
           return;
         }
@@ -108,7 +107,7 @@ export function GlitchHeadline({ className }: { className?: string }) {
       runBeats(0);
     };
 
-    timeouts.push(setTimeout(trigger, 1800));
+    timeouts.push(setTimeout(trigger, 900));
     return () => {
       cancelled = true;
       timeouts.forEach(clearTimeout);
