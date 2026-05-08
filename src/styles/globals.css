@@ -85,6 +85,31 @@
     95% { opacity: 0.85; }
     96% { opacity: 1; }
   }
+  @keyframes glitchShiftA {
+    0%, 100% { transform: translate(-3px, 0); clip-path: inset(0 0 0 0); }
+    20%      { transform: translate(-5px, 1px); clip-path: inset(8% 0 62% 0); }
+    40%      { transform: translate(-2px, -1px); clip-path: inset(45% 0 28% 0); }
+    60%      { transform: translate(-6px, 0); clip-path: inset(70% 0 8% 0); }
+    80%      { transform: translate(-1px, 1px); clip-path: inset(0 0 0 0); }
+  }
+  @keyframes glitchShiftB {
+    0%, 100% { transform: translate(3px, 0); clip-path: inset(0 0 0 0); }
+    25%      { transform: translate(5px, -1px); clip-path: inset(20% 0 50% 0); }
+    50%      { transform: translate(2px, 1px); clip-path: inset(60% 0 12% 0); }
+    75%      { transform: translate(6px, 0); clip-path: inset(0 0 80% 0); }
+  }
+  @keyframes glitchShiftC {
+    0%, 100% { transform: translate(0, 0); }
+    33%      { transform: translate(-2px, 1px); }
+    66%      { transform: translate(2px, -1px); }
+  }
+  @keyframes sparkFlicker {
+    0%   { opacity: 0.65; transform: translate(-30%, -55%) scaleX(0.85) scaleY(1); }
+    25%  { opacity: 1;    transform: translate(-30%, -60%) scaleX(1.05) scaleY(1.1); }
+    50%  { opacity: 0.8;  transform: translate(-30%, -50%) scaleX(0.9)  scaleY(0.95); }
+    75%  { opacity: 1;    transform: translate(-30%, -65%) scaleX(1.15) scaleY(1.05); }
+    100% { opacity: 0.7;  transform: translate(-30%, -55%) scaleX(0.95) scaleY(1); }
+  }
   @keyframes lineDraw {
     from { transform: scaleX(0); }
     to   { transform: scaleX(1); }
