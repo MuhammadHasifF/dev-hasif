@@ -41,8 +41,26 @@ export function ManifestoScroll() {
     <section
       ref={ref}
       aria-label="Manifesto scroll"
-      className="relative h-[260vh] w-full overflow-clip bg-[var(--color-bg-0)]"
+      className="relative h-[260vh] w-full overflow-clip"
     >
+      {/* Soft top fade — blends Hero into the section without a hard seam */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 z-[2] h-[28vh]"
+        style={{
+          background:
+            "linear-gradient(to bottom, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.55) 35%, transparent 100%)",
+        }}
+      />
+      {/* Soft bottom fade — blends burn-finale into whatever follows */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-[20vh]"
+        style={{
+          background:
+            "linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 100%)",
+        }}
+      />
       <div className="sticky top-0 flex h-screen w-full items-center justify-center overflow-hidden">
         {/* Phase 1: subtle scroll-driven crimson tint */}
         <motion.div
@@ -115,34 +133,20 @@ export function ManifestoScroll() {
           }
           className="pointer-events-none absolute inset-x-0 top-[18%] z-[7] flex w-[280%] items-center will-change-transform"
         >
-          <h2 className="font-display whitespace-nowrap text-[clamp(120px,22vw,360px)] font-medium leading-[0.85] tracking-[-0.05em] text-transparent">
-            <span
-              style={{
-                WebkitTextStroke: "1px color-mix(in oklab, var(--color-text-0) 55%, transparent)",
-                filter:
-                  "drop-shadow(0 0 24px color-mix(in oklab, var(--color-text-0) 35%, transparent)) drop-shadow(0 0 60px color-mix(in oklab, var(--color-text-0) 18%, transparent))",
-              }}
-            >
-              BUILT FOR THE FIELD
-            </span>
+          <h2 className="font-display whitespace-nowrap text-[clamp(120px,22vw,360px)] font-bold leading-[0.85] tracking-[-0.05em] text-[var(--color-text-0)]">
+            <GlitchManifestoWord text="BUILT FOR THE FIELD" />
             <span
               className="ml-12"
               style={{
-                color: "color-mix(in oklab, var(--color-accent) 95%, transparent)",
-                textShadow: "0 0 60px color-mix(in oklab, var(--color-accent) 60%, transparent)",
+                color: "var(--color-accent)",
+                textShadow:
+                  "0 0 40px color-mix(in oklab, var(--color-accent) 80%, transparent), 0 0 80px color-mix(in oklab, var(--color-accent) 50%, transparent)",
               }}
             >
               ·
             </span>
-            <span
-              className="ml-12"
-              style={{
-                WebkitTextStroke: "1px color-mix(in oklab, var(--color-text-0) 45%, transparent)",
-                filter:
-                  "drop-shadow(0 0 18px color-mix(in oklab, var(--color-text-0) 25%, transparent))",
-              }}
-            >
-              TUNED FOR SCALE
+            <span className="ml-12">
+              <GlitchManifestoWord text="TUNED FOR SCALE" dim />
             </span>
           </h2>
         </motion.div>
@@ -168,6 +172,67 @@ export function ManifestoScroll() {
         </motion.div>
       </div>
     </section>
+  );
+}
+
+function GlitchManifestoWord({ text, dim = false }: { text: string; dim?: boolean }) {
+  // Constant red glitch on bold white text. Two red layers jitter at different
+  // periods (steps() gives a hard switching feel), and a cyan ghost adds depth.
+  // The white text itself stays solid + readable.
+  return (
+    <span
+      className="relative inline-block align-baseline"
+      style={{
+        textShadow:
+          "0 0 24px color-mix(in oklab, var(--color-text-0) 40%, transparent), 0 0 60px color-mix(in oklab, var(--color-text-0) 20%, transparent)",
+        opacity: dim ? 0.92 : 1,
+      }}
+    >
+      {/* Red ghost — primary glitch channel */}
+      <span
+        aria-hidden="true"
+        className="absolute inset-0"
+        style={{
+          color: "var(--color-accent)",
+          mixBlendMode: "screen",
+          textShadow: "0 0 18px color-mix(in oklab, var(--color-accent) 80%, transparent)",
+          animation: "glitchShiftA 240ms steps(2, end) infinite",
+          willChange: "transform, clip-path",
+        }}
+      >
+        {text}
+      </span>
+      {/* Hot red secondary, slower jitter */}
+      <span
+        aria-hidden="true"
+        className="absolute inset-0"
+        style={{
+          color: "#ff5560",
+          mixBlendMode: "screen",
+          opacity: 0.85,
+          animation: "glitchShiftB 360ms steps(2, end) infinite",
+          willChange: "transform, clip-path",
+        }}
+      >
+        {text}
+      </span>
+      {/* Cyan ghost — chromatic aberration counterweight */}
+      <span
+        aria-hidden="true"
+        className="absolute inset-0"
+        style={{
+          color: "#00e5ff",
+          mixBlendMode: "screen",
+          opacity: 0.45,
+          animation: "glitchShiftC 520ms steps(2, end) infinite",
+          willChange: "transform",
+        }}
+      >
+        {text}
+      </span>
+      {/* Main solid white */}
+      <span className="relative">{text}</span>
+    </span>
   );
 }
 
