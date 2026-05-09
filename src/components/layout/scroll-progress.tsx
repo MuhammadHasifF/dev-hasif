@@ -42,12 +42,12 @@ export function ScrollProgress() {
 
   return (
     <>
-      {/* top progress strip — burning fire trail with spark head */}
+      {/* Top progress strip: ONE fill bar + ONE animated flame at the tip.
+          No second overlapping element — they were lagging out of sync. */}
       <div
         aria-hidden="true"
         className="pointer-events-none fixed inset-x-0 top-0 z-[70] h-[3px]"
       >
-        {/* deep ember trail */}
         <div
           className="h-full origin-left will-change-transform"
           style={{
@@ -59,22 +59,8 @@ export function ScrollProgress() {
               "0 0 6px color-mix(in oklab, var(--color-accent) 70%, transparent), 0 0 14px color-mix(in oklab, var(--color-accent) 35%, transparent)",
           }}
         />
-        {/* hot-burn band that rides just behind the head */}
-        <div
-          className="absolute top-0 h-full w-[120px] motion-reduce:hidden"
-          style={{
-            left: `${p * 100}%`,
-            transform: "translateX(-100%)",
-            background:
-              "linear-gradient(90deg, transparent 0%, color-mix(in oklab, var(--color-accent) 30%, transparent) 30%, #ff5560 70%, #ffd6c2 96%, #ffffff 100%)",
-            filter: "blur(0.4px)",
-            transition: "left 80ms linear",
-            animation: "var(--animate-flicker)",
-          }}
-        />
-        {/* Burning flame tip + sparks at the leading edge */}
         {p > 0.001 && (
-          <FlameTip progress={p} orientation="horizontal" size={20} />
+          <FlameTip progress={p} orientation="horizontal" size={22} />
         )}
       </div>
 
