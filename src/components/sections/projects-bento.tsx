@@ -8,6 +8,7 @@ import { projects, projectCategories, type ProjectCategory } from "@/content/pro
 import { Section } from "@/components/primitives/section";
 import { OrgLogo } from "@/components/primitives/org-tag";
 import { Chip } from "@/components/primitives/chip";
+import { GlitchReveal } from "@/components/primitives/glitch-reveal";
 import { cn } from "@/lib/utils";
 
 const bentoSize: Record<number, string> = {
@@ -65,43 +66,43 @@ export function ProjectsBento() {
               <motion.div
                 key={p.slug}
                 layout
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 12 }}
                 transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
-                className={cn("group", bentoSize[i % 8] ?? "md:col-span-3 md:row-span-1")}
+                className={cn(bentoSize[i % 8] ?? "md:col-span-3 md:row-span-1")}
               >
-                <BentoCardLink href={`/work/${p.slug}`}>
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex items-center gap-2">
-                      <OrgLogo orgKey={p.orgKey} size="md" />
-                      <Chip>{p.category}</Chip>
+                {/* Odd index → slide in from left, even index → from right */}
+                <GlitchReveal side={i % 2 === 0 ? "left" : "right"} className="group h-full">
+                  <BentoCardLink href={`/work/${p.slug}`}>
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex items-center gap-2">
+                        <OrgLogo orgKey={p.orgKey} size="md" />
+                        <Chip>{p.category}</Chip>
+                      </div>
+                      <span className="text-[var(--color-text-2)] transition-colors group-hover:text-[var(--color-accent)]">
+                        <DiagonalArrow />
+                      </span>
                     </div>
-                    <span className="text-[var(--color-text-2)] transition-colors group-hover:text-[var(--color-accent)]">
-                      <DiagonalArrow />
-                    </span>
-                  </div>
-                  <div className="mt-6">
-                    <h3 className="font-display text-xl leading-tight text-[var(--color-text-0)] md:text-2xl">
-                      {p.title}
-                    </h3>
-                    <p className="mt-2 line-clamp-2 text-sm text-[var(--color-text-1)]">{p.tagline}</p>
-                    <div className="mt-4 flex flex-wrap gap-1.5">
-                      {p.stack.slice(0, 4).map((s) => (
-                        <span
-                          key={s}
-                          className="rounded-md border border-[var(--color-border)] bg-[var(--color-bg-2)] px-2 py-0.5 font-mono text-[10px] text-[var(--color-text-1)]"
-                        >
-                          {s}
-                        </span>
-                      ))}
+                    <div className="mt-6">
+                      <h3 className="font-display text-xl leading-tight text-[var(--color-text-0)] md:text-2xl">
+                        {p.title}
+                      </h3>
+                      <p className="mt-2 line-clamp-2 text-sm text-[var(--color-text-1)]">{p.tagline}</p>
+                      <div className="mt-4 flex flex-wrap gap-1.5">
+                        {p.stack.slice(0, 4).map((s) => (
+                          <span
+                            key={s}
+                            className="rounded-md border border-[var(--color-border)] bg-[var(--color-bg-2)] px-2 py-0.5 font-mono text-[10px] text-[var(--color-text-1)]"
+                          >
+                            {s}
+                          </span>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                  <div className="mt-6 flex items-center justify-between font-mono text-[10px] uppercase tracking-widest text-[var(--color-text-2)]">
-                    <span>{p.year}</span>
-                    <span>{p.org}</span>
-                  </div>
-                </BentoCardLink>
+                    <div className="mt-6 flex items-center justify-between font-mono text-[10px] uppercase tracking-widest text-[var(--color-text-2)]">
+                      <span>{p.year}</span>
+                      <span>{p.org}</span>
+                    </div>
+                  </BentoCardLink>
+                </GlitchReveal>
               </motion.div>
             ))}
           </AnimatePresence>
