@@ -110,7 +110,7 @@ export async function GET(req: Request) {
             fontFamily: "monospace",
           }}
         >
-          <span>Muhammad Hasif · Research engineer · Singapore</span>
+          <span>Muhammad Hasif · Applied AI undergrad & full-stack engineer · Singapore</span>
           <span>{new Date().getFullYear()}</span>
         </div>
       </div>

@@ -7,6 +7,7 @@ import { experience } from "@/content/experience";
 import { Section } from "@/components/primitives/section";
 import { OrgLogo } from "@/components/primitives/org-tag";
 import { Chip } from "@/components/primitives/chip";
+import { FlameTip } from "@/components/primitives/flame-tip";
 import { cn } from "@/lib/utils";
 
 export function ExperienceTimeline() {
@@ -22,11 +23,11 @@ export function ExperienceTimeline() {
     <Section
       id="experience"
       eyebrow="EXPERIENCE"
-      index={4}
-      total={8}
+      index={2}
+      total={7}
       stamp="// TIMELINE"
       title={["Six roles. Six", "very different playbooks."]}
-      intro="From research engineering to a Security Operations Center to a national Police Force. I've shipped across the stack and the chain of command."
+      intro="Data engineering, ML, full-stack web, and the operational reality behind them — at SIT, Deloitte, MOM, HTX, and SPF. I've shipped across the stack and the chain of command."
     >
       <div ref={wrapRef} className="relative">
         <div
@@ -50,6 +51,8 @@ export function ExperienceTimeline() {
               boxShadow: "0 0 12px color-mix(in oklab, var(--color-accent) 60%, transparent)",
             }}
           />
+          {/* Burning flame at the leading (bottom) edge of the progress fill */}
+          <FlameTip progress={1} orientation="vertical" size={22} />
         </motion.div>
         <ol className="space-y-10 md:space-y-16">
           {experience.map((r, i) => {

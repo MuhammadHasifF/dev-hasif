@@ -10,7 +10,7 @@ import { PullQuote } from "@/components/sections/pull-quote";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Long-form bio for Muhammad Hasif. Research engineering, government operations, cybersecurity, and applied AI.",
+    "Long-form bio for Muhammad Hasif. Applied AI undergrad and full-stack engineer shipping data products, ML pipelines, and analytics platforms.",
 };
 
 const values = [
@@ -46,28 +46,29 @@ export default function AboutPage() {
         <div className="grid gap-12 md:grid-cols-3">
           <div className="prose prose-invert max-w-none md:col-span-2 text-[var(--color-text-0)]">
             <p>
-              Analytically driven and technically versatile, with hands-on
-              experience across data analysis, cybersecurity, automation, and
-              operational technology. Proven track record supporting
-              national-level initiatives through real-time data systems,
-              geospatial dashboards, RPA solutions, and predictive modeling.
+              Applied AI undergraduate and full-stack engineer with hands-on
+              experience shipping data products end-to-end — data pipelines,
+              predictive modeling, LLM applications, and the web platforms
+              that surface insights to real users.
             </p>
             <p>
-              Adept at Python, SQL, ArcGIS, and BI tools, with a deep
-              understanding of stakeholder needs, cross-agency collaboration,
-              and applied machine learning.
+              I&rsquo;ve built ML forecasting pipelines at Deloitte, real-time
+              3D web platforms at SIT, and analytics dashboards across
+              government engagements. Comfortable across the modern data and
+              web stack — Python, SQL, TypeScript, React/Next.js, scikit-learn,
+              LangChain — with a working knowledge of cybersecurity and
+              automation from time spent in a national SOC and on RPA projects.
             </p>
             <PullQuote>
-              Known for leading teams under pressure, adapting quickly in
-              dynamic environments, and communicating complex ideas with
-              clarity.
+              I move between research, engineering, and stakeholders fluently,
+              and I write code that ships.
             </PullQuote>
             <p>
-              Committed to delivering secure, scalable, and data-informed
-              solutions across sectors. Currently a research engineer on open
-              real-time 3D reconstruction work at SIT, an undergraduate in
-              Applied AI, and an operator-shaped engineer from my time in
-              Singapore&rsquo;s Home Team.
+              Currently shipping a maritime data platform on the SIT FSSD
+              project (Python ETL, fault-diagnosis tooling, Apache ECharts
+              dashboards) alongside studies in Applied AI. I care about clear
+              data, honest metrics, and tools that real operators can actually
+              use.
             </p>
           </div>
 
@@ -77,9 +78,9 @@ export default function AboutPage() {
                 Currently
               </div>
               <ul className="space-y-2 text-sm text-[var(--color-text-0)]">
-                <li>Research engineer · R3CAP · SIT</li>
+                <li>Web app developer · FSSD · SIT</li>
                 <li>Undergraduate · Applied AI · SIT</li>
-                <li>Writing more, shipping more, sleeping less</li>
+                <li>Shipping more, writing more, sleeping less</li>
               </ul>
             </div>
             <div className="hud-panel p-5">
@@ -88,9 +89,9 @@ export default function AboutPage() {
               </div>
               <ul className="space-y-2 text-sm text-[var(--color-text-0)]">
                 <li>CHI &rsquo;25 + DIS &rsquo;26 contributions</li>
-                <li>GE2025 polling automation lead</li>
-                <li>Best Operational Fitness (SPF × OCC)</li>
-                <li>Best Trainee (POBC)</li>
+                <li>GE2025 polling automation lead (1,900+ stations)</li>
+                <li>~12% lift over baseline ARIMA at Deloitte</li>
+                <li>Best Trainee (POBC) · Best Op-Fit (OCC)</li>
               </ul>
             </div>
           </aside>

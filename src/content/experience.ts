@@ -59,7 +59,7 @@ export const experience: Role[] = [
     end: "08/2025",
     location: "Hybrid · Singapore",
     summary:
-      "Officer-level role inside the Contingency Planning Division supporting national operations through data-driven planning, geospatial analytics, and workflow automation across SPF, HTX, GovTech, and Security Command for high-security and large-scale public events.",
+      "Officer-level role driving data-driven planning, geospatial analytics, and workflow automation across SPF, HTX, GovTech, and Security Command. Built dashboards, RPA pipelines, and real-time spatial systems for national operations.",
     highlights: [
       "Co-developed MBFT personnel tracking system with HTX + Security Command — geospatial monitoring for high-security operations",
       "Built the VIP Security Key Operations System for tracking + auditing of high-sensitivity key custody",
@@ -81,7 +81,7 @@ export const experience: Role[] = [
     end: "06/2024",
     location: "On-site · Singapore",
     summary:
-      "Handpicked into HTX's Cyber Operations team inside a national Security Operations Center. Digital defense, incident response, and high-profile national engagements.",
+      "Inside HTX's national SOC, owned automation tooling and data pipelines for incident reporting and threat intel — Python, pandas, scheduled jobs, structured outputs — alongside core SOC analyst duties (DFIR, threat hunting).",
     highlights: [
       "Scripted SOC reports + dashboards to replace manual exports, accelerating insights delivery",
       "Conducted forensic investigations and coordinated incident-response playbooks",

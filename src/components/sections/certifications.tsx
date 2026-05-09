@@ -11,8 +11,8 @@ export function CertificationsAwards() {
     <Section
       id="credentials"
       eyebrow="CREDENTIALS"
-      index={6}
-      total={8}
+      index={5}
+      total={7}
       stamp="// PAPER TRAIL"
       title={["Certifications", "& recognitions."]}
       intro="The paper trail. Certifications, awards, and honors earned along the way."

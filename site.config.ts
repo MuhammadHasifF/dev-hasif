@@ -2,15 +2,15 @@ export const siteConfig = {
   name: "Muhammad Hasif",
   fullName: "Muhammad Hasif Bin Mohd Faisal",
   shortName: "Hasif",
-  title: "Hasif · Research Engineer & AI Undergrad",
+  title: "Hasif · Applied AI Undergrad & Full-Stack Engineer",
   description:
-    "Analytically driven, technically versatile. Research engineer and Applied AI undergrad shipping data-informed systems across data, cybersecurity, automation, and operational technology.",
+    "Applied AI undergrad and full-stack engineer shipping data products, ML pipelines, and analytics platforms — from raw telemetry to production dashboards.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://hasif.dev",
   ogImage: "/og.png",
   tagline:
-    "Research engineer & Applied AI undergrad. Building systems that move between people, data, and the physical world.",
+    "Applied AI undergrad & full-stack engineer shipping data products, ML pipelines, and analytics platforms — from raw telemetry to production dashboards.",
   taglineAlt:
-    "Hands-on across data analysis, cybersecurity, automation, and operational technology. Supporting national-level initiatives through real-time data systems, geospatial dashboards, RPA, and predictive modeling.",
+    "Building data and AI systems end-to-end — from ingestion and modeling through APIs, dashboards, and the people who actually use them.",
   location: "Singapore 400412",
   email: "muhammad.hasif.faisal@gmail.com",
   phone: "+65 8896 6503",
@@ -23,11 +23,13 @@ export const siteConfig = {
     email: "mailto:muhammad.hasif.faisal@gmail.com",
   },
   nav: [
-    { label: "Work", href: "/work" },
-    { label: "About", href: "/about" },
-    { label: "Experience", href: "/experience" },
+    { label: "About", href: "/#about" },
+    { label: "Experience", href: "/#experience" },
+    { label: "Work", href: "/#work" },
+    { label: "Skills", href: "/#skills" },
+    { label: "Credentials", href: "/#credentials" },
     { label: "Resume", href: "/resume" },
-    { label: "Contact", href: "/contact" },
+    { label: "Contact", href: "/#contact" },
   ],
   github: {
     username: "MuhammadHasifF",

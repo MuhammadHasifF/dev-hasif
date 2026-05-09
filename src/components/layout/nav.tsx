@@ -2,17 +2,30 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 import { Command, Menu, X } from "lucide-react";
 import { siteConfig } from "@/../site.config";
 import { Magnetic } from "@/components/primitives/magnetic";
+import { useLenisScroll } from "@/components/layout/lenis-provider";
 import { cn } from "@/lib/utils";
+
+type NavItem = (typeof siteConfig.nav)[number];
+
+function isAnchor(href: string) {
+  return href.startsWith("/#");
+}
+function anchorId(href: string) {
+  return href.slice(1); // "/#about" → "#about"
+}
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [activeId, setActiveId] = useState<string | null>(null);
   const pathname = usePathname();
+  const router = useRouter();
+  const { scrollTo } = useLenisScroll();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -25,8 +38,59 @@ export function Nav() {
     setOpen(false);
   }, [pathname]);
 
+  // Active section spy on the home page only — uses IntersectionObserver on each section id.
+  useEffect(() => {
+    if (pathname !== "/") {
+      setActiveId(null);
+      return;
+    }
+    const ids = siteConfig.nav.filter((n) => isAnchor(n.href)).map((n) => anchorId(n.href));
+    const els = ids
+      .map((id) => document.querySelector(id) as HTMLElement | null)
+      .filter((el): el is HTMLElement => !!el);
+    if (!els.length) return;
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible[0]) {
+          setActiveId(`#${visible[0].target.id}`);
+        }
+      },
+      { threshold: [0.25, 0.5, 0.75], rootMargin: "-72px 0px -40% 0px" },
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, [pathname]);
+
   const openPalette = () => {
     window.dispatchEvent(new CustomEvent("cmdk:open"));
+  };
+
+  const handleNavClick = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement>, item: NavItem) => {
+      if (!isAnchor(item.href)) return; // Resume + non-anchor links: native handling
+      e.preventDefault();
+      const id = anchorId(item.href); // "#about"
+      if (pathname === "/") {
+        history.replaceState(null, "", item.href);
+        scrollTo(id, { duration: 1.6 });
+      } else {
+        // From any other route → return to home, hash will be picked up by HomeHashWatch
+        router.push(`/${id}`);
+      }
+      setOpen(false);
+    },
+    [pathname, router, scrollTo],
+  );
+
+  const isItemActive = (item: NavItem) => {
+    if (isAnchor(item.href)) {
+      return pathname === "/" && activeId === anchorId(item.href);
+    }
+    return pathname === item.href || (item.href.length > 1 && pathname.startsWith(item.href));
   };
 
   return (
@@ -35,7 +99,7 @@ export function Nav() {
         "fixed inset-x-0 top-0 z-50 transition-[backdrop-filter,background-color,border-color] duration-300",
         scrolled
           ? "glass border-b border-[var(--color-border)]"
-          : "bg-transparent border-b border-transparent"
+          : "bg-transparent border-b border-transparent",
       )}
     >
       <nav className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6">
@@ -55,23 +119,24 @@ export function Nav() {
               style={{ objectPosition: "50% 30%" }}
             />
           </span>
-          <span className="hidden sm:block text-[var(--color-text-0)]">hasif<span className="text-[var(--color-accent)]">.</span>dev</span>
+          <span className="hidden sm:block text-[var(--color-text-0)]">
+            hasif<span className="text-[var(--color-accent)]">.</span>dev
+          </span>
         </Link>
 
         <div className="hidden items-center gap-1 md:flex">
           {siteConfig.nav.map((item) => {
-            const active =
-              pathname === item.href ||
-              (item.href.length > 1 && pathname.startsWith(item.href));
+            const active = isItemActive(item);
             return (
               <Magnetic key={item.href} strength={0.18}>
                 <Link
                   href={item.href}
+                  onClick={(e) => handleNavClick(e, item)}
                   className={cn(
                     "relative inline-flex rounded-full px-3 py-1.5 text-sm transition",
                     active
                       ? "text-[var(--color-text-0)]"
-                      : "text-[var(--color-text-1)] hover:text-[var(--color-text-0)]"
+                      : "text-[var(--color-text-1)] hover:text-[var(--color-text-0)]",
                   )}
                 >
                   {active && (
@@ -93,11 +158,13 @@ export function Nav() {
           >
             <Command className="h-3.5 w-3.5" />
             <span>Search</span>
-            <kbd className="rounded-sm border border-[var(--color-border)] bg-[var(--color-bg-2)] px-1.5 py-0.5 font-mono text-[10px]">⌘K</kbd>
+            <kbd className="rounded-sm border border-[var(--color-border)] bg-[var(--color-bg-2)] px-1.5 py-0.5 font-mono text-[10px]">
+              ⌘K
+            </kbd>
           </button>
           <button
             type="button"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-sm border border-[var(--color-border)] bg-[var(--color-bg-1)] text-[var(--color-text-1)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] md:hidden"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-sm border border-[var(--color-border)] bg-[var(--color-bg-1)] text-[var(--color-text-1)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] md:hidden"
             onClick={() => setOpen((v) => !v)}
             aria-label="Toggle menu"
             aria-expanded={open}
@@ -107,24 +174,44 @@ export function Nav() {
         </div>
       </nav>
 
+      {/* Mobile drawer — anchor links scroll-and-close */}
       {open && (
-        <div className="border-t border-[var(--color-border)] bg-[var(--color-bg-0)] md:hidden">
-          <div className="mx-auto max-w-6xl px-4 py-4">
-            <ul className="flex flex-col gap-1">
-              {siteConfig.nav.map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className="flex items-center justify-between rounded-lg px-3 py-3 text-base text-[var(--color-text-0)] hover:bg-[var(--color-bg-2)]"
-                  >
-                    {item.label}
-                    <span className="text-[var(--color-text-2)]">→</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+        <>
+          <div
+            className="fixed inset-0 top-14 z-40 bg-black/50 backdrop-blur-sm md:hidden"
+            onClick={() => setOpen(false)}
+            aria-hidden="true"
+          />
+          <div className="absolute inset-x-0 top-14 z-50 border-t border-[var(--color-border)] bg-[var(--color-bg-0)]/95 backdrop-blur-md md:hidden">
+            <div className="mx-auto max-w-6xl px-4 py-4">
+              <ul className="flex flex-col gap-1">
+                {siteConfig.nav.map((item) => {
+                  const active = isItemActive(item);
+                  return (
+                    <li key={item.href}>
+                      <Link
+                        href={item.href}
+                        onClick={(e) => handleNavClick(e, item)}
+                        className={cn(
+                          "flex min-h-[44px] items-center justify-between rounded-lg px-3 py-3 text-base hover:bg-[var(--color-bg-2)]",
+                          active ? "text-[var(--color-text-0)]" : "text-[var(--color-text-1)]",
+                        )}
+                      >
+                        <span className="inline-flex items-center gap-3">
+                          {active && (
+                            <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-accent)] shadow-[0_0_8px_var(--color-accent)]" />
+                          )}
+                          {item.label}
+                        </span>
+                        <span className="text-[var(--color-text-2)]">→</span>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
           </div>
-        </div>
+        </>
       )}
     </header>
   );

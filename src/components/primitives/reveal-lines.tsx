@@ -19,12 +19,15 @@ export function RevealLines({
   className,
   stagger = 70,
   threshold = 0.35,
+  once = false,
   as: Tag = "div",
 }: {
   children: ReactNode;
   className?: string;
   stagger?: number;
   threshold?: number;
+  /** When false (default), reveals replay each time the element re-enters the viewport. */
+  once?: boolean;
   as?: "h1" | "h2" | "h3" | "div";
 }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -42,8 +45,12 @@ export function RevealLines({
         for (const e of entries) {
           if (e.isIntersecting) {
             setActive(true);
-            io.disconnect();
-            break;
+            if (once) {
+              io.disconnect();
+              break;
+            }
+          } else if (!once) {
+            setActive(false);
           }
         }
       },
@@ -51,7 +58,7 @@ export function RevealLines({
     );
     io.observe(el);
     return () => io.disconnect();
-  }, [threshold]);
+  }, [threshold, once]);
 
   const items = Array.isArray(children) ? children : [children];
 

@@ -53,8 +53,8 @@ export function ContactInline() {
     <Section
       id="contact"
       eyebrow="CONTACT"
-      index={8}
-      total={8}
+      index={7}
+      total={7}
       stamp="// OPEN CHANNEL"
       title={["Open a channel."]}
       intro="Drop a packet. I'll respond from my actual inbox, usually within a few days."
