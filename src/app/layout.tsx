@@ -15,6 +15,7 @@ import { PageTransition } from "@/components/layout/page-transition";
 import { SectionPill } from "@/components/layout/section-pill";
 import { CyberGrid } from "@/components/layout/cyber-grid";
 import { LiveClock } from "@/components/layout/live-clock";
+import { LenisProvider } from "@/components/layout/lenis-provider";
 import "@/styles/globals.css";
 
 const geistSans = Geist({
@@ -101,24 +102,26 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <SettingsProvider>
-            <a
-              href="#main"
-              className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[999] focus:rounded-sm focus:bg-[var(--color-accent)] focus:px-3 focus:py-2 focus:text-white"
-            >
-              Skip to content
-            </a>
-            <CyberGrid />
-            <GrainOverlay />
-            <ScrollProgress />
-            <LiveClock />
-            <Nav />
-            <CommandPalette />
-            <Konami />
-            <SectionPill />
-            <main id="main" className="relative">
-              <PageTransition>{children}</PageTransition>
-            </main>
-            <Footer />
+            <LenisProvider>
+              <a
+                href="#main"
+                className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[999] focus:rounded-sm focus:bg-[var(--color-accent)] focus:px-3 focus:py-2 focus:text-white"
+              >
+                Skip to content
+              </a>
+              <CyberGrid />
+              <GrainOverlay />
+              <ScrollProgress />
+              <LiveClock />
+              <Nav />
+              <CommandPalette />
+              <Konami />
+              <SectionPill />
+              <main id="main" className="relative">
+                <PageTransition>{children}</PageTransition>
+              </main>
+              <Footer />
+            </LenisProvider>
           </SettingsProvider>
         </ThemeProvider>
         <Analytics />

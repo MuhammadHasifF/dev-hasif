@@ -22,8 +22,8 @@ export function ExperienceTimeline() {
     <Section
       id="experience"
       eyebrow="EXPERIENCE"
-      index={4}
-      total={8}
+      index={2}
+      total={7}
       stamp="// TIMELINE"
       title={["Six roles. Six", "very different playbooks."]}
       intro="From research engineering to a Security Operations Center to a national Police Force. I've shipped across the stack and the chain of command."

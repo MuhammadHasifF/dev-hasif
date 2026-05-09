@@ -39,10 +39,10 @@ export function FeaturedRail() {
     return (
       <Section
         eyebrow="FEATURED"
-        index={2}
-        total={8}
+        index={3}
+        total={7}
         stamp="// CASE FILES"
-        title={["Selected work."]}
+        title={["Featured Work."]}
       >
         <div className="grid gap-4 md:grid-cols-2">
           {featured.map((p) => (
@@ -84,7 +84,7 @@ export function FeaturedRail() {
               Featured
             </div>
             <h2 className="mt-2 font-display text-4xl leading-tight text-[var(--color-text-0)] md:text-6xl">
-              Selected work, side-scrolled.
+              Featured Work.
             </h2>
           </div>
           <div className="hidden text-right font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--color-text-2)] md:block">

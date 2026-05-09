@@ -23,11 +23,13 @@ export const siteConfig = {
     email: "mailto:muhammad.hasif.faisal@gmail.com",
   },
   nav: [
-    { label: "Work", href: "/work" },
-    { label: "About", href: "/about" },
-    { label: "Experience", href: "/experience" },
+    { label: "About", href: "/#about" },
+    { label: "Experience", href: "/#experience" },
+    { label: "Work", href: "/#work" },
+    { label: "Skills", href: "/#skills" },
+    { label: "Credentials", href: "/#credentials" },
     { label: "Resume", href: "/resume" },
-    { label: "Contact", href: "/contact" },
+    { label: "Contact", href: "/#contact" },
   ],
   github: {
     username: "MuhammadHasifF",

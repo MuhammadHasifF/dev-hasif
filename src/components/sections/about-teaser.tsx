@@ -9,9 +9,10 @@ import { Reveal } from "@/components/primitives/reveal";
 export function AboutTeaser() {
   return (
     <Section
+      id="about"
       eyebrow="ABOUT"
       index={1}
-      total={8}
+      total={7}
       stamp="// ORIGIN"
       title={["Engineer.", "Researcher.", "Operator."]}
     >

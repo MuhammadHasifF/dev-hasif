@@ -30,13 +30,12 @@ export function ProjectsBento() {
 
   return (
     <Section
-      id="work"
       eyebrow="ARCHIVE"
       index={3}
-      total={8}
+      total={7}
       stamp="// FULL ARCHIVE"
-      title={["Built for the field,", "tuned for scale."]}
-      intro="A cross-section of research engineering, government operations, cybersecurity, and data work I've led or contributed to."
+      title={["All Projects."]}
+      intro="Built for the field, tuned for scale. A cross-section of research engineering, government operations, cybersecurity, and data work I've led or contributed to."
     >
       <div className="mb-8 flex flex-wrap items-center gap-2">
         {projectCategories.map((c) => (

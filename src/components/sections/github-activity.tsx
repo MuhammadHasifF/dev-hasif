@@ -23,8 +23,8 @@ export async function GitHubActivity() {
     <Section
       id="github"
       eyebrow="LIVE FEED"
-      index={7}
-      total={8}
+      index={6}
+      total={7}
       stamp="// REPOS"
       title={["Shipping", "in the open."]}
       intro={`Public activity from @${siteConfig.github.username}, revalidated hourly. What I've been pushing, starring, and breaking lately.`}

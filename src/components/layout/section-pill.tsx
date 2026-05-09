@@ -23,9 +23,13 @@ export function SectionPill() {
     if (!sections.length) return;
 
     const titles: Record<string, string> = {
-      work: "Selected work",
+      about: "About",
       experience: "Experience",
+      work: "Work",
       skills: "Skills",
+      credentials: "Credentials",
+      github: "Live Feed",
+      contact: "Contact",
     };
 
     const observer = new IntersectionObserver(

@@ -16,8 +16,8 @@ export function SkillsConstellation() {
     <Section
       id="skills"
       eyebrow="SKILLS"
-      index={5}
-      total={8}
+      index={4}
+      total={7}
       stamp="// STACK"
       title={["A toolkit", "across the stack."]}
       intro="Filter by group to highlight the cluster. Each cell is a discrete capability, not a marketing word."

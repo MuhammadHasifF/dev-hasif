@@ -59,16 +59,16 @@ export function CyberGrid() {
           ["--mx" as string]: "50vw",
           ["--my" as string]: "50vh",
           ["--sp" as string]: "0",
-          // burn ramps from 0 (top) → 1 (deep page); intensifies brightness/saturation toward bright red
-          ["--burn" as string]: "calc(max(0, var(--sp) - 0.32) * 1.7)",
+          // burn now stays subtle — HomeBgRamp owns the bright-red dominance.
+          ["--burn" as string]: "calc(max(0, var(--sp) - 0.5) * 1.0)",
           // phase A: hero zone (1 → 0 by sp ~0.25)
           ["--phase-a" as string]: "calc(1 - min(1, var(--sp) * 4))",
-          // phase B: mid-page (peaks around sp 0.4, fades out around sp 0.75)
+          // phase B: mid-page (peaks around sp 0.45, fades out around sp 0.78)
           ["--phase-b" as string]:
-            "calc(min(1, max(0, (var(--sp) - 0.18) * 4.5)) * (1 - max(0, (var(--sp) - 0.55) * 3)))",
-          // phase C: deep page — heavy red wash ramps in
+            "calc(min(1, max(0, (var(--sp) - 0.22) * 3.6)) * (1 - max(0, (var(--sp) - 0.62) * 2.6)))",
+          // phase C: deeper page — soft accent only; HomeBgRamp handles the heavy red.
           ["--phase-c" as string]:
-            "calc(min(1, max(0, (var(--sp) - 0.45) * 3.2)))",
+            "calc(min(1, max(0, (var(--sp) - 0.55) * 2.0)) * 0.55)",
         } as React.CSSProperties
       }
     >

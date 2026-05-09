@@ -57,7 +57,10 @@ export function Section({
   return (
     <section
       id={id}
-      className={cn("relative mx-auto w-full max-w-6xl px-4 py-24 sm:px-6 md:py-32", className)}
+      className={cn(
+        "relative mx-auto w-full max-w-6xl scroll-mt-20 px-4 py-24 sm:px-6 md:py-32",
+        className,
+      )}
     >
       {(eyebrow || title || intro || idx) && (
         <div ref={headerRef} className="mb-10 md:mb-14">
