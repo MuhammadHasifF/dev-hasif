@@ -47,7 +47,7 @@ export default function AboutPage() {
           <div className="prose prose-invert max-w-none md:col-span-2 text-[var(--color-text-0)]">
             <p>
               Applied AI undergraduate and full-stack engineer with hands-on
-              experience shipping data products end-to-end — data pipelines,
+              experience shipping data products end-to-end, data pipelines,
               predictive modeling, LLM applications, and the web platforms
               that surface insights to real users.
             </p>
@@ -55,8 +55,8 @@ export default function AboutPage() {
               I&rsquo;ve built ML forecasting pipelines at Deloitte, real-time
               3D web platforms at SIT, and analytics dashboards across
               government engagements. Comfortable across the modern data and
-              web stack — Python, SQL, TypeScript, React/Next.js, scikit-learn,
-              LangChain — with a working knowledge of cybersecurity and
+              web stack, Python, SQL, TypeScript, React/Next.js, scikit-learn,
+              LangChain, with a working knowledge of cybersecurity and
               automation from time spent in a national SOC and on RPA projects.
             </p>
             <PullQuote>

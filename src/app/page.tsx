@@ -2,6 +2,7 @@ import { Hero } from "@/components/hero/hero";
 import { JsonLd } from "@/components/seo/json-ld";
 import { Marquee } from "@/components/sections/marquee";
 import { StatsStrip } from "@/components/sections/stats-strip";
+import { ManifestoScroll } from "@/components/sections/manifesto-scroll";
 import { AboutTeaser } from "@/components/sections/about-teaser";
 import { ProjectsBento } from "@/components/sections/projects-bento";
 import { FeaturedRail } from "@/components/sections/featured-rail";
@@ -22,11 +23,12 @@ export default function HomePage() {
       <HomeHashWatch />
       <JsonLd />
       <Hero />
+      <ManifestoScroll />
       <Marquee />
       <StatsStrip />
       <AboutTeaser />
       <ExperienceTimeline />
-      {/* Work — Featured + All Projects merged under one anchor */}
+      {/* Work, Featured + All Projects merged under one anchor */}
       <div id="work" className="scroll-mt-20">
         <FeaturedRail />
         <ProjectsBento />

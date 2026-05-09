@@ -74,16 +74,16 @@ export function GlitchHeadline({ className }: { className?: string }) {
 
     const trigger = () => {
       if (cancelled) return;
-      const heavy = Math.random() < 0.25;
-      const swap = Math.random() < 0.45;
-      const beats = heavy ? 5 : 3;
+      const heavy = Math.random() < 0.42;
+      const swap = Math.random() < 0.55;
+      const beats = heavy ? 7 : 4;
 
       const runBeats = (i: number) => {
         if (cancelled) return;
         if (i >= beats) {
           setBurst(ZERO_BURST);
           setPhase("idle");
-          const wait = 1200 + Math.random() * 2100;
+          const wait = 300 + Math.random() * 525;
           timeouts.push(setTimeout(trigger, wait));
           return;
         }
@@ -107,7 +107,7 @@ export function GlitchHeadline({ className }: { className?: string }) {
       runBeats(0);
     };
 
-    timeouts.push(setTimeout(trigger, 900));
+    timeouts.push(setTimeout(trigger, 225));
     return () => {
       cancelled = true;
       timeouts.forEach(clearTimeout);

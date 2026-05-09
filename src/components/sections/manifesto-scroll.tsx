@@ -31,7 +31,7 @@ export function ManifestoScroll() {
   // Phase 1: subtle scroll-driven hue tint (entry → mid).
   const tintOpacity = useTransform(scrollYProgress, [0, 0.25, 0.55, 0.65], [0, 0.32, 0.42, 0]);
 
-  // Phase 2: BURN — bright red bg ramps in, content darkens to silhouettes.
+  // Phase 2: BURN, bright red bg ramps in, content darkens to silhouettes.
   const burn = useTransform(scrollYProgress, [0.55, 0.95], [0, 1]);
   const burnBgOpacity = useTransform(burn, (b) => b * 0.96);
   const contentFilter = useTransform(burn, (b) => `brightness(${(1 - b * 0.94).toFixed(3)}) saturate(${(1 + b * 0.6).toFixed(3)})`);
@@ -43,7 +43,7 @@ export function ManifestoScroll() {
       aria-label="Manifesto scroll"
       className="relative h-[260vh] w-full overflow-clip"
     >
-      {/* Soft top fade — blends Hero into the section without a hard seam */}
+      {/* Soft top fade, blends Hero into the section without a hard seam */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 z-[2] h-[28vh]"
@@ -52,7 +52,7 @@ export function ManifestoScroll() {
             "linear-gradient(to bottom, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.55) 35%, transparent 100%)",
         }}
       />
-      {/* Soft bottom fade — blends burn-finale into whatever follows */}
+      {/* Soft bottom fade, blends burn-finale into whatever follows */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-[20vh]"
@@ -79,7 +79,7 @@ export function ManifestoScroll() {
           />
         </motion.div>
 
-        {/* Phase 2: BURN — bright red bg, lit from below, ramps in over the tail */}
+        {/* Phase 2: BURN, bright red bg, lit from below, ramps in over the tail */}
         <motion.div
           aria-hidden="true"
           style={reduce ? undefined : { opacity: burnBgOpacity }}
@@ -112,7 +112,7 @@ export function ManifestoScroll() {
           />
         </motion.div>
 
-        {/* Panorama rising from bottom (magnitude.be move) — darkens to silhouette during burn */}
+        {/* Panorama rising from bottom (magnitude.be move), darkens to silhouette during burn */}
         <motion.div
           style={
             reduce
@@ -124,7 +124,7 @@ export function ManifestoScroll() {
           <Panorama />
         </motion.div>
 
-        {/* Giant horizontal word (foe.design move) — darkens to black during burn */}
+        {/* Giant horizontal word (foe.design move), darkens to black during burn */}
         <motion.div
           style={
             reduce
@@ -151,7 +151,7 @@ export function ManifestoScroll() {
           </h2>
         </motion.div>
 
-        {/* Bottom HUD index — also darkens during the burn */}
+        {/* Bottom HUD index, also darkens during the burn */}
         <motion.div
           style={reduce ? undefined : { filter: wordsFilter }}
           className="pointer-events-none absolute inset-x-0 bottom-8 z-20 flex items-center justify-between px-4 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-text-2)] sm:px-8"
@@ -163,7 +163,7 @@ export function ManifestoScroll() {
           <span>{"// keep scrolling"}</span>
         </motion.div>
 
-        {/* Orbiting object (q-industrial move) — darkens to silhouette during burn */}
+        {/* Orbiting object (q-industrial move), darkens to silhouette during burn */}
         <motion.div
           style={reduce ? undefined : { rotate: orbit, filter: contentFilter }}
           className="pointer-events-none absolute right-6 top-1/2 z-20 h-40 w-40 -translate-y-1/2 will-change-transform sm:right-12 md:h-56 md:w-56"
@@ -188,7 +188,7 @@ function GlitchManifestoWord({ text, dim = false }: { text: string; dim?: boolea
         opacity: dim ? 0.92 : 1,
       }}
     >
-      {/* Red ghost — primary glitch channel */}
+      {/* Red ghost, primary glitch channel */}
       <span
         aria-hidden="true"
         className="absolute inset-0"
@@ -216,7 +216,7 @@ function GlitchManifestoWord({ text, dim = false }: { text: string; dim?: boolea
       >
         {text}
       </span>
-      {/* Cyan ghost — chromatic aberration counterweight */}
+      {/* Cyan ghost, chromatic aberration counterweight */}
       <span
         aria-hidden="true"
         className="absolute inset-0"

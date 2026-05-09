@@ -6,7 +6,7 @@ import { Section } from "@/components/primitives/section";
 import { cn } from "@/lib/utils";
 
 /**
- * SKILLS — flat HUD grid. (Old physics-canvas constellation was the dominant
+ * SKILLS, flat HUD grid. (Old physics-canvas constellation was the dominant
  * lag source; killed for perf. Hover a group filter to dim non-matching cells.)
  */
 export function SkillsConstellation() {

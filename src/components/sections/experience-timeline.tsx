@@ -27,7 +27,7 @@ export function ExperienceTimeline() {
       total={7}
       stamp="// TIMELINE"
       title={["Six roles. Six", "very different playbooks."]}
-      intro="Data engineering, ML, full-stack web, and the operational reality behind them — at SIT, Deloitte, MOM, HTX, and SPF. I've shipped across the stack and the chain of command."
+      intro="Data engineering, ML, full-stack web, and the operational reality behind them, at SIT, Deloitte, MOM, HTX, and SPF. I've shipped across the stack and the chain of command."
     >
       <div ref={wrapRef} className="relative">
         <div

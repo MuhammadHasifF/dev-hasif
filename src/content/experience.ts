@@ -61,12 +61,12 @@ export const experience: Role[] = [
     summary:
       "Officer-level role driving data-driven planning, geospatial analytics, and workflow automation across SPF, HTX, GovTech, and Security Command. Built dashboards, RPA pipelines, and real-time spatial systems for national operations.",
     highlights: [
-      "Co-developed MBFT personnel tracking system with HTX + Security Command — geospatial monitoring for high-security operations",
+      "Co-developed MBFT personnel tracking system with HTX + Security Command, geospatial monitoring for high-security operations",
       "Built the VIP Security Key Operations System for tracking + auditing of high-sensitivity key custody",
       "Shipped UiPath RPA across 1,900+ polling stations for GE2025, saving ~30+ analyst hours per polling cycle",
       "Integrated ArcGIS spatial analytics + CCTV analytics + facial recognition into GovTech's VoteQ for crowd flow + resource allocation",
       "Designed ArcGIS operations dashboards + map layers for situational awareness during national events",
-      "Vice-Chairperson, Cadet Councils — led cohort initiatives and represented cadets to command",
+      "Vice-Chairperson, Cadet Councils, led cohort initiatives and represented cadets to command",
       "Completed 19-day Outward Bound Singapore expedition for leadership and resilience training",
     ],
     awards: ["Best Operational Fitness (Officer Cadet Course)"],
@@ -81,7 +81,7 @@ export const experience: Role[] = [
     end: "06/2024",
     location: "On-site · Singapore",
     summary:
-      "Inside HTX's national SOC, owned automation tooling and data pipelines for incident reporting and threat intel — Python, pandas, scheduled jobs, structured outputs — alongside core SOC analyst duties (DFIR, threat hunting).",
+      "Inside HTX's national SOC, owned automation tooling and data pipelines for incident reporting and threat intel, Python, pandas, scheduled jobs, structured outputs, alongside core SOC analyst duties (DFIR, threat hunting).",
     highlights: [
       "Scripted SOC reports + dashboards to replace manual exports, accelerating insights delivery",
       "Conducted forensic investigations and coordinated incident-response playbooks",
@@ -121,7 +121,7 @@ export const experience: Role[] = [
     end: "02/2023",
     location: "Singapore",
     summary:
-      "End-to-end AI + data analytics consulting on a maritime shipping client engagement — proposal development through model deployment and stakeholder reporting.",
+      "End-to-end AI + data analytics consulting on a maritime shipping client engagement, proposal development through model deployment and stakeholder reporting.",
     highlights: [
       "Translated client requirements into analytical roadmaps and proposal artifacts",
       "Delivered ~12% accuracy lift over a baseline ARIMA forecast through feature engineering + ensembling",

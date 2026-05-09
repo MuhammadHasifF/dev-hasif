@@ -3,11 +3,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Command, Menu, X } from "lucide-react";
 import { siteConfig } from "@/../site.config";
 import { Magnetic } from "@/components/primitives/magnetic";
 import { useLenisScroll } from "@/components/layout/lenis-provider";
+import { NavMonster } from "@/components/layout/nav-monster";
 import { cn } from "@/lib/utils";
 
 type NavItem = (typeof siteConfig.nav)[number];
@@ -23,6 +24,7 @@ export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(null);
+  const headerRef = useRef<HTMLElement>(null);
   const pathname = usePathname();
   const router = useRouter();
   const { scrollTo } = useLenisScroll();
@@ -95,6 +97,7 @@ export function Nav() {
 
   return (
     <header
+      ref={headerRef}
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-[backdrop-filter,background-color,border-color] duration-300",
         scrolled
@@ -102,7 +105,8 @@ export function Nav() {
           : "bg-transparent border-b border-transparent",
       )}
     >
-      <nav className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6">
+      <NavMonster scopeRef={headerRef} />
+      <nav className="relative z-[2] mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6">
         <Link
           href="/"
           aria-label="Home"
@@ -133,16 +137,29 @@ export function Nav() {
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item)}
                   className={cn(
-                    "relative inline-flex rounded-full px-3 py-1.5 text-sm transition",
+                    "group/nav relative inline-flex rounded-full px-3 py-1.5 text-sm transition",
                     active
                       ? "text-[var(--color-text-0)]"
                       : "text-[var(--color-text-1)] hover:text-[var(--color-text-0)]",
                   )}
                 >
                   {active && (
-                    <span className="absolute inset-0 -z-10 rounded-full bg-[var(--color-bg-2)]" />
+                    <span className="absolute inset-0 -z-10 rounded-full bg-[var(--color-bg-2)] ring-1 ring-[var(--color-accent)]/35" />
                   )}
-                  {item.label}
+                  <span className="relative">
+                    {item.label}
+                    <span
+                      aria-hidden="true"
+                      className={cn(
+                        "pointer-events-none absolute -bottom-1 left-1/2 h-px w-0 -translate-x-1/2 bg-[var(--color-accent)] transition-[width] duration-300 group-hover/nav:w-full",
+                        active && "w-full",
+                      )}
+                      style={{
+                        boxShadow:
+                          "0 0 6px color-mix(in oklab, var(--color-accent) 80%, transparent)",
+                      }}
+                    />
+                  </span>
                 </Link>
               </Magnetic>
             );
