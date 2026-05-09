@@ -51,40 +51,40 @@ export function HomeBgRamp() {
       style={
         {
           ["--ramp" as string]: "0",
-          // gate the ramp: stays at 0 until ~ramp 0.42 (≈ 3/4 through Experience for a typical home),
-          // hits full intensity around ~0.94 (Contact), eases back at the very end (footer).
+          // Stay 0 until Skills section starts (~ramp 0.62 of the home page),
+          // then climb to 1 by Contact (~ramp 0.96). Footer eases back slightly.
           ["--gate" as string]:
-            "calc(min(1, max(0, (var(--ramp) - 0.42) * 1.95)) * (1 - max(0, (var(--ramp) - 0.94) * 4)))",
+            "calc(min(1, max(0, (var(--ramp) - 0.62) * 2.95)) * (1 - max(0, (var(--ramp) - 0.97) * 5)))",
         } as React.CSSProperties
       }
     >
-      {/* Bottom-anchored bright red wash that climbs the page */}
+      {/* Full-screen bright red flood (the "whole screen turns red" layer) */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(140% 110% at 50% 100%, color-mix(in oklab, var(--color-accent) 70%, transparent) 0%, color-mix(in oklab, var(--color-accent) 32%, transparent) 35%, transparent 75%)",
-          opacity: "calc(var(--gate) * 0.82)",
+            "radial-gradient(120% 120% at 50% 60%, color-mix(in oklab, #ff1e3c 78%, transparent) 0%, color-mix(in oklab, var(--color-accent) 50%, transparent) 45%, color-mix(in oklab, var(--color-accent) 22%, transparent) 80%, transparent 100%)",
+          opacity: "calc(var(--gate) * 0.92)",
           mixBlendMode: "screen",
         }}
       />
-      {/* Soft red atmosphere that fills the lower viewport */}
-      <div
-        className="absolute inset-x-0 bottom-0 h-[70vh]"
-        style={{
-          background:
-            "linear-gradient(to top, color-mix(in oklab, #ff1e3c 60%, transparent) 0%, color-mix(in oklab, var(--color-accent) 22%, transparent) 45%, transparent 90%)",
-          opacity: "calc(var(--gate) * 0.78)",
-          mixBlendMode: "screen",
-        }}
-      />
-      {/* Vignette deepening toward the bottom — keeps content readable on red */}
+      {/* Secondary saturating wash so dark surfaces also climb red */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(120% 100% at 50% 100%, transparent 50%, rgba(0,0,0,0.45) 100%)",
-          opacity: "calc(var(--gate) * 0.6)",
+            "linear-gradient(180deg, color-mix(in oklab, var(--color-accent) 30%, transparent) 0%, color-mix(in oklab, #ff1e3c 45%, transparent) 50%, color-mix(in oklab, var(--color-accent) 30%, transparent) 100%)",
+          opacity: "calc(var(--gate) * 0.55)",
+          mixBlendMode: "lighten",
+        }}
+      />
+      {/* Vignette deepening at edges to keep content readable on red */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(120% 100% at 50% 50%, transparent 35%, rgba(0,0,0,0.55) 100%)",
+          opacity: "calc(var(--gate) * 0.65)",
         }}
       />
     </div>

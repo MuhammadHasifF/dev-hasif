@@ -55,7 +55,7 @@ export async function POST(req: Request) {
   const data = parsed.data;
 
   if (data.honeypot && data.honeypot.trim().length > 0) {
-    // Silently accept — don't tell bots why.
+    // Silently accept, don't tell bots why.
     return NextResponse.json({ ok: true });
   }
 
@@ -63,7 +63,7 @@ export async function POST(req: Request) {
   const to = process.env.CONTACT_TO_EMAIL ?? siteConfig.email;
 
   if (!apiKey) {
-    console.warn("[contact] RESEND_API_KEY missing — logging payload instead of sending:");
+    console.warn("[contact] RESEND_API_KEY missing, logging payload instead of sending:");
     console.warn(JSON.stringify({ from: data.email, name: data.name, message: data.message }, null, 2));
     return NextResponse.json(
       { ok: true, dev: true, note: "Dev stub. Configure RESEND_API_KEY to send real emails." }

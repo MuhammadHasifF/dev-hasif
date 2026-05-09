@@ -3,28 +3,26 @@
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import type { ReactNode } from "react";
 
-type Side = "left" | "right";
-
 /**
- * Glitch slide-in wrapper. Card content slides from the given side with a
- * chromatic-aberration glitch + brief scanline tear, then crisp resolves.
- * Re-triggers on every viewport entry/exit (scrolls down AND up).
+ * Cyberpunk red-glitch reveal. The card stays in place (no translation).
+ * On entry it: rapidly jitters, throws a couple of red RGB-shift pulses,
+ * a horizontal scanline tear sweeps top to bottom, then it crisp-resolves.
+ * On exit (scroll up past the card OR scroll down past it) it plays the
+ * same glitch in reverse so cards re-trigger every time the viewport
+ * crosses them.
  *
- * Reduced motion: simple 300ms fade, no slide, no glitch.
+ * Reduced motion: 300ms fade, no glitch.
  */
-export function GlitchReveal({
-  children,
-  side,
-  delay = 0,
-  className,
-  amount = 0.3,
-}: {
+type Props = {
   children: ReactNode;
-  side: Side;
+  /** Kept for back-compat with existing call sites; ignored visually now. */
+  side?: "left" | "right";
   delay?: number;
   className?: string;
   amount?: number;
-}) {
+};
+
+export function GlitchReveal({ children, delay = 0, className, amount = 0.3 }: Props) {
   const reduce = useReducedMotion();
 
   if (reduce) {
@@ -40,44 +38,82 @@ export function GlitchReveal({
     );
   }
 
-  const dir = side === "left" ? -1 : 1;
-  const variants: Variants = {
-    hidden: {
-      opacity: 0,
-      x: dir * 56,
-      filter: "blur(4px)",
-    },
+  // Container variants, opacity + brief jitter on entry, also drives stepped
+  // reveals of inner ghost layers.
+  const wrapVariants: Variants = {
+    hidden: { opacity: 0, x: 0, y: 0, filter: "blur(6px)" },
     visible: {
       opacity: 1,
-      x: 0,
       filter: "blur(0px)",
+      x: [0, -3, 4, -2, 3, 0],
+      y: [0, 2, -2, 1, 0, 0],
       transition: {
-        duration: 0.6,
+        duration: 0.55,
         delay,
         ease: [0.32, 0.72, 0, 1],
+        x: { duration: 0.45, delay, times: [0, 0.15, 0.3, 0.5, 0.75, 1] },
+        y: { duration: 0.45, delay, times: [0, 0.15, 0.3, 0.5, 0.75, 1] },
       },
     },
   };
 
-  // Chromatic aberration shadow that decays from ±8px to 0.
-  const chromaVariants: Variants = {
-    hidden: {
-      boxShadow:
-        `${dir * 8}px 0 0 rgba(255, 30, 60, 0.55), ${-dir * 8}px 0 0 rgba(0, 229, 255, 0.45)`,
-    },
+  // Red RGB-shift ghost. Splits left then right then snaps to 0.
+  const redVariants: Variants = {
+    hidden: { x: -8, opacity: 0.85 },
     visible: {
-      boxShadow: "0 0 0 rgba(255,30,60,0), 0 0 0 rgba(0,229,255,0)",
-      transition: { duration: 0.55, delay, ease: [0.32, 0.72, 0, 1] },
+      x: [-8, 6, -4, 2, 0],
+      opacity: [0.9, 0.7, 0.5, 0.25, 0],
+      transition: {
+        duration: 0.55,
+        delay,
+        ease: "linear",
+        times: [0, 0.25, 0.5, 0.75, 1],
+      },
     },
   };
 
-  // Scanline tear sweeping top → bottom briefly during entry.
-  const scanVariants: Variants = {
-    hidden: { y: "-10%", opacity: 0 },
+  // Hot red ghost (lighter shade, slightly different timing for chromatic depth).
+  const hotVariants: Variants = {
+    hidden: { x: 8, opacity: 0.7 },
     visible: {
-      y: ["-10%", "110%"],
-      opacity: [0, 1, 0],
-      transition: { duration: 0.5, delay: delay + 0.15, ease: "linear" },
+      x: [8, -4, 3, -1, 0],
+      opacity: [0.7, 0.5, 0.3, 0.15, 0],
+      transition: {
+        duration: 0.55,
+        delay: delay + 0.04,
+        ease: "linear",
+        times: [0, 0.25, 0.5, 0.75, 1],
+      },
+    },
+  };
+
+  // Horizontal scanline tear, sweeps top to bottom briefly during entry.
+  const scanVariants: Variants = {
+    hidden: { y: "-12%", opacity: 0 },
+    visible: {
+      y: ["-12%", "112%"],
+      opacity: [0, 1, 1, 0],
+      transition: {
+        duration: 0.42,
+        delay: delay + 0.1,
+        ease: "linear",
+        times: [0, 0.2, 0.85, 1],
+      },
+    },
+  };
+
+  // Pixel-row noise band (cyberpunk static slice during the burst).
+  const noiseVariants: Variants = {
+    hidden: { opacity: 0, scaleY: 0.4 },
+    visible: {
+      opacity: [0, 0.85, 0, 0.6, 0],
+      scaleY: [0.4, 1, 0.6, 1.1, 0.5],
+      transition: {
+        duration: 0.4,
+        delay: delay + 0.05,
+        ease: "linear",
+        times: [0, 0.2, 0.45, 0.7, 1],
+      },
     },
   };
 
@@ -87,15 +123,49 @@ export function GlitchReveal({
       whileInView="visible"
       exit="hidden"
       viewport={{ once: false, amount }}
-      variants={variants}
+      variants={wrapVariants}
       className={`relative ${className ?? ""}`}
       style={{ willChange: "transform, opacity, filter" }}
     >
-      {/* Chromatic aberration shadow */}
+      {/* Red RGB-shift ghost layer */}
       <motion.span
         aria-hidden="true"
-        variants={chromaVariants}
-        className="pointer-events-none absolute inset-0 -z-[1] rounded-[inherit]"
+        variants={redVariants}
+        className="pointer-events-none absolute inset-0"
+        style={{
+          boxShadow:
+            "inset 0 0 0 1px color-mix(in oklab, var(--color-accent) 80%, transparent)",
+          background:
+            "linear-gradient(90deg, color-mix(in oklab, var(--color-accent) 22%, transparent), transparent 50%, color-mix(in oklab, var(--color-accent) 22%, transparent))",
+          mixBlendMode: "screen",
+          willChange: "transform, opacity",
+        }}
+      />
+      {/* Hot red ghost (higher saturation, opposite-direction shift) */}
+      <motion.span
+        aria-hidden="true"
+        variants={hotVariants}
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(90deg, transparent, color-mix(in oklab, #ff5560 32%, transparent) 50%, transparent)",
+          mixBlendMode: "screen",
+          willChange: "transform, opacity",
+        }}
+      />
+      {/* Pixel-noise static band */}
+      <motion.span
+        aria-hidden="true"
+        variants={noiseVariants}
+        className="pointer-events-none absolute inset-x-0"
+        style={{
+          top: "30%",
+          height: "32%",
+          backgroundImage:
+            "repeating-linear-gradient(to bottom, transparent 0 1px, color-mix(in oklab, var(--color-accent) 28%, transparent) 1px 2px)",
+          mixBlendMode: "screen",
+          transformOrigin: "center",
+        }}
       />
       {/* Scanline tear */}
       <motion.span
@@ -105,8 +175,9 @@ export function GlitchReveal({
         style={{
           top: 0,
           background:
-            "linear-gradient(90deg, transparent, color-mix(in oklab, var(--color-accent) 90%, transparent), transparent)",
-          boxShadow: "0 0 14px color-mix(in oklab, var(--color-accent) 70%, transparent)",
+            "linear-gradient(90deg, transparent, color-mix(in oklab, var(--color-accent) 95%, transparent), transparent)",
+          boxShadow:
+            "0 0 16px color-mix(in oklab, var(--color-accent) 80%, transparent), 0 0 32px color-mix(in oklab, var(--color-accent) 50%, transparent)",
         }}
       />
       {children}
@@ -115,9 +186,7 @@ export function GlitchReveal({
 }
 
 /**
- * Glitch reveal for a section title (or any single text element).
- * Renders three offset copies (red/cyan ghosts + main) that converge on entry,
- * splits apart on exit, replays each time the title re-enters the viewport.
+ * Single-element red-glitch title. Re-triggers on every viewport crossing.
  */
 export function GlitchTitle({
   children,
@@ -127,7 +196,6 @@ export function GlitchTitle({
   className?: string;
 }) {
   const reduce = useReducedMotion();
-
   if (reduce) {
     return (
       <motion.div
@@ -140,7 +208,6 @@ export function GlitchTitle({
       </motion.div>
     );
   }
-
   return (
     <motion.div
       initial="hidden"
@@ -149,43 +216,29 @@ export function GlitchTitle({
       viewport={{ once: false, amount: 0.4 }}
       className={`relative ${className ?? ""}`}
     >
-      {/* Red ghost */}
       <motion.span
         aria-hidden="true"
         variants={{
           hidden: { x: -10, opacity: 0.85 },
-          visible: { x: 0, opacity: 0, transition: { duration: 0.55, ease: [0.32, 0.72, 0, 1] } },
+          visible: {
+            x: [-10, 6, -3, 0],
+            opacity: [0.85, 0.5, 0.2, 0],
+            transition: { duration: 0.5, ease: "linear", times: [0, 0.35, 0.7, 1] },
+          },
         }}
         className="pointer-events-none absolute inset-0"
-        style={{
-          color: "var(--color-accent)",
-          mixBlendMode: "screen",
-          willChange: "transform, opacity",
-        }}
+        style={{ color: "var(--color-accent)", mixBlendMode: "screen" }}
       >
         {children}
       </motion.span>
-      {/* Cyan ghost */}
-      <motion.span
-        aria-hidden="true"
-        variants={{
-          hidden: { x: 10, opacity: 0.7 },
-          visible: { x: 0, opacity: 0, transition: { duration: 0.55, ease: [0.32, 0.72, 0, 1] } },
-        }}
-        className="pointer-events-none absolute inset-0"
-        style={{
-          color: "#00e5ff",
-          mixBlendMode: "screen",
-          willChange: "transform, opacity",
-        }}
-      >
-        {children}
-      </motion.span>
-      {/* Main */}
       <motion.span
         variants={{
           hidden: { opacity: 0, filter: "blur(4px)" },
-          visible: { opacity: 1, filter: "blur(0px)", transition: { duration: 0.55, ease: [0.32, 0.72, 0, 1] } },
+          visible: {
+            opacity: 1,
+            filter: "blur(0px)",
+            transition: { duration: 0.5, ease: [0.32, 0.72, 0, 1] },
+          },
         }}
         className="relative block"
       >

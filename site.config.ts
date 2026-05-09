@@ -4,13 +4,13 @@ export const siteConfig = {
   shortName: "Hasif",
   title: "Hasif · Applied AI Undergrad & Full-Stack Engineer",
   description:
-    "Applied AI undergrad and full-stack engineer shipping data products, ML pipelines, and analytics platforms — from raw telemetry to production dashboards.",
+    "Applied AI undergrad and full-stack engineer shipping data products, ML pipelines, and analytics platforms, from raw telemetry to production dashboards.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://hasif.dev",
   ogImage: "/og.png",
   tagline:
-    "Applied AI undergrad & full-stack engineer shipping data products, ML pipelines, and analytics platforms — from raw telemetry to production dashboards.",
+    "Applied AI undergrad & full-stack engineer shipping data products, ML pipelines, and analytics platforms, from raw telemetry to production dashboards.",
   taglineAlt:
-    "Building data and AI systems end-to-end — from ingestion and modeling through APIs, dashboards, and the people who actually use them.",
+    "Building data and AI systems end-to-end, from ingestion and modeling through APIs, dashboards, and the people who actually use them.",
   location: "Singapore 400412",
   email: "muhammad.hasif.faisal@gmail.com",
   phone: "+65 8896 6503",
