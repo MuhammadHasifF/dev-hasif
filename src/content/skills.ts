@@ -70,6 +70,20 @@ export const skillGroups: SkillGroup[] = [
     ],
   },
   {
+    id: "professional",
+    label: "Professional",
+    hue: "var(--color-text-1)",
+    items: [
+      "Agile / Sprint-Based Dev",
+      "Cross-Functional Collaboration",
+      "Technical Documentation",
+      "Requirements Translation",
+      "Structured Problem-Solving",
+      "Clear Technical Communication",
+      "High-Pressure Adaptability",
+    ],
+  },
+  {
     id: "security",
     label: "Cybersecurity & Ops",
     hue: "var(--color-accent)",
@@ -83,20 +97,6 @@ export const skillGroups: SkillGroup[] = [
       "Security & Governance",
       "Excel (VBA)",
       "KNIME",
-    ],
-  },
-  {
-    id: "professional",
-    label: "Professional",
-    hue: "var(--color-text-1)",
-    items: [
-      "Agile / Sprint-Based Dev",
-      "Cross-Functional Collaboration",
-      "Technical Documentation",
-      "Requirements Translation",
-      "Structured Problem-Solving",
-      "Clear Technical Communication",
-      "High-Pressure Adaptability",
     ],
   },
 ];

@@ -37,7 +37,7 @@ export function Hero() {
           </div>
           <div className="flex items-center gap-3">
             <span className="status-dot" />
-            <span>OPEN TO RESEARCH &amp; ENGINEERING ROLES</span>
+            <span>OPEN TO DATA, AI &amp; ENGINEERING ROLES</span>
           </div>
         </div>
 
@@ -57,7 +57,7 @@ export function Hero() {
           </div>
 
           <div className="grid grid-cols-2 gap-x-4 gap-y-6 md:col-span-5 md:grid-cols-2">
-            <HeroMeta k="ROLE" v="Research / Engineering" />
+            <HeroMeta k="ROLE" v="Data / AI / Engineering" />
             <HeroMeta k="LOCALE" v={(<><MapPin className="mr-1 inline h-3 w-3 text-[var(--color-accent)]" />Singapore</>)} />
             <HeroMeta k="STATUS" v={(<><span className="mr-2 inline-block h-1.5 w-1.5 translate-y-[-2px] rounded-full bg-[var(--color-accent)] shadow-[0_0_8px_var(--color-accent)]" />Online</>)} />
             <HeroMeta k="VERSION" v="v3.0 / 2026" />
@@ -75,7 +75,7 @@ export function Hero() {
           <span className="flex items-center gap-2">
             <span className="hidden sm:inline">SECTIONS</span>
             <span className="text-[var(--color-text-1)]">/</span>
-            <span className="text-[var(--color-accent)]">08</span>
+            <span className="text-[var(--color-accent)]">07</span>
           </span>
         </motion.div>
       </motion.div>

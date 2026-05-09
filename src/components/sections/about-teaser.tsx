@@ -14,24 +14,26 @@ export function AboutTeaser() {
       index={1}
       total={7}
       stamp="// ORIGIN"
-      title={["Engineer.", "Researcher.", "Operator."]}
+      title={["Engineer.", "Researcher.", "Builder."]}
     >
       <div className="grid items-start gap-12 md:grid-cols-2">
         <Reveal>
           <p className="text-pretty text-lg leading-relaxed text-[var(--color-text-0)]/90">
-            Analytically driven and technically versatile, with hands-on
-            experience across <span className="text-[var(--color-accent)]">data analysis</span>,{" "}
-            <span className="text-[var(--color-accent)]">cybersecurity</span>,{" "}
-            <span className="text-[var(--color-accent)]">automation</span>, and
-            operational technology. I&rsquo;ve supported national-level
-            initiatives through real-time data systems, geospatial dashboards,
-            RPA solutions, and predictive modeling.
+            Applied AI undergraduate and full-stack engineer shipping{" "}
+            <span className="text-[var(--color-accent)]">data products</span>{" "}
+            end-to-end —{" "}
+            <span className="text-[var(--color-accent)]">data pipelines</span>,{" "}
+            <span className="text-[var(--color-accent)]">predictive modeling</span>,{" "}
+            <span className="text-[var(--color-accent)]">LLM applications</span>, and
+            the web platforms that surface insights to real users.
           </p>
           <p className="mt-6 max-w-xl text-[var(--color-text-1)]">
-            Known for leading teams under pressure, adapting quickly in dynamic
-            environments, and communicating complex ideas with clarity. My
-            work sits at the intersection of research, engineering, and the
-            operators who rely on both.
+            I&rsquo;ve built ML forecasting pipelines at Deloitte, real-time 3D
+            web platforms at SIT, and analytics dashboards across government
+            engagements. Comfortable across the modern data and web stack —
+            Python, SQL, TypeScript, React/Next.js, scikit-learn, LangChain —
+            with a working knowledge of cybersecurity and automation from time
+            spent in a national SOC and on RPA projects.
           </p>
           <div className="mt-8">
             <Link
