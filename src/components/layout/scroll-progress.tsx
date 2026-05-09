@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { FlameTip } from "@/components/primitives/flame-tip";
 
 /**
  * Scroll progress as a HUD data-stream:
- *  - cyan core line, scaled by progress
- *  - leading "head" tick that glows
+ *  - red core line, scaled by progress
+ *  - burning flame tip + spark trail at the leading edge (FlameTip)
  *  - bottom-right percentage readout (mono)
  *  - rAF-throttled scroll listener (single rAF; no per-frame loop)
  */
@@ -71,33 +72,10 @@ export function ScrollProgress() {
             animation: "var(--animate-flicker)",
           }}
         />
-        {/* spark head — white-hot core */}
-        <div
-          className="absolute top-1/2 h-[8px] w-[8px] -translate-y-1/2 rounded-full motion-reduce:hidden"
-          style={{
-            left: `${p * 100}%`,
-            transform: "translate(-50%, -50%)",
-            background:
-              "radial-gradient(circle, #ffffff 0%, #ffd6c2 25%, var(--color-accent-3) 50%, var(--color-accent) 75%, transparent 100%)",
-            boxShadow:
-              "0 0 8px #ffffff, 0 0 16px var(--color-accent-3), 0 0 28px var(--color-accent), 0 0 44px color-mix(in oklab, var(--color-accent) 80%, transparent)",
-            transition: "left 80ms linear",
-          }}
-        />
-        {/* spark plume — short flame curling up from the head */}
-        <div
-          className="absolute top-0 h-[10px] w-[26px] motion-reduce:hidden"
-          style={{
-            left: `${p * 100}%`,
-            transform: "translate(-30%, -55%)",
-            background:
-              "radial-gradient(70% 110% at 100% 50%, #ffffff 0%, #ffe1c2 18%, var(--color-accent-3) 38%, color-mix(in oklab, var(--color-accent) 70%, transparent) 60%, transparent 80%)",
-            filter: "blur(2.4px)",
-            transition: "left 80ms linear",
-            opacity: p > 0.001 ? 0.95 : 0,
-            animation: "sparkFlicker 220ms steps(2, end) infinite",
-          }}
-        />
+        {/* Burning flame tip + sparks at the leading edge */}
+        {p > 0.001 && (
+          <FlameTip progress={p} orientation="horizontal" size={20} />
+        )}
       </div>
 
       {/* fixed bottom-right HUD readout */}

@@ -7,6 +7,7 @@ import { experience } from "@/content/experience";
 import { Section } from "@/components/primitives/section";
 import { OrgLogo } from "@/components/primitives/org-tag";
 import { Chip } from "@/components/primitives/chip";
+import { FlameTip } from "@/components/primitives/flame-tip";
 import { cn } from "@/lib/utils";
 
 export function ExperienceTimeline() {
@@ -50,6 +51,8 @@ export function ExperienceTimeline() {
               boxShadow: "0 0 12px color-mix(in oklab, var(--color-accent) 60%, transparent)",
             }}
           />
+          {/* Burning flame at the leading (bottom) edge of the progress fill */}
+          <FlameTip progress={1} orientation="vertical" size={22} />
         </motion.div>
         <ol className="space-y-10 md:space-y-16">
           {experience.map((r, i) => {
