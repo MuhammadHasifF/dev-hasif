@@ -51,10 +51,11 @@ export function HomeBgRamp() {
       style={
         {
           ["--ramp" as string]: "0",
-          // Stay 0 until Skills section starts (~ramp 0.62 of the home page),
-          // then climb to 1 by Contact (~ramp 0.96). Footer eases back slightly.
+          // Stay 0 through All Projects + first half of Skills (matches the
+          // dark Experience-section feel). Ramp begins at ~ramp 0.78 (mid-
+          // Skills) and climbs to peak by ~0.96 (Contact). Footer eases back.
           ["--gate" as string]:
-            "calc(min(1, max(0, (var(--ramp) - 0.62) * 2.95)) * (1 - max(0, (var(--ramp) - 0.97) * 5)))",
+            "calc(min(1, max(0, (var(--ramp) - 0.78) * 5.0)) * (1 - max(0, (var(--ramp) - 0.97) * 5)))",
         } as React.CSSProperties
       }
     >

@@ -11,6 +11,7 @@ import {
 } from "framer-motion";
 import { projects } from "@/content/projects";
 import { Section } from "@/components/primitives/section";
+import { OrgLogo } from "@/components/primitives/org-tag";
 import { DiagonalArrow } from "@/components/primitives/diagonal-arrow";
 
 const featured = projects.filter((p) => p.featured).slice(0, 5);
@@ -23,14 +24,14 @@ export function FeaturedRail() {
     offset: ["start start", "end end"],
   });
 
-  // Translate the rail right, to, left as the user scrolls vertically.
+  // Translate the rail right to left as the user scrolls vertically.
   const x = useTransform(scrollYProgress, [0, 1], ["0%", "-78%"]);
 
-  // Smooth bg fill: black at start, ramps to a deep cinematic red as the rail
-  // travels. No diagonal lines, no stripes, just a single soft radial wash
-  // moving with the rail.
-  const bgRedMix = useTransform(scrollYProgress, [0, 1], [0, 1]);
-  const bgX = useTransform(scrollYProgress, [0, 1], ["18%", "82%"]);
+  // Keep the section background as the page's normal dark feel
+  // (transparent so the global cyber-grid shows through).
+  // Only a small accent radial drifts across the background, condensed
+  // and subtle. NO heavy black, to, red wash, NO stripes.
+  const accentX = useTransform(scrollYProgress, [0, 1], ["20%", "80%"]);
 
   if (reduce) {
     return (
@@ -42,8 +43,8 @@ export function FeaturedRail() {
         title={["Featured Work."]}
       >
         <div className="grid gap-4 md:grid-cols-2">
-          {featured.map((p) => (
-            <FeaturedCardStatic key={p.slug} project={p} />
+          {featured.map((p, i) => (
+            <FeaturedStaticCard key={p.slug} project={p} index={i} />
           ))}
         </div>
       </Section>
@@ -59,10 +60,9 @@ export function FeaturedRail() {
       className="relative h-[400vh]"
     >
       <div className="sticky top-0 flex h-[100dvh] flex-col justify-center overflow-hidden">
-        {/* Smooth, single-piece red wash that follows the rail.
-            No stripes, no patterns, no seams. Pure black at start,
-            deep cinematic red at the end. */}
-        <SmoothRedBg progress={scrollYProgress} bgX={bgX} bgRedMix={bgRedMix} />
+        {/* Subtle drifting accent only — no heavy bg, no stripes. The page's
+            normal cyber-grid shows through (matches Experience-section feel). */}
+        <SubtleAccent x={accentX} progress={scrollYProgress} />
 
         <div className="relative z-[1] mx-auto mb-6 flex w-full max-w-6xl items-end justify-between px-4 sm:px-6">
           <div>
@@ -82,13 +82,19 @@ export function FeaturedRail() {
         <motion.div style={{ x }} className="relative z-[1] flex gap-6 px-[10vw]">
           {featured.map((p, i) => (
             <div key={p.slug} className="shrink-0 w-[80vw] md:w-[60vw] lg:w-[44vw]">
-              <FeaturedCardMotion project={p} index={i} progress={scrollYProgress} total={total} />
+              <FeaturedCardMotion
+                project={p}
+                index={i}
+                progress={scrollYProgress}
+                total={total}
+                count={featured.length}
+              />
             </div>
           ))}
           <div className="shrink-0 w-[80vw] md:w-[60vw] lg:w-[44vw]">
             <Link
               href="/work"
-              className="hud-panel group flex h-full min-h-[420px] flex-col items-center justify-center gap-3 p-12 text-center transition-colors hover:border-[var(--color-accent)]"
+              className="hud-panel group flex h-full min-h-[460px] flex-col items-center justify-center gap-3 p-12 text-center transition-colors hover:border-[var(--color-accent)]"
             >
               <span className="font-display text-3xl text-[var(--color-text-0)] md:text-4xl">
                 See every project
@@ -106,68 +112,30 @@ export function FeaturedRail() {
 }
 
 /**
- * Smooth, single-piece red bg.
- *  - Solid base layer fades from #050204 (near-black) to #1a0608 (deep red)
- *  - One soft red glow that drifts with the rail, no edges, no stripes
- *  - Faint vignette to keep cards readable
- * Built so there is no visible boundary between this section and adjacent
- * sections, the global cyber grid still shows through the partially
- * transparent layers, so it stitches in instead of cutting hard.
+ * Subtle drifting accent only. The section background stays the page's
+ * default (Experience-section feel). The only visible scroll-bound
+ * change is a soft red glow that drifts horizontally with the rail.
  */
-function SmoothRedBg({
+function SubtleAccent({
+  x,
   progress,
-  bgX,
-  bgRedMix,
 }: {
+  x: MotionValue<string>;
   progress: MotionValue<number>;
-  bgX: MotionValue<string>;
-  bgRedMix: MotionValue<number>;
 }) {
-  const baseBg = useTransform(
-    bgRedMix,
-    (m) =>
-      `linear-gradient(180deg, rgba(5,2,4,${0.92 - m * 0.18}) 0%, rgba(${Math.round(
-        5 + m * 35,
-      )},${Math.round(2 + m * 4)},${Math.round(4 + m * 8)},${0.94 - m * 0.06}) 100%)`,
+  const accent = useTransform(
+    x,
+    (px) =>
+      `radial-gradient(36% 56% at ${px} 50%, color-mix(in oklab, var(--color-accent) 18%, transparent) 0%, color-mix(in oklab, var(--color-accent) 6%, transparent) 50%, transparent 80%)`,
   );
-  const glowBg = useTransform(
-    bgX,
-    (x) =>
-      `radial-gradient(50% 80% at ${x} 50%, color-mix(in oklab, var(--color-accent) 28%, transparent) 0%, color-mix(in oklab, var(--color-accent) 8%, transparent) 45%, transparent 75%)`,
-  );
-  const glowOpacity = useTransform(progress, [0, 0.2, 1], [0, 0.55, 0.85]);
+  const accentOpacity = useTransform(progress, [0, 0.15, 1], [0, 0.85, 0.85]);
 
   return (
-    <>
-      {/* Base black to deep red wash */}
-      <motion.div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10"
-        style={{ background: baseBg }}
-      />
-      {/* Travelling soft red glow, no edges */}
-      <motion.div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10"
-        style={{ background: glowBg, opacity: glowOpacity }}
-      />
-      {/* Top + bottom feathered edges so the section blends seamlessly into
-          adjacent areas, no hard horizontal lines */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[18vh]"
-        style={{
-          background: "linear-gradient(to bottom, rgba(0,0,0,0.85), transparent)",
-        }}
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-[18vh]"
-        style={{
-          background: "linear-gradient(to top, rgba(0,0,0,0.85), transparent)",
-        }}
-      />
-    </>
+    <motion.div
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 -z-10"
+      style={{ background: accent, opacity: accentOpacity, mixBlendMode: "screen" }}
+    />
   );
 }
 
@@ -176,85 +144,181 @@ function FeaturedCardMotion({
   index,
   progress,
   total,
+  count,
 }: {
   project: (typeof projects)[number];
   index: number;
   progress: MotionValue<number>;
   total: number;
+  count: number;
 }) {
   const slot = index / Math.max(1, total - 1);
 
-  // Soft accent wash that peaks when the card is centered. No stripes.
-  const peakOpacity = useTransform(progress, (v) => {
+  // Border glow + accent rail intensity peak when the card is centered.
+  const peak = useTransform(progress, (v) => {
     const dist = Math.abs(v - slot);
-    return Math.max(0, 0.5 - dist * 1.4);
+    return Math.max(0, 1 - dist * 2.4);
   });
+  const borderColor = useTransform(
+    peak,
+    (p) =>
+      `color-mix(in oklab, var(--color-accent) ${Math.round(15 + p * 55)}%, var(--color-border))`,
+  );
+  const railOpacity = useTransform(peak, (p) => 0.25 + p * 0.75);
+  const railHeight = useTransform(peak, (p) => `${20 + p * 80}%`);
+  const haloOpacity = useTransform(peak, (p) => p * 0.45);
+
+  const num = String(index + 1).padStart(2, "0");
+  const totalStr = String(count).padStart(2, "0");
 
   return (
-    <Link
-      href={`/work/${p.slug}`}
-      className="hud-panel hud-panel-hover group relative block h-full min-h-[420px] overflow-hidden p-8 transition-colors"
-    >
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full opacity-0 blur-3xl transition-opacity duration-700 group-hover:opacity-40"
-        style={{ background: "var(--color-accent)" }}
-      />
+    <Link href={`/work/${p.slug}`} className="block h-full">
       <motion.div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(60% 60% at 50% 50%, color-mix(in oklab, var(--color-accent) 36%, transparent), transparent 70%)",
-          opacity: peakOpacity,
-          mixBlendMode: "screen",
-        }}
-      />
-      <div className="absolute inset-0 bg-noise opacity-[0.04] mix-blend-overlay" />
-      <CardBody p={p} />
+        className="hud-panel group relative flex h-full min-h-[460px] flex-col overflow-hidden p-7 transition-[border-color,box-shadow,background] md:p-9"
+        style={{ borderColor }}
+      >
+        {/* Left vertical accent rail that lights up as the card centers */}
+        <motion.div
+          aria-hidden="true"
+          className="absolute left-0 top-1/2 w-[2px] -translate-y-1/2"
+          style={{
+            height: railHeight,
+            background:
+              "linear-gradient(to bottom, transparent, var(--color-accent), transparent)",
+            boxShadow:
+              "0 0 12px color-mix(in oklab, var(--color-accent) 80%, transparent)",
+            opacity: railOpacity,
+          }}
+        />
+        {/* Halo behind the card when centered */}
+        <motion.div
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-12 -top-12 h-72 w-72 rounded-full blur-3xl"
+          style={{
+            background: "var(--color-accent)",
+            opacity: haloOpacity,
+            mixBlendMode: "screen",
+          }}
+        />
+        {/* Hover accent intensifier */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+          style={{
+            background:
+              "radial-gradient(circle at 0% 0%, color-mix(in oklab, var(--color-accent) 14%, transparent), transparent 50%)",
+            mixBlendMode: "screen",
+          }}
+        />
+
+        {/* Top row, slot index + category + year */}
+        <div className="relative flex items-start justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <OrgLogo orgKey={p.orgKey} size="md" />
+            <div className="flex flex-col">
+              <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-text-2)]">
+                {p.category}
+              </span>
+              <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-text-2)]">
+                {p.year}
+              </span>
+            </div>
+          </div>
+          <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-text-2)]">
+            <span className="text-[var(--color-accent)]">{num}</span> / {totalStr}
+          </div>
+        </div>
+
+        {/* Hairline divider */}
+        <motion.div
+          aria-hidden="true"
+          className="relative mt-5 h-px w-full"
+          style={{
+            background:
+              "linear-gradient(to right, var(--color-accent) 0%, transparent 100%)",
+            opacity: railOpacity,
+          }}
+        />
+
+        {/* Title + tagline */}
+        <h3 className="relative mt-5 font-display text-3xl leading-tight text-[var(--color-text-0)] md:text-4xl">
+          {p.title}
+        </h3>
+        <p className="relative mt-3 max-w-md text-sm text-[var(--color-text-1)] md:text-base">
+          {p.tagline}
+        </p>
+
+        {/* Stack chips */}
+        <div className="relative mt-auto flex flex-wrap items-center gap-2 pt-8">
+          {p.stack.slice(0, 5).map((s) => (
+            <span
+              key={s}
+              className="rounded-sm border border-[var(--color-border)] bg-[var(--color-bg-2)]/60 px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-[var(--color-text-1)] transition-colors group-hover:border-[var(--color-accent)]/40"
+            >
+              {s}
+            </span>
+          ))}
+        </div>
+
+        {/* CTA row */}
+        <div className="relative mt-6 flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.22em]">
+          <span className="text-[var(--color-text-2)]">{p.org}</span>
+          <span className="inline-flex items-center gap-2 text-[var(--color-text-0)] transition-colors group-hover:text-[var(--color-accent)]">
+            Read case study
+            <DiagonalArrow />
+          </span>
+        </div>
+      </motion.div>
     </Link>
   );
 }
 
-function FeaturedCardStatic({ project: p }: { project: (typeof projects)[number] }) {
+function FeaturedStaticCard({
+  project: p,
+  index,
+}: {
+  project: (typeof projects)[number];
+  index: number;
+}) {
+  const num = String(index + 1).padStart(2, "0");
   return (
     <Link
       href={`/work/${p.slug}`}
-      className="hud-panel hud-panel-hover group relative block h-full min-h-[420px] overflow-hidden p-8 transition-colors"
+      className="hud-panel hud-panel-hover group relative block h-full min-h-[460px] overflow-hidden p-7 transition-colors md:p-9"
     >
-      <div className="absolute inset-0 bg-noise opacity-[0.04] mix-blend-overlay" />
-      <CardBody p={p} />
-    </Link>
-  );
-}
-
-function CardBody({ p }: { p: (typeof projects)[number] }) {
-  return (
-    <div className="relative flex h-full flex-col">
-      <div className="flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--color-text-2)]">
-        <span>{p.category}</span>
-        <span>{p.year}</span>
+      <div className="relative flex items-start justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <OrgLogo orgKey={p.orgKey} size="md" />
+          <div className="flex flex-col">
+            <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-text-2)]">
+              {p.category}
+            </span>
+            <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-text-2)]">
+              {p.year}
+            </span>
+          </div>
+        </div>
+        <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-text-2)]">
+          <span className="text-[var(--color-accent)]">{num}</span> / 05
+        </div>
       </div>
-      <h3 className="mt-6 font-display text-3xl leading-tight text-[var(--color-text-0)] md:text-4xl">
+      <div className="mt-5 h-px w-full bg-gradient-to-r from-[var(--color-accent)] to-transparent opacity-50" />
+      <h3 className="mt-5 font-display text-3xl leading-tight text-[var(--color-text-0)] md:text-4xl">
         {p.title}
       </h3>
       <p className="mt-3 max-w-md text-sm text-[var(--color-text-1)] md:text-base">
         {p.tagline}
       </p>
-      <div className="mt-auto flex flex-wrap items-center gap-2 pt-8">
-        {p.stack.slice(0, 4).map((s) => (
+      <div className="mt-8 flex flex-wrap items-center gap-2">
+        {p.stack.slice(0, 5).map((s) => (
           <span
             key={s}
-            className="rounded-full border border-[var(--color-border)] bg-[var(--color-bg-2)] px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-[var(--color-text-1)]"
+            className="rounded-sm border border-[var(--color-border)] bg-[var(--color-bg-2)]/60 px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-[var(--color-text-1)]"
           >
             {s}
           </span>
         ))}
       </div>
-      <div className="mt-6 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--color-text-0)]">
-        Read case study
-        <DiagonalArrow />
-      </div>
-    </div>
+    </Link>
   );
 }
