@@ -11,17 +11,6 @@ import { Chip } from "@/components/primitives/chip";
 import { GlitchReveal } from "@/components/primitives/glitch-reveal";
 import { cn } from "@/lib/utils";
 
-const bentoSize: Record<number, string> = {
-  0: "md:col-span-3 md:row-span-2",
-  1: "md:col-span-3 md:row-span-1",
-  2: "md:col-span-2 md:row-span-1",
-  3: "md:col-span-2 md:row-span-1",
-  4: "md:col-span-2 md:row-span-1",
-  5: "md:col-span-3 md:row-span-1",
-  6: "md:col-span-3 md:row-span-1",
-  7: "md:col-span-3 md:row-span-1",
-};
-
 export function ProjectsBento() {
   const [filter, setFilter] = useState<ProjectCategory | "All">("All");
   const filtered = useMemo(
@@ -60,14 +49,14 @@ export function ProjectsBento() {
       </div>
 
       <LayoutGroup id="projects-bento">
-        <div className="grid auto-rows-[minmax(170px,auto)] grid-cols-1 gap-4 md:grid-cols-6">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           <AnimatePresence mode="popLayout">
             {filtered.map((p, i) => (
               <motion.div
                 key={p.slug}
                 layout
                 transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
-                className={cn(bentoSize[i % 8] ?? "md:col-span-3 md:row-span-1")}
+                className="h-full"
               >
                 {/* Odd index → slide in from left, even index → from right */}
                 <GlitchReveal side={i % 2 === 0 ? "left" : "right"} className="group h-full">

@@ -130,7 +130,7 @@ export function GlitchHeadline({ className }: { className?: string }) {
 
   return (
     <div ref={ref} className={cn("relative", className)}>
-      <h1 className="font-display text-[clamp(64px,12vw,180px)] font-medium leading-[0.88] tracking-[-0.04em] text-[var(--color-text-0)]">
+      <h1 className="font-display text-[clamp(3rem,14vw,11rem)] font-bold leading-[0.88] tracking-[-0.04em] text-[var(--color-text-0)]">
         <GlitchLine revealed={revealed} delay={0}>
           <GlitchWord
             text={first}

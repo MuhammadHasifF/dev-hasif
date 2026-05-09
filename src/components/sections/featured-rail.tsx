@@ -90,11 +90,11 @@ export function FeaturedRail() {
       ref={containerRef}
       aria-label="Featured projects — pinned vertical stack"
       className="relative"
-      style={{ height: `${(featured.length + 1) * 100}vh` }}
+      style={{ height: `${(featured.length + 1) * 100}dvh` }}
     >
       <div
         ref={pinRef}
-        className="relative flex h-screen w-full items-center justify-center overflow-hidden"
+        className="relative flex h-[100dvh] w-full items-center justify-center overflow-hidden"
       >
         {/* Constant red bg — locked, no hue shift, no pulsing */}
         <div
