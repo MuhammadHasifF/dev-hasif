@@ -61,7 +61,8 @@ export function GlitchHeadline({ className }: { className?: string }) {
     return () => io.disconnect();
   }, []);
 
-  // Glitch + swap loop
+  // Glitch + swap loop. Pauses when the hero scrolls out of view OR the
+  // tab is hidden so we don't burn CPU running animations no one is seeing.
   useEffect(() => {
     if (!revealed) return;
     const reduce =
@@ -70,10 +71,34 @@ export function GlitchHeadline({ className }: { className?: string }) {
     if (reduce) return;
 
     let cancelled = false;
+    let visible = !document.hidden;
+    let onScreen = true;
     const timeouts: ReturnType<typeof setTimeout>[] = [];
+
+    const onVisibility = () => {
+      visible = !document.hidden;
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
+    const sentinel = ref.current;
+    let io: IntersectionObserver | null = null;
+    if (sentinel && typeof IntersectionObserver !== "undefined") {
+      io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) onScreen = e.isIntersecting;
+        },
+        { threshold: 0 },
+      );
+      io.observe(sentinel);
+    }
 
     const trigger = () => {
       if (cancelled) return;
+      if (!visible || !onScreen) {
+        // Skip this beat, retry shortly when conditions allow.
+        timeouts.push(setTimeout(trigger, 600));
+        return;
+      }
       const heavy = Math.random() < 0.42;
       const swap = Math.random() < 0.55;
       const beats = heavy ? 7 : 4;
@@ -111,6 +136,8 @@ export function GlitchHeadline({ className }: { className?: string }) {
     return () => {
       cancelled = true;
       timeouts.forEach(clearTimeout);
+      document.removeEventListener("visibilitychange", onVisibility);
+      io?.disconnect();
     };
   }, [revealed]);
 

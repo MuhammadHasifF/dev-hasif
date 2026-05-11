@@ -45,8 +45,18 @@ export function NavMonster({ scopeRef }: { scopeRef: React.RefObject<HTMLElement
     let attacking = false;
     let attackTimer = 0;
     let prevTs = performance.now();
+    let paused = document.hidden;
+    const onVisibility = () => {
+      paused = document.hidden;
+      if (!paused) prevTs = performance.now();
+    };
+    document.addEventListener("visibilitychange", onVisibility);
 
     const tick = (ts: number) => {
+      if (paused) {
+        raf = requestAnimationFrame(tick);
+        return;
+      }
       const dt = Math.min(0.05, (ts - prevTs) / 1000);
       prevTs = ts;
       const w = scope.clientWidth;
@@ -145,6 +155,7 @@ export function NavMonster({ scopeRef }: { scopeRef: React.RefObject<HTMLElement
       scope.removeEventListener("pointermove", onMove);
       scope.removeEventListener("pointerenter", onEnter);
       scope.removeEventListener("pointerleave", onLeave);
+      document.removeEventListener("visibilitychange", onVisibility);
     };
   }, [enabled, scopeRef]);
 

@@ -136,6 +136,7 @@ export function Nav() {
                 <Link
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item)}
+                  aria-current={active ? "page" : undefined}
                   className={cn(
                     "group/nav relative inline-flex rounded-full px-3 py-1.5 text-sm transition",
                     active
@@ -191,7 +192,7 @@ export function Nav() {
         </div>
       </nav>
 
-      {/* Mobile drawer — anchor links scroll-and-close */}
+      {/* Mobile drawer, anchor links scroll-and-close */}
       {open && (
         <>
           <div
@@ -199,7 +200,12 @@ export function Nav() {
             onClick={() => setOpen(false)}
             aria-hidden="true"
           />
-          <div className="absolute inset-x-0 top-14 z-50 border-t border-[var(--color-border)] bg-[var(--color-bg-0)]/95 backdrop-blur-md md:hidden">
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Site navigation"
+            className="absolute inset-x-0 top-14 z-50 border-t border-[var(--color-border)] bg-[var(--color-bg-0)]/95 backdrop-blur-md md:hidden"
+          >
             <div className="mx-auto max-w-6xl px-4 py-4">
               <ul className="flex flex-col gap-1">
                 {siteConfig.nav.map((item) => {
@@ -209,6 +215,7 @@ export function Nav() {
                       <Link
                         href={item.href}
                         onClick={(e) => handleNavClick(e, item)}
+                        aria-current={active ? "page" : undefined}
                         className={cn(
                           "flex min-h-[44px] items-center justify-between rounded-lg px-3 py-3 text-base hover:bg-[var(--color-bg-2)]",
                           active ? "text-[var(--color-text-0)]" : "text-[var(--color-text-1)]",
