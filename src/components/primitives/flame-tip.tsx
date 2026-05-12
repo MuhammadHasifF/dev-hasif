@@ -191,14 +191,20 @@ function FlameSvg({
 
 function Sparks({ orientation }: { orientation: Orientation }) {
   const horizontal = orientation === "horizontal";
-  // Six independent sparks with different durations + delays + targets.
+  // Twelve independent sparks with staggered timing + varied directions.
   const sparks = [
-    { d: 1.1, t: 0.0, x: -22, y: 6 },
-    { d: 1.4, t: 0.18, x: -28, y: -4 },
-    { d: 0.9, t: 0.4, x: -16, y: 10 },
-    { d: 1.6, t: 0.6, x: -32, y: 3 },
-    { d: 1.0, t: 0.85, x: -18, y: -8 },
-    { d: 1.3, t: 1.1, x: -24, y: 8 },
+    { d: 1.1, t: 0.0, x: -22, y: 6, s: 3 },
+    { d: 1.4, t: 0.12, x: -28, y: -4, s: 2 },
+    { d: 0.85, t: 0.24, x: -16, y: 10, s: 3 },
+    { d: 1.55, t: 0.36, x: -34, y: 3, s: 2 },
+    { d: 1.0, t: 0.48, x: -18, y: -10, s: 3 },
+    { d: 1.3, t: 0.6, x: -26, y: 8, s: 2 },
+    { d: 1.2, t: 0.72, x: -20, y: -6, s: 3 },
+    { d: 1.45, t: 0.84, x: -30, y: 12, s: 2 },
+    { d: 0.95, t: 0.96, x: -14, y: -8, s: 3 },
+    { d: 1.6, t: 1.08, x: -36, y: 5, s: 2 },
+    { d: 1.15, t: 1.2, x: -24, y: -3, s: 3 },
+    { d: 1.35, t: 1.32, x: -28, y: 9, s: 2 },
   ];
   return (
     <>
@@ -208,12 +214,14 @@ function Sparks({ orientation }: { orientation: Orientation }) {
         return (
           <span
             key={i}
-            className="absolute h-[3px] w-[3px] rounded-full"
+            className="absolute rounded-full"
             style={{
-              top: horizontal ? "30%" : "70%",
+              top: horizontal ? "32%" : "68%",
               left: horizontal ? 0 : "55%",
+              width: s.s,
+              height: s.s,
               background:
-                "radial-gradient(circle, #fff5e0 0%, #ff5560 50%, transparent 100%)",
+                "radial-gradient(circle, #fff5e0 0%, #ff5560 55%, transparent 100%)",
               boxShadow:
                 "0 0 6px #ff5560, 0 0 10px color-mix(in oklab, var(--color-accent) 70%, transparent)",
               opacity: 0,
@@ -224,6 +232,20 @@ function Sparks({ orientation }: { orientation: Orientation }) {
           />
         );
       })}
+      {/* Ember smoke wisp rising above the flame */}
+      <span
+        className="absolute"
+        style={{
+          top: horizontal ? "-40%" : "120%",
+          left: horizontal ? "30%" : "55%",
+          width: horizontal ? 18 : 4,
+          height: horizontal ? 4 : 18,
+          background:
+            "radial-gradient(circle, color-mix(in oklab, var(--color-accent) 30%, transparent) 0%, transparent 70%)",
+          filter: "blur(2px)",
+          animation: "emberWisp 1.6s linear infinite",
+        }}
+      />
     </>
   );
 }

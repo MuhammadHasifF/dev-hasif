@@ -122,9 +122,59 @@ export function ContactInline() {
     >
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="hud-panel grid gap-4 p-6 md:grid-cols-2 md:p-8"
+        className="relative grid gap-4 overflow-hidden rounded-2xl border border-[var(--color-accent)]/35 bg-gradient-to-br from-[#0b0307] via-[#1a0610] to-[#2a0418] p-6 shadow-[0_0_60px_-12px_color-mix(in_oklab,var(--color-accent)_55%,transparent)] md:grid-cols-2 md:p-8"
         aria-live="polite"
       >
+        {/* Pink/cyber atmospheric gradients */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full opacity-50 blur-3xl"
+          style={{
+            background:
+              "radial-gradient(circle, #ff3a78 0%, color-mix(in oklab, var(--color-accent) 40%, transparent) 50%, transparent 80%)",
+          }}
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -left-24 -bottom-24 h-72 w-72 rounded-full opacity-45 blur-3xl"
+          style={{
+            background:
+              "radial-gradient(circle, #ff5d9d 0%, color-mix(in oklab, var(--color-accent-3) 40%, transparent) 55%, transparent 85%)",
+          }}
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 opacity-25 mix-blend-overlay"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(to bottom, transparent 0 2px, rgba(255,90,130,0.06) 2px 3px)",
+          }}
+        />
+        {/* Corner brackets */}
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute left-3 top-3 h-3 w-3 border-l border-t border-[var(--color-accent)]"
+        />
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute right-3 top-3 h-3 w-3 border-r border-t border-[var(--color-accent)]"
+        />
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute left-3 bottom-3 h-3 w-3 border-l border-b border-[var(--color-accent)]"
+        />
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute right-3 bottom-3 h-3 w-3 border-r border-b border-[var(--color-accent)]"
+        />
+        {/* Channel header strip */}
+        <div className="relative md:col-span-2 mb-1 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-text-2)]">
+          <span className="inline-flex items-center gap-2">
+            <span className="status-dot" />
+            channel open · welcoming signal
+          </span>
+          <span className="text-[var(--color-accent-3)]">{"//"} secure transmit</span>
+        </div>
         <input
           type="text"
           tabIndex={-1}
@@ -134,16 +184,22 @@ export function ContactInline() {
           {...register("honeypot")}
         />
 
-        <Field id="name" label="Name" error={errors.name?.message}>
-          <input id="name" autoComplete="name" {...register("name")} className={inputCls(!!errors.name)} />
-        </Field>
-        <Field id="email" label="Email" error={errors.email?.message}>
-          <input id="email" type="email" autoComplete="email" {...register("email")} className={inputCls(!!errors.email)} />
-        </Field>
-        <Field id="company" label="Org (optional)" error={errors.company?.message}>
-          <input id="company" autoComplete="organization" {...register("company")} className={inputCls(!!errors.company)} />
-        </Field>
-        <div className="md:col-span-2">
+        <div className="relative">
+          <Field id="name" label="Name" error={errors.name?.message}>
+            <input id="name" autoComplete="name" {...register("name")} className={inputCls(!!errors.name)} />
+          </Field>
+        </div>
+        <div className="relative">
+          <Field id="email" label="Email" error={errors.email?.message}>
+            <input id="email" type="email" autoComplete="email" {...register("email")} className={inputCls(!!errors.email)} />
+          </Field>
+        </div>
+        <div className="relative">
+          <Field id="company" label="Org (optional)" error={errors.company?.message}>
+            <input id="company" autoComplete="organization" {...register("company")} className={inputCls(!!errors.company)} />
+          </Field>
+        </div>
+        <div className="relative md:col-span-2">
           <Field id="message" label="Message" error={errors.message?.message}>
             <div className="relative">
               <textarea
@@ -172,7 +228,7 @@ export function ContactInline() {
           </Field>
         </div>
 
-        <div className="md:col-span-2 flex flex-wrap items-center justify-between gap-3">
+        <div className="relative md:col-span-2 flex flex-wrap items-center justify-between gap-3">
           <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-text-2)]">
             <span className="text-[var(--color-accent)]">›</span> direct{" "}
             <a href="mailto:muhammad.hasif.faisal@gmail.com" className="text-[var(--color-text-1)] underline-offset-4 hover:text-[var(--color-accent)] hover:underline">
@@ -240,7 +296,7 @@ function Field({
 
 function inputCls(hasError: boolean) {
   return cn(
-    "w-full rounded-sm border bg-[var(--color-bg-2)] px-3 py-2.5 text-sm text-[var(--color-text-0)] placeholder:text-[var(--color-text-2)] outline-none transition-[border-color,box-shadow] focus:border-[var(--color-accent)] focus:shadow-[0_0_0_1px_var(--color-accent),0_0_16px_-4px_var(--color-accent)]",
-    hasError ? "border-[var(--color-warning)]" : "border-[var(--color-border)]"
+    "w-full rounded-md border bg-[color:color-mix(in_oklab,#1a0410_85%,transparent)] px-3 py-2.5 text-sm text-white placeholder:text-white/40 outline-none transition-[border-color,box-shadow] focus:border-[#ff3a78] focus:shadow-[0_0_0_1px_#ff3a78,0_0_24px_-4px_#ff3a78,inset_0_0_18px_-8px_#ff3a78]",
+    hasError ? "border-[var(--color-warning)]" : "border-[#ff3a78]/30 hover:border-[#ff3a78]/55",
   );
 }

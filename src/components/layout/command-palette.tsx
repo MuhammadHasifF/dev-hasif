@@ -80,11 +80,11 @@ export function CommandPalette() {
 
           <Command.Group heading="Navigate" className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:pb-1 [&_[cmdk-group-heading]]:pt-2 [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-widest [&_[cmdk-group-heading]]:text-[var(--color-text-2)]">
             <Item icon={<Home />} label="Home" onSelect={() => go("/")} />
-            <Item icon={<Info />} label="About" onSelect={() => go("/about")} />
-            <Item icon={<Rocket />} label="Work" onSelect={() => go("/work")} />
-            <Item icon={<Wrench />} label="Experience" onSelect={() => go("/experience")} />
+            <Item icon={<Info />} label="About" onSelect={() => go("/#about")} />
+            <Item icon={<Wrench />} label="Experience" onSelect={() => go("/#experience")} />
+            <Item icon={<Rocket />} label="Work archive" onSelect={() => go("/work")} />
             <Item icon={<FileText />} label="Resume" onSelect={() => go("/resume")} />
-            <Item icon={<Mail />} label="Contact" onSelect={() => go("/contact")} />
+            <Item icon={<Mail />} label="Contact" onSelect={() => go("/#contact")} />
           </Command.Group>
 
           <Command.Group heading="Projects" className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:pb-1 [&_[cmdk-group-heading]]:pt-2 [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-widest [&_[cmdk-group-heading]]:text-[var(--color-text-2)]">

@@ -25,7 +25,7 @@ export function Footer() {
           </p>
           <div className="mt-6 flex flex-wrap gap-2">
             <Link
-              href="/contact"
+              href="/#contact"
               className="inline-flex h-10 items-center gap-2 rounded-sm border border-[var(--color-accent)] bg-[var(--color-accent)] px-4 font-mono text-[11px] uppercase tracking-[0.18em] text-white transition-[box-shadow,transform] hover:shadow-[0_0_24px_-4px_var(--color-accent)] active:scale-[0.98]"
             >
               <Mail className="h-4 w-4" /> Open channel

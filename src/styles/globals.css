@@ -124,6 +124,11 @@
     15%  { opacity: 1; transform: translate(calc(var(--dx) * 0.25), calc(var(--dy) * 0.25)) scale(1.1); }
     100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0.3); }
   }
+  @keyframes emberWisp {
+    0%   { opacity: 0; transform: translate(0, 0) scale(0.6); }
+    35%  { opacity: 0.5; transform: translate(-6px, -8px) scale(1); }
+    100% { opacity: 0; transform: translate(-14px, -22px) scale(1.6); }
+  }
   @keyframes sparkFlicker {
     0%   { opacity: 0.65; transform: translate(-30%, -55%) scaleX(0.85) scaleY(1); }
     25%  { opacity: 1;    transform: translate(-30%, -60%) scaleX(1.05) scaleY(1.1); }
