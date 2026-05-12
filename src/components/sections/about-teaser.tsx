@@ -19,21 +19,19 @@ export function AboutTeaser() {
       <div className="grid items-start gap-12 md:grid-cols-2">
         <Reveal>
           <p className="text-pretty text-lg leading-relaxed text-[var(--color-text-0)]/90">
-            Applied AI undergraduate and full-stack engineer shipping{" "}
-            <span className="text-[var(--color-accent)]">data products</span>{" "}
-            end-to-end , {" "}
-            <span className="text-[var(--color-accent)]">data pipelines</span>,{" "}
-            <span className="text-[var(--color-accent)]">predictive modeling</span>,{" "}
-            <span className="text-[var(--color-accent)]">LLM applications</span>, and
-            the web platforms that surface insights to real users.
+            Applied AI undergraduate (SIT, Honours, expected 2028) building
+            production grade{" "}
+            <span className="text-[var(--color-accent)]">machine learning</span>,{" "}
+            <span className="text-[var(--color-accent)]">LLM</span>, and{" "}
+            <span className="text-[var(--color-accent)]">data systems</span>{" "}
+            end to end.
           </p>
           <p className="mt-6 max-w-xl text-[var(--color-text-1)]">
-            I&rsquo;ve built ML forecasting pipelines at Deloitte, real-time 3D
-            web platforms at SIT, and analytics dashboards across government
-            engagements. Comfortable across the modern data and web stack , 
-            Python, SQL, TypeScript, React/Next.js, scikit-learn, LangChain , 
-            with a working knowledge of cybersecurity and automation from time
-            spent in a national SOC and on RPA projects.
+            Hands on experience with Generative AI (Llama 3.3, Groq, LangChain,
+            RAG), time-series forecasting (ARIMA, XGBoost, LightGBM), full stack
+            data platforms (Python, Flask/Django, Vue/React, Pandas, Apache
+            ECharts), and geospatial analytics (ArcGIS) across Deloitte, HTX,
+            Singapore Police Force, MOM, and SIT research labs.
           </p>
           <div className="mt-8">
             <Link

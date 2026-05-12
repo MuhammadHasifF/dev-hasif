@@ -46,29 +46,36 @@ export default function AboutPage() {
         <div className="grid gap-12 md:grid-cols-3">
           <div className="prose prose-invert max-w-none md:col-span-2 text-[var(--color-text-0)]">
             <p>
-              Applied AI undergraduate and full-stack engineer with hands-on
-              experience shipping data products end-to-end, data pipelines,
-              predictive modeling, LLM applications, and the web platforms
-              that surface insights to real users.
+              Applied AI undergraduate (SIT, Honours, expected 2028) building
+              production grade machine learning, LLM, and data systems. Hands
+              on experience with Generative AI (Llama 3.3, Groq, LangChain,
+              RAG), time-series forecasting (ARIMA, XGBoost, LightGBM), full
+              stack data platforms (Python, Flask/Django, Vue/React, Pandas,
+              Apache ECharts), and geospatial analytics (ArcGIS) across
+              Deloitte, HTX, Singapore Police Force, MOM, and SIT research
+              labs.
             </p>
             <p>
-              I&rsquo;ve built ML forecasting pipelines at Deloitte, real-time
-              3D web platforms at SIT, and analytics dashboards across
-              government engagements. Comfortable across the modern data and
-              web stack, Python, SQL, TypeScript, React/Next.js, scikit-learn,
-              LangChain, with a working knowledge of cybersecurity and
-              automation from time spent in a national SOC and on RPA projects.
+              Currently architecting an end to end data platform for the SIT
+              Future Ship & System Design (FSSD) project. Raw maritime alarm
+              data flows through Pandas based ETL into a Flask/Django + Vue/
+              React fault diagnosis app, with Apache ECharts dashboards that
+              translate operational alarm streams into stakeholder facing
+              diagnostic insights.
             </p>
             <PullQuote>
-              I move between research, engineering, and stakeholders fluently,
-              and I write code that ships.
+              Strong record of shipping mission critical, stakeholder facing
+              solutions under pressure.
             </PullQuote>
             <p>
-              Currently shipping a maritime data platform on the SIT FSSD
-              project (Python ETL, fault-diagnosis tooling, Apache ECharts
-              dashboards) alongside studies in Applied AI. I care about clear
-              data, honest metrics, and tools that real operators can actually
-              use.
+              Earlier work spans an MSIG travel insurance LLM prototype at
+              SingHacks 2025 (Llama 3.3 70B, Groq, LangChain, RAG), R3CAP open
+              source 3D reconstruction at SIT's Centre of Immersification
+              (Python, Babylon.js, WebXR, contributions backing CHI '25 and
+              DIS '26 submissions), HTX SOC automation in Python, and Deloitte
+              forecasting work that lifted accuracy by ~12% over baseline
+              ARIMA on client datasets. I move between research, engineering,
+              and stakeholders fluently, and I write code that ships.
             </p>
           </div>
 
