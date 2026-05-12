@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" fill="#ffffff"/>
+  <g transform="translate(6 14)">
+    <path d="M10 4 C 14 0, 22 0, 24 8 C 24 16, 18 22, 10 24 C 6 18, 4 12, 10 4 Z" fill="#c8102e"/>
+    <path d="M14 14 C 18 12, 26 14, 26 24 C 24 32, 16 34, 10 30 C 8 24, 10 18, 14 14 Z" fill="#1b2a73"/>
+  </g>
+  <text x="32" y="44" fill="#0b0e16" font-family="Helvetica, Arial, sans-serif" font-weight="800" font-size="14" letter-spacing="0.5">MSIG</text>
+</svg>

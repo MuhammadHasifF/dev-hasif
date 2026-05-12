@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Github, Linkedin, Mail, FileText } from "lucide-react";
 import { siteConfig } from "@/../site.config";
 import { SettingsMenu } from "@/components/layout/settings-menu";
+import { GlitchWord } from "@/components/primitives/glitch-word";
 
 const buildTime = new Date().toISOString();
 
@@ -11,9 +12,12 @@ export function Footer() {
       <div className="mx-auto grid max-w-6xl gap-12 px-4 py-16 sm:px-6 md:grid-cols-4">
         <div className="md:col-span-2">
           <div className="font-display text-4xl leading-none text-[var(--color-text-0)] md:text-6xl">
-            Let&rsquo;s build
+            <GlitchWord intensity={0.8}>Let&rsquo;s build</GlitchWord>
             <br />
-            <span className="gradient-text">something real.</span>
+            <span className="gradient-text">
+              <GlitchWord>something </GlitchWord>
+              <GlitchWord intensity={1.4}>real.</GlitchWord>
+            </span>
           </div>
           <p className="mt-6 max-w-md text-sm text-[var(--color-text-1)]">
             I&rsquo;m open to research collaborations, engineering roles, and

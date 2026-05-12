@@ -139,6 +139,18 @@
 
 :root {
   color-scheme: dark;
+  --burn-gate: 0;
+}
+
+/* As the home page's red wash intensifies (--burn-gate ramps 0 → 1 from scroll
+ * ~0.82 onward), shift the muted greys toward warm off-white so labels and
+ * borders stay legible against the red. The accent itself shifts toward a
+ * brighter pink so it pops against its own background. */
+:where(body) {
+  --color-text-1: color-mix(in oklab, #8a8b95 calc((1 - var(--burn-gate)) * 100%), #f8e6e9 calc(var(--burn-gate) * 100%));
+  --color-text-2: color-mix(in oklab, #54555f calc((1 - var(--burn-gate)) * 100%), #f0c5cc calc(var(--burn-gate) * 100%));
+  --color-border: color-mix(in oklab, #1a1b22 calc((1 - var(--burn-gate)) * 100%), #ffd0d6 calc(var(--burn-gate) * 18%));
+  --color-accent: color-mix(in oklab, #ff1e3c calc((1 - var(--burn-gate)) * 100%), #fff0e6 calc(var(--burn-gate) * 100%));
 }
 
 .high-contrast {

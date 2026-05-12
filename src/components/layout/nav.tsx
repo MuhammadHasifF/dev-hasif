@@ -40,31 +40,70 @@ export function Nav() {
     setOpen(false);
   }, [pathname]);
 
-  // Active section spy on the home page only — uses IntersectionObserver on each section id.
+  // Active section spy. IntersectionObserver was flaky for tall pinned
+  // sections (Featured rail = 5x viewport) where multiple sections
+  // intersected at once and order flipped. Replaced with a scroll-position
+  // scan: find the section whose top crossed an offset line at the bottom
+  // of the nav. Single scroll listener, rAF-coalesced, deterministic.
   useEffect(() => {
     if (pathname !== "/") {
       setActiveId(null);
       return;
     }
     const ids = siteConfig.nav.filter((n) => isAnchor(n.href)).map((n) => anchorId(n.href));
-    const els = ids
-      .map((id) => document.querySelector(id) as HTMLElement | null)
-      .filter((el): el is HTMLElement => !!el);
-    if (!els.length) return;
+    if (!ids.length) return;
 
-    const io = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-        if (visible[0]) {
-          setActiveId(`#${visible[0].target.id}`);
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const line = 88; // nav 56 + 32 breathing room
+      const els = ids
+        .map((id) => ({ id, el: document.querySelector(id) as HTMLElement | null }))
+        .filter((x): x is { id: string; el: HTMLElement } => !!x.el);
+      if (!els.length) return;
+
+      // Find the section whose top is <= line and whose bottom is > line.
+      // If multiple match, pick the one whose top is closest to (but below) the line.
+      const candidates = els
+        .map(({ id, el }) => {
+          const rect = el.getBoundingClientRect();
+          return { id, top: rect.top, bottom: rect.bottom };
+        })
+        .filter((c) => c.top <= line && c.bottom > line);
+
+      if (candidates.length) {
+        candidates.sort((a, b) => b.top - a.top); // largest top (closest to line from above)
+        setActiveId(candidates[0].id);
+        return;
+      }
+
+      // Before the first numbered section, clear active.
+      if (els[0]) {
+        const first = els[0].el.getBoundingClientRect();
+        if (first.top > line) {
+          setActiveId(null);
+          return;
         }
-      },
-      { threshold: [0.25, 0.5, 0.75], rootMargin: "-72px 0px -40% 0px" },
-    );
-    els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
+      }
+      // After the last section bottom, lock to the last id.
+      const last = els[els.length - 1];
+      if (last) {
+        const r = last.el.getBoundingClientRect();
+        if (r.bottom <= line) setActiveId(last.id);
+      }
+    };
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", update);
+      if (raf) cancelAnimationFrame(raf);
+    };
   }, [pathname]);
 
   const openPalette = () => {

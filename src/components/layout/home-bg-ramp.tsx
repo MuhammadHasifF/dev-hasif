@@ -3,6 +3,12 @@
 import { useEffect, useRef } from "react";
 
 /**
+ * Also writes a global --burn-gate CSS variable on documentElement so other
+ * components (footer, contact, github activity, etc.) can darken their text
+ * + lighten their borders in lockstep with the red wash.
+ */
+
+/**
  * Home-only fixed gradient layer driven by document scroll progress.
  * Stays transparent through Hero / Marquee / Stats / About, begins shifting
  * to red around ~3/4 of the way through the Experience section, deepens
@@ -24,6 +30,9 @@ export function HomeBgRamp() {
     const apply = () => {
       pending = false;
       el.style.setProperty("--ramp", p.toFixed(4));
+      // Gate (0 → 1) ramps from scroll 0.82 to 0.97.
+      const gate = Math.max(0, Math.min(1, (p - 0.82) * 6.5)) * (1 - Math.max(0, (p - 0.97) * 5));
+      document.documentElement.style.setProperty("--burn-gate", gate.toFixed(4));
     };
     const update = () => {
       const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
@@ -40,6 +49,7 @@ export function HomeBgRamp() {
     return () => {
       window.removeEventListener("scroll", update);
       window.removeEventListener("resize", update);
+      document.documentElement.style.removeProperty("--burn-gate");
     };
   }, []);
 
@@ -51,11 +61,11 @@ export function HomeBgRamp() {
       style={
         {
           ["--ramp" as string]: "0",
-          // Stay 0 through All Projects + first half of Skills (matches the
-          // dark Experience-section feel). Ramp begins at ~ramp 0.78 (mid-
-          // Skills) and climbs to peak by ~0.96 (Contact). Footer eases back.
+          // Stay 0 through All Projects + Skills. Ramp begins at ~ramp 0.82
+          // (past mid-Skills, into Credentials) and climbs to peak by ~0.97
+          // (Contact). Footer eases back slightly.
           ["--gate" as string]:
-            "calc(min(1, max(0, (var(--ramp) - 0.78) * 5.0)) * (1 - max(0, (var(--ramp) - 0.97) * 5)))",
+            "calc(min(1, max(0, (var(--ramp) - 0.82) * 6.5)) * (1 - max(0, (var(--ramp) - 0.97) * 5)))",
         } as React.CSSProperties
       }
     >

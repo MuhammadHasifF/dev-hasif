@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   motion,
   useScroll,
@@ -18,14 +18,36 @@ const featured = projects.filter((p) => p.featured).slice(0, 5);
 
 export function FeaturedRail() {
   const targetRef = useRef<HTMLDivElement>(null);
+  const railRef = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: targetRef,
     offset: ["start start", "end end"],
   });
 
-  // Translate the rail right to left as the user scrolls vertically.
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-78%"]);
+  // Measured: how many pixels the rail must travel so the last card's right
+  // edge sits inside the viewport. Recomputes on resize. This guarantees the
+  // last card is FULLY visible at scroll end on every breakpoint.
+  const [endPx, setEndPx] = useState(0);
+  useEffect(() => {
+    const measure = () => {
+      const rail = railRef.current;
+      if (!rail) return;
+      const width = rail.scrollWidth;
+      const vw = window.innerWidth;
+      // 10vw gutter on each side, plus a small overscroll to fully clear.
+      const gutter = vw * 0.1;
+      const offset = Math.max(0, width - vw + gutter + 8);
+      setEndPx(offset);
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
+
+  // Translate the rail right to left as the user scrolls, ending at the
+  // exact pixel offset that fully reveals the trailing card.
+  const x = useTransform(scrollYProgress, [0, 1], [0, -endPx]);
 
   // Keep the section background as the page's normal dark feel
   // (transparent so the global cyber-grid shows through).
@@ -79,7 +101,7 @@ export function FeaturedRail() {
           </div>
         </div>
 
-        <motion.div style={{ x }} className="relative z-[1] flex gap-6 px-[10vw]">
+        <motion.div ref={railRef} style={{ x }} className="relative z-[1] flex gap-6 px-[10vw]">
           {featured.map((p, i) => (
             <div key={p.slug} className="shrink-0 w-[80vw] md:w-[60vw] lg:w-[44vw]">
               <FeaturedCardMotion

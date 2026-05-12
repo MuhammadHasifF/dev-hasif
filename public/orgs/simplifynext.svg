@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" fill="#ffffff"/>
+  <g transform="translate(0 22)">
+    <text x="6" y="14" fill="#c8102e" font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="11">simplify</text>
+    <text x="34" y="14" fill="#7e8186" font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="11">next</text>
+    <path d="M50 6 L54 11 L50 16 L52 11 Z" fill="#c8102e"/>
+  </g>
+  <text x="6" y="44" fill="#7e8186" font-family="Helvetica, Arial, sans-serif" font-weight="500" font-size="6" letter-spacing="0.5">RPA · INTELLIGENT AUTOMATION</text>
+</svg>

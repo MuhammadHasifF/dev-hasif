@@ -79,7 +79,7 @@ export const projects: Project[] = [
       "Conversational AI prototype for MSIG built during SingHacks 2025. Python, Llama 3.3 70B served through Groq for ultra low latency inference, and LangChain driven RAG over policy + destination knowledge bases. Side by side policy comparison across TravelEasy, Pre-Ex, and Scootsurance, plus eligibility aware quoting and itinerary document extraction.",
     year: "2025",
     org: "MSIG · SingHacks",
-    orgKey: "github",
+    orgKey: "msig",
     category: "AI",
     tags: ["GenAI", "RAG", "Hackathon"],
     stack: ["Python", "Llama 3.3 70B", "Groq", "LangChain", "RAG"],
@@ -93,6 +93,27 @@ export const projects: Project[] = [
     ],
     featured: true,
     hue: "from-[var(--color-accent-3)] to-[var(--color-accent)]",
+  },
+  {
+    slug: "ge2025-rpa",
+    title: "GE2025 Polling Operations Automation",
+    tagline:
+      "UiPath RPA + Excel/VBA across 1,900+ polling stations for GE2025, ~30+ analyst hours saved per cycle.",
+    description:
+      "Designed and deployed UiPath automation and dynamic Excel/VBA tools for backend polling logistics during GE2025 across 1,900+ polling stations. Automated crowd recording and ballot box delivery tracking, eliminating an estimated 30+ analyst hours per polling cycle and processing thousands of operational data points per shift.",
+    year: "2025",
+    org: "Singapore Police Force",
+    orgKey: "spf",
+    category: "Government",
+    tags: ["RPA", "Automation", "Elections"],
+    stack: ["UiPath", "Python", "Excel VBA"],
+    impact: [
+      "Saved ~30+ analyst hours per polling cycle",
+      "Processed thousands of operational data points per shift",
+      "Coverage across 1,900+ polling stations",
+    ],
+    featured: true,
+    hue: "from-[var(--color-accent)] to-[var(--color-accent-3)]",
   },
   {
     slug: "m5-forecasting",
@@ -116,27 +137,6 @@ export const projects: Project[] = [
     ],
     featured: true,
     hue: "from-[var(--color-accent-3)] to-[var(--color-accent-2)]",
-  },
-  {
-    slug: "ge2025-rpa",
-    title: "GE2025 Polling Operations Automation",
-    tagline:
-      "UiPath RPA + Excel/VBA across 1,900+ polling stations for GE2025, ~30+ analyst hours saved per cycle.",
-    description:
-      "Designed and deployed UiPath automation and dynamic Excel/VBA tools for backend polling logistics during GE2025 across 1,900+ polling stations. Automated crowd recording and ballot box delivery tracking, eliminating an estimated 30+ analyst hours per polling cycle and processing thousands of operational data points per shift.",
-    year: "2025",
-    org: "Singapore Police Force",
-    orgKey: "spf",
-    category: "Government",
-    tags: ["RPA", "Automation", "Elections"],
-    stack: ["UiPath", "Python", "Excel VBA"],
-    impact: [
-      "Saved ~30+ analyst hours per polling cycle",
-      "Processed thousands of operational data points per shift",
-      "Coverage across 1,900+ polling stations",
-    ],
-    featured: true,
-    hue: "from-[var(--color-accent)] to-[var(--color-accent-3)]",
   },
   {
     slug: "movement-tracker",

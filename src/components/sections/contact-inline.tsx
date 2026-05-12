@@ -3,10 +3,66 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Check, Loader2, Send } from "lucide-react";
 import { Section } from "@/components/primitives/section";
 import { cn } from "@/lib/utils";
+
+/** Cycles through a few example messages as the textarea placeholder. */
+const PLACEHOLDER_CYCLE = [
+  "Hi Hasif, we're hiring a Data/AI engineer and your FSSD work looks like a fit. Open to a chat?",
+  "Got 5 minutes to walk me through how MSIG Travel Assistant routes through Llama 3.3 + Groq?",
+  "We're looking for an ML-leaning full-stack contractor for a 3-month forecasting build. Interested?",
+  "Quick one, what stack would you reach for to ship a vessel-health dashboard MVP in a week?",
+  "Hey, just wanted to say your R3CAP demo was wild. How did the auto-labelling integration land?",
+];
+
+function useTypingPlaceholder(samples: string[]) {
+  const [text, setText] = useState("");
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      setText(samples[0]);
+      return;
+    }
+    let i = 0;
+    let charIdx = 0;
+    let deleting = false;
+    let cancelled = false;
+    let timer: ReturnType<typeof setTimeout>;
+    const tick = () => {
+      if (cancelled) return;
+      const sample = samples[i];
+      if (!deleting) {
+        charIdx += 1;
+        setText(sample.slice(0, charIdx));
+        if (charIdx === sample.length) {
+          deleting = true;
+          timer = setTimeout(tick, 1800); // pause at full
+          return;
+        }
+        timer = setTimeout(tick, 28 + Math.random() * 32);
+      } else {
+        charIdx -= 1;
+        setText(sample.slice(0, charIdx));
+        if (charIdx === 0) {
+          deleting = false;
+          i = (i + 1) % samples.length;
+          timer = setTimeout(tick, 360);
+          return;
+        }
+        timer = setTimeout(tick, 14 + Math.random() * 14);
+      }
+    };
+    timer = setTimeout(tick, 400);
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [samples]);
+  return text;
+}
 
 const schema = z.object({
   name: z.string().min(2, "Your name, please").max(80),
@@ -21,12 +77,17 @@ type FormData = z.infer<typeof schema>;
 export function ContactInline() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
+  const [hasContent, setHasContent] = useState(false);
+  const typingPlaceholder = useTypingPlaceholder(PLACEHOLDER_CYCLE);
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
+  const messageReg = register("message", {
+    onChange: (e) => setHasContent(Boolean(e.target.value.length)),
+  });
 
   const onSubmit = async (data: FormData) => {
     setStatus("loading");
@@ -84,7 +145,30 @@ export function ContactInline() {
         </Field>
         <div className="md:col-span-2">
           <Field id="message" label="Message" error={errors.message?.message}>
-            <textarea id="message" rows={6} {...register("message")} className={inputCls(!!errors.message)} />
+            <div className="relative">
+              <textarea
+                id="message"
+                rows={6}
+                {...messageReg}
+                placeholder=" "
+                className={cn(
+                  inputCls(!!errors.message),
+                  "relative z-[1] bg-transparent",
+                )}
+              />
+              {!hasContent && (
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute left-3 top-2.5 z-[2] max-w-[calc(100%-1.5rem)] font-mono text-sm leading-snug text-[var(--color-text-2)]"
+                >
+                  {typingPlaceholder}
+                  <span
+                    className="ml-0.5 inline-block h-[1em] w-[2px] -translate-y-[2px] align-middle bg-[var(--color-accent)]"
+                    style={{ animation: "var(--animate-blink)" }}
+                  />
+                </div>
+              )}
+            </div>
           </Field>
         </div>
 
