@@ -124,6 +124,11 @@
     15%  { opacity: 1; transform: translate(calc(var(--dx) * 0.25), calc(var(--dy) * 0.25)) scale(1.1); }
     100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0.3); }
   }
+  @keyframes emberWisp {
+    0%   { opacity: 0; transform: translate(0, 0) scale(0.6); }
+    35%  { opacity: 0.5; transform: translate(-6px, -8px) scale(1); }
+    100% { opacity: 0; transform: translate(-14px, -22px) scale(1.6); }
+  }
   @keyframes sparkFlicker {
     0%   { opacity: 0.65; transform: translate(-30%, -55%) scaleX(0.85) scaleY(1); }
     25%  { opacity: 1;    transform: translate(-30%, -60%) scaleX(1.05) scaleY(1.1); }
@@ -139,6 +144,18 @@
 
 :root {
   color-scheme: dark;
+  --burn-gate: 0;
+}
+
+/* As the home page's red wash intensifies (--burn-gate ramps 0 → 1 from scroll
+ * ~0.82 onward), shift the muted greys toward warm off-white so labels and
+ * borders stay legible against the red. The accent itself shifts toward a
+ * brighter pink so it pops against its own background. */
+:where(body) {
+  --color-text-1: color-mix(in oklab, #8a8b95 calc((1 - var(--burn-gate)) * 100%), #f8e6e9 calc(var(--burn-gate) * 100%));
+  --color-text-2: color-mix(in oklab, #54555f calc((1 - var(--burn-gate)) * 100%), #f0c5cc calc(var(--burn-gate) * 100%));
+  --color-border: color-mix(in oklab, #1a1b22 calc((1 - var(--burn-gate)) * 100%), #ffd0d6 calc(var(--burn-gate) * 18%));
+  --color-accent: color-mix(in oklab, #ff1e3c calc((1 - var(--burn-gate)) * 100%), #fff0e6 calc(var(--burn-gate) * 100%));
 }
 
 .high-contrast {

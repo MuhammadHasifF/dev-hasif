@@ -52,7 +52,7 @@ export function Hero() {
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <ArrowLink href="/work" variant="primary">View work</ArrowLink>
-              <ArrowLink href="/contact">Get in touch</ArrowLink>
+              <ArrowLink href="/#contact">Get in touch</ArrowLink>
             </div>
           </div>
 

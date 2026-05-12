@@ -4,13 +4,13 @@ export const siteConfig = {
   shortName: "Hasif",
   title: "Hasif · Applied AI Undergrad & Full-Stack Engineer",
   description:
-    "Applied AI undergrad and full-stack engineer shipping data products, ML pipelines, and analytics platforms, from raw telemetry to production dashboards.",
+    "Applied AI undergraduate (SIT, Hons., expected 2028) building production grade machine learning, LLM, and data systems. Generative AI (Llama 3.3, Groq, LangChain, RAG), time-series forecasting (ARIMA, XGBoost, LightGBM), full stack data platforms (Python, Flask/Django, Vue/React, Pandas, Apache ECharts), and geospatial analytics (ArcGIS) across Deloitte, HTX, Singapore Police Force, MOM, and SIT research labs.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://hasif.dev",
   ogImage: "/og.png",
   tagline:
-    "Applied AI undergrad & full-stack engineer shipping data products, ML pipelines, and analytics platforms, from raw telemetry to production dashboards.",
+    "Applied AI undergraduate building production grade machine learning, LLM, and full stack data systems. Shipping across Deloitte, HTX, SPF, MOM, and SIT research labs.",
   taglineAlt:
-    "Building data and AI systems end-to-end, from ingestion and modeling through APIs, dashboards, and the people who actually use them.",
+    "Generative AI (Llama 3.3, Groq, LangChain, RAG), time-series forecasting (ARIMA, XGBoost, LightGBM), full stack data platforms (Python, Flask/Django, Vue/React, Pandas, Apache ECharts), and geospatial analytics (ArcGIS).",
   location: "Singapore 400412",
   email: "muhammad.hasif.faisal@gmail.com",
   phone: "+65 8896 6503",

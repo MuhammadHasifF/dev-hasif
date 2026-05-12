@@ -24,7 +24,9 @@ export function ManifestoScroll() {
   // Pin the panorama in view longer so the burn-finale has something to silhouette.
   const panoramaY = useTransform(scrollYProgress, [0, 0.4, 0.92, 1], ["100%", "0%", "0%", "-12%"]);
   const panoramaScale = useTransform(scrollYProgress, [0, 0.4, 1], [1.15, 1, 1.08]);
-  const wordX = useTransform(scrollYProgress, [0, 1], ["20%", "-60%"]);
+  // Travel further left so "TUNED FOR SCALE" fully clears the viewport at end.
+  // Word container is w-[280%] so going to -180% reveals all of it.
+  const wordX = useTransform(scrollYProgress, [0, 1], ["25%", "-180%"]);
   const wordOpacity = useTransform(scrollYProgress, [0, 0.15, 0.92, 1], [0, 1, 1, 0]);
   const orbit = useTransform(scrollYProgress, [0, 1], [0, 360]);
 
