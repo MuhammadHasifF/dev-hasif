@@ -129,6 +129,55 @@
     35%  { opacity: 0.5; transform: translate(-6px, -8px) scale(1); }
     100% { opacity: 0; transform: translate(-14px, -22px) scale(1.6); }
   }
+  @keyframes flameBodyPulse {
+    from { transform: scale(0.95, 1.05); }
+    to   { transform: scale(1.06, 0.94); }
+  }
+  @keyframes flameHaloPulse {
+    from { opacity: 0.55; transform: scale(0.96, 1.04); }
+    to   { opacity: 0.95; transform: scale(1.08, 0.92); }
+  }
+  @keyframes flameMidWiggle {
+    0%, 100% { transform: scaleY(1) translateY(0); }
+    25%      { transform: scaleY(1.08) translateY(-1px); }
+    50%      { transform: scaleY(0.94) translateY(0); }
+    75%      { transform: scaleY(1.05) translateY(-1px); }
+  }
+  @keyframes flameCoreWiggle {
+    0%, 100% { transform: translateY(0) scaleY(1); }
+    33%      { transform: translateY(-1px) scaleY(1.1); }
+    66%      { transform: translateY(0) scaleY(0.92); }
+  }
+  @keyframes skillChipPop {
+    0%   { opacity: 0; transform: translateY(4px) scale(0.96); filter: blur(2px); }
+    60%  { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+    100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+  }
+  @keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-28px); filter: blur(3px); }
+    to   { opacity: 1; transform: translateX(0); filter: blur(0); }
+  }
+  @keyframes channelSweep {
+    0%   { opacity: 0; clip-path: inset(0 100% 0 0); transform: translateX(-12px); }
+    60%  { opacity: 1; clip-path: inset(0 0 0 0); transform: translateX(0); }
+    100% { opacity: 1; clip-path: inset(0 0 0 0); transform: translateX(0); }
+  }
+  @keyframes glitchWordA {
+    0%, 100% { transform: translate3d(0, 0, 0); opacity: 0; clip-path: inset(0 0 0 0); }
+    10%      { transform: translate3d(calc(var(--glitch-intensity, 1) * -3px), 0, 0); opacity: 0.85; clip-path: inset(10% 0 60% 0); }
+    20%      { transform: translate3d(calc(var(--glitch-intensity, 1) * 5px), 0, 0); opacity: 0.7; clip-path: inset(50% 0 18% 0); }
+    35%      { transform: translate3d(0, 0, 0); opacity: 0; clip-path: inset(0 0 0 0); }
+    72%      { transform: translate3d(calc(var(--glitch-intensity, 1) * -4px), 0, 0); opacity: 0.75; clip-path: inset(0 0 70% 0); }
+    78%      { transform: translate3d(0, 0, 0); opacity: 0; clip-path: inset(0 0 0 0); }
+  }
+  @keyframes glitchWordB {
+    0%, 100% { transform: translate3d(0, 0, 0); opacity: 0; clip-path: inset(0 0 0 0); }
+    14%      { transform: translate3d(calc(var(--glitch-intensity, 1) * 4px), -1px, 0); opacity: 0.6; clip-path: inset(28% 0 35% 0); }
+    24%      { transform: translate3d(calc(var(--glitch-intensity, 1) * -2px), 1px, 0); opacity: 0.5; clip-path: inset(70% 0 8% 0); }
+    40%      { transform: translate3d(0, 0, 0); opacity: 0; clip-path: inset(0 0 0 0); }
+    60%      { transform: translate3d(calc(var(--glitch-intensity, 1) * 3px), 0, 0); opacity: 0.55; clip-path: inset(0 0 80% 0); }
+    66%      { transform: translate3d(0, 0, 0); opacity: 0; clip-path: inset(0 0 0 0); }
+  }
   @keyframes sparkFlicker {
     0%   { opacity: 0.65; transform: translate(-30%, -55%) scaleX(0.85) scaleY(1); }
     25%  { opacity: 1;    transform: translate(-30%, -60%) scaleX(1.05) scaleY(1.1); }
@@ -148,14 +197,12 @@
 }
 
 /* As the home page's red wash intensifies (--burn-gate ramps 0 → 1 from scroll
- * ~0.82 onward), shift the muted greys toward warm off-white so labels and
- * borders stay legible against the red. The accent itself shifts toward a
- * brighter pink so it pops against its own background. */
+ * ~0.82 onward), shift the muted greys toward warm off-white so labels stay
+ * legible against the red. The accent (brand red) is intentionally untouched.
+ * Only readability-affecting tokens move. */
 :where(body) {
   --color-text-1: color-mix(in oklab, #8a8b95 calc((1 - var(--burn-gate)) * 100%), #f8e6e9 calc(var(--burn-gate) * 100%));
   --color-text-2: color-mix(in oklab, #54555f calc((1 - var(--burn-gate)) * 100%), #f0c5cc calc(var(--burn-gate) * 100%));
-  --color-border: color-mix(in oklab, #1a1b22 calc((1 - var(--burn-gate)) * 100%), #ffd0d6 calc(var(--burn-gate) * 18%));
-  --color-accent: color-mix(in oklab, #ff1e3c calc((1 - var(--burn-gate)) * 100%), #fff0e6 calc(var(--burn-gate) * 100%));
 }
 
 .high-contrast {
@@ -429,6 +476,39 @@
     margin-left: 2px;
     color: var(--color-accent);
     animation: var(--animate-blink);
+  }
+
+  /* ── Skill chip pop (no JS, cheap GPU-only paint) ── */
+  .skill-chip {
+    animation: skillChipPop 0.5s cubic-bezier(0.32, 0.72, 0, 1) both;
+    animation-delay: var(--delay, 0ms);
+  }
+
+  /* ── Open-channel sweep: each child slides + clips in left-to-right ── */
+  .contact-channel > *:not([aria-hidden="true"]) {
+    animation: channelSweep 0.7s cubic-bezier(0.32, 0.72, 0, 1) both;
+  }
+  .contact-channel > *:nth-of-type(1)  { animation-delay: 0ms; }
+  .contact-channel > *:nth-of-type(2)  { animation-delay: 90ms; }
+  .contact-channel > *:nth-of-type(3)  { animation-delay: 180ms; }
+  .contact-channel > *:nth-of-type(4)  { animation-delay: 270ms; }
+  .contact-channel > *:nth-of-type(5)  { animation-delay: 360ms; }
+  .contact-channel > *:nth-of-type(6)  { animation-delay: 450ms; }
+  .contact-channel > *:nth-of-type(7)  { animation-delay: 540ms; }
+  .contact-channel > *:nth-of-type(n+8) { animation-delay: 630ms; }
+
+  /* ── Continuous red glitch on a single word, CSS-only ── */
+  .glitch-word-ghost {
+    pointer-events: none;
+    will-change: transform, opacity, clip-path;
+    text-shadow: 0 0 14px color-mix(in oklab, var(--color-accent) 70%, transparent);
+  }
+  .glitch-word-ghost-a {
+    animation: glitchWordA 2.4s steps(60, end) infinite;
+  }
+  .glitch-word-ghost-b {
+    animation: glitchWordB 3.1s steps(60, end) infinite;
+    animation-delay: 0.6s;
   }
 
   /* ── Glyph mono ── */

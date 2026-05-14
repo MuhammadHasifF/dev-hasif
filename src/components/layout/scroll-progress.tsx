@@ -4,24 +4,30 @@ import { useEffect, useRef, useState } from "react";
 import { FlameTip } from "@/components/primitives/flame-tip";
 
 /**
- * Scroll progress as a HUD data-stream:
- *  - red core line, scaled by progress
- *  - burning flame tip + spark trail at the leading edge (FlameTip)
- *  - bottom-right percentage readout (mono)
- *  - rAF-throttled scroll listener (single rAF; no per-frame loop)
+ * One DOM source of truth for both the fill bar AND the flame at its tip.
+ * The parent strip has a single CSS variable `--p` set by a rAF-coalesced
+ * scroll listener; the bar scales by --p and the flame is positioned by
+ * left:calc(var(--p) * 100%). No second tween, no transition lag — they
+ * share the same source and update on the same frame.
  */
 export function ScrollProgress() {
-  const [p, setP] = useState(0);
+  const ref = useRef<HTMLDivElement>(null);
   const labelRef = useRef<HTMLDivElement>(null);
+  const [hasProgress, setHasProgress] = useState(false);
 
   useEffect(() => {
     let raf = 0;
+    let lastP = -1;
     const update = () => {
       raf = 0;
       const h = document.documentElement;
       const max = h.scrollHeight - h.clientHeight;
       const next = max > 0 ? h.scrollTop / max : 0;
-      setP(next);
+      if (Math.abs(next - lastP) < 0.0005) return;
+      lastP = next;
+      const el = ref.current;
+      if (el) el.style.setProperty("--p", next.toFixed(4));
+      setHasProgress(next > 0.001);
       if (labelRef.current) {
         labelRef.current.textContent = `${Math.round(next * 100).toString().padStart(3, "0")}%`;
       }
@@ -42,29 +48,39 @@ export function ScrollProgress() {
 
   return (
     <>
-      {/* Top progress strip: ONE fill bar + ONE animated flame at the tip.
-          No second overlapping element — they were lagging out of sync. */}
       <div
+        ref={ref}
         aria-hidden="true"
         className="pointer-events-none fixed inset-x-0 top-0 z-[70] h-[3px]"
+        style={{ ["--p" as string]: "0" } as React.CSSProperties}
       >
+        {/* Fill bar — scaleX driven by --p, no transition */}
         <div
-          className="h-full origin-left will-change-transform"
+          className="h-full origin-left"
           style={{
-            transform: `scaleX(${p})`,
+            transform: "scaleX(var(--p))",
             background:
               "linear-gradient(90deg, transparent 0%, color-mix(in oklab, var(--color-accent) 35%, transparent) 30%, color-mix(in oklab, var(--color-accent) 80%, transparent) 70%, var(--color-accent) 100%)",
-            transition: "transform 80ms linear",
             boxShadow:
               "0 0 6px color-mix(in oklab, var(--color-accent) 70%, transparent), 0 0 14px color-mix(in oklab, var(--color-accent) 35%, transparent)",
           }}
         />
-        {p > 0.001 && (
-          <FlameTip progress={p} orientation="horizontal" size={22} />
+        {/* Flame at the tip — positioned by --p on the SAME parent so they
+            always move together on the same frame */}
+        {hasProgress && (
+          <div
+            className="absolute"
+            style={{
+              left: "calc(var(--p) * 100%)",
+              top: "50%",
+              transform: "translate(-50%, -50%)",
+            }}
+          >
+            <FlameTip progress={1} orientation="horizontal" size={22} />
+          </div>
         )}
       </div>
 
-      {/* fixed bottom-right HUD readout */}
       <div
         aria-hidden="true"
         className="pointer-events-none fixed bottom-3 right-3 z-[70] hidden items-center gap-2 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-text-2)] md:flex"

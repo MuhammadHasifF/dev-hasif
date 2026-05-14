@@ -7,6 +7,7 @@ import { siteConfig } from "@/../site.config";
 import { ArrowLink } from "@/components/primitives/arrow-link";
 import { Cityscape } from "@/components/hero/cityscape";
 import { GlitchHeadline } from "@/components/hero/glitch-headline";
+import { HeroLogoBridge } from "@/components/hero/logo-bridge";
 
 export function Hero() {
   const reduce = useReducedMotion();
@@ -41,8 +42,13 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Editorial display title — masked-line reveal + cyberpunk glitch */}
-        <GlitchHeadline />
+        {/* Editorial display title — masked-line reveal + cyberpunk glitch.
+            The avatar mark sits inline so the logo lives in two coordinated
+            positions: here in the hero, and in the top-left nav after scroll. */}
+        <div className="flex items-center gap-[0.18em]">
+          <GlitchHeadline className="flex-1" />
+          <HeroLogoBridge />
+        </div>
 
         {/* Two-column tagline + meta */}
         <div className="grid gap-10 border-t border-[var(--color-border)] pt-8 md:grid-cols-12 md:gap-6">
