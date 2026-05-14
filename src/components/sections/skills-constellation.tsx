@@ -1,15 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { skillGroups } from "@/content/skills";
 import { Section } from "@/components/primitives/section";
 import { cn } from "@/lib/utils";
 
 /**
- * SKILLS, flat HUD grid. Per-chip glitch was costing 200+ motion components
- * on the page and causing dropped frames. Replaced with a CSS-only staggered
- * fade so the chips still reveal in waves, but stay cheap to paint. Group
- * panels still dim on filter hover.
+ * SKILLS, flat HUD grid. Each chip glitches in red on viewport entry via
+ * pure CSS keyframes, driven by ONE IntersectionObserver per group panel.
+ * Cheap to paint even with 80+ chips on the page.
  */
 export function SkillsConstellation() {
   const [activeGroup, setActiveGroup] = useState<string | null>(null);
@@ -73,22 +72,45 @@ export function SkillsConstellation() {
                   {String(g.items.length).padStart(2, "0")}
                 </span>
               </div>
-              <ul className="flex flex-wrap gap-1.5 skill-chip-list">
-                {g.items.map((item, i) => (
-                  <li
-                    key={item}
-                    className="skill-chip rounded-sm border border-[var(--color-border)] bg-[var(--color-bg-2)] px-2 py-1 font-mono text-[11px] text-[var(--color-text-0)]"
-                    style={{ animationDelay: `${i * 36}ms` }}
-                  >
-                    {item}
-                  </li>
-                ))}
-              </ul>
+              <SkillChipList items={g.items} />
             </div>
           );
         })}
       </div>
     </Section>
+  );
+}
+
+function SkillChipList({ items }: { items: string[] }) {
+  const ref = useRef<HTMLUListElement>(null);
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) setInView(e.isIntersecting);
+      },
+      { threshold: 0.15 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return (
+    <ul
+      ref={ref}
+      className={`flex flex-wrap gap-1.5 skill-chip-list ${inView ? "in-view" : ""}`}
+    >
+      {items.map((item, i) => (
+        <li
+          key={item}
+          className="skill-chip-glitch rounded-sm border border-[var(--color-border)] bg-[var(--color-bg-2)] px-2 py-1 font-mono text-[11px] text-[var(--color-text-0)]"
+          style={{ animationDelay: `${i * 32}ms` } as React.CSSProperties}
+        >
+          {item}
+        </li>
+      ))}
+    </ul>
   );
 }
 

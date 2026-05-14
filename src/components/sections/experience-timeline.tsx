@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { experience } from "@/content/experience";
 import { Section } from "@/components/primitives/section";
@@ -132,11 +132,13 @@ function RoleCard({
         <ChevronDown className={cn("h-3 w-3 transition", isOpen && "rotate-180")} />
       </button>
 
+      <AnimatePresence initial={false}>
       {isOpen && (
         <motion.div
-          initial={{ height: 0, opacity: 0 }}
-          animate={{ height: "auto", opacity: 1 }}
-          transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
+          key="highlights"
+          initial={{ height: 0, opacity: 0, y: -6 }}
+          animate={{ height: "auto", opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.32, 0.72, 0, 1] } }}
+          exit={{ height: 0, opacity: 0, y: -6, transition: { duration: 0.4, ease: [0.32, 0.72, 0, 1] } }}
           className="overflow-hidden"
         >
           <ul className="mt-4 space-y-2 border-l border-[var(--color-border)] pl-4 text-sm text-[var(--color-text-1)]">
@@ -170,6 +172,7 @@ function RoleCard({
           )}
         </motion.div>
       )}
+      </AnimatePresence>
     </motion.div>
   );
 }

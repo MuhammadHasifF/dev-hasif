@@ -12,12 +12,20 @@ export function Footer() {
       <div className="mx-auto grid max-w-6xl gap-12 px-4 py-16 sm:px-6 md:grid-cols-4">
         <div className="md:col-span-2">
           <div className="font-display text-4xl leading-none text-[var(--color-text-0)] md:text-6xl">
-            Let&rsquo;s build
+            <span>Let&rsquo;s build</span>
             <br />
-            <span className="gradient-text">
-              something{" "}
-              <GlitchWord intensity={1.4}>amazing.</GlitchWord>
-            </span>
+            <span className="text-[var(--color-text-1)]">something </span>
+            <GlitchWord intensity={1.4}>
+              <span
+                className="text-[var(--color-accent)]"
+                style={{
+                  textShadow:
+                    "0 0 18px color-mix(in oklab, var(--color-accent) 60%, transparent)",
+                }}
+              >
+                amazing.
+              </span>
+            </GlitchWord>
           </div>
           <p className="mt-6 max-w-md text-sm text-[var(--color-text-1)]">
             I&rsquo;m open to research collaborations, engineering roles, and
