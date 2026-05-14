@@ -8,15 +8,15 @@ const buildTime = new Date().toISOString();
 
 export function Footer() {
   return (
-    <footer className="relative mt-32 border-t border-[var(--color-border)]">
+    <footer className="glass relative mt-32 border-t border-[var(--color-border)]">
       <div className="mx-auto grid max-w-6xl gap-12 px-4 py-16 sm:px-6 md:grid-cols-4">
         <div className="md:col-span-2">
           <div className="font-display text-4xl leading-none text-[var(--color-text-0)] md:text-6xl">
-            <GlitchWord intensity={0.8}>Let&rsquo;s build</GlitchWord>
+            Let&rsquo;s build
             <br />
             <span className="gradient-text">
-              <GlitchWord>something </GlitchWord>
-              <GlitchWord intensity={1.4}>real.</GlitchWord>
+              something{" "}
+              <GlitchWord intensity={1.4}>amazing.</GlitchWord>
             </span>
           </div>
           <p className="mt-6 max-w-md text-sm text-[var(--color-text-1)]">

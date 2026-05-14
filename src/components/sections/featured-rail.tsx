@@ -13,6 +13,7 @@ import { projects } from "@/content/projects";
 import { Section } from "@/components/primitives/section";
 import { OrgLogo } from "@/components/primitives/org-tag";
 import { DiagonalArrow } from "@/components/primitives/diagonal-arrow";
+import { ProjectDrawer } from "@/components/projects/project-drawer";
 
 const featured = projects.filter((p) => p.featured).slice(0, 5);
 
@@ -20,6 +21,8 @@ export function FeaturedRail() {
   const targetRef = useRef<HTMLDivElement>(null);
   const railRef = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
+  const [openSlug, setOpenSlug] = useState<string | null>(null);
+  const openProject = openSlug ? featured.find((p) => p.slug === openSlug) ?? null : null;
   const { scrollYProgress } = useScroll({
     target: targetRef,
     offset: ["start start", "end end"],
@@ -66,9 +69,19 @@ export function FeaturedRail() {
       >
         <div className="grid gap-4 md:grid-cols-2">
           {featured.map((p, i) => (
-            <FeaturedStaticCard key={p.slug} project={p} index={i} />
+            <FeaturedStaticCard
+              key={p.slug}
+              project={p}
+              index={i}
+              onOpen={() => setOpenSlug(p.slug)}
+            />
           ))}
         </div>
+        <ProjectDrawer
+          project={openProject}
+          open={openSlug !== null}
+          onClose={() => setOpenSlug(null)}
+        />
       </Section>
     );
   }
@@ -110,6 +123,7 @@ export function FeaturedRail() {
                 progress={scrollYProgress}
                 total={total}
                 count={featured.length}
+                onOpen={() => setOpenSlug(p.slug)}
               />
             </div>
           ))}
@@ -129,6 +143,11 @@ export function FeaturedRail() {
           </div>
         </motion.div>
       </div>
+      <ProjectDrawer
+        project={openProject}
+        open={openSlug !== null}
+        onClose={() => setOpenSlug(null)}
+      />
     </section>
   );
 }
@@ -167,12 +186,14 @@ function FeaturedCardMotion({
   progress,
   total,
   count,
+  onOpen,
 }: {
   project: (typeof projects)[number];
   index: number;
   progress: MotionValue<number>;
   total: number;
   count: number;
+  onOpen: () => void;
 }) {
   const slot = index / Math.max(1, total - 1);
 
@@ -194,7 +215,7 @@ function FeaturedCardMotion({
   const totalStr = String(count).padStart(2, "0");
 
   return (
-    <Link href={`/work/${p.slug}`} className="block h-full">
+    <button type="button" onClick={onOpen} className="block h-full w-full text-left">
       <motion.div
         className="hud-panel group relative flex h-full min-h-[460px] flex-col overflow-hidden p-7 transition-[border-color,box-shadow,background] md:p-9"
         style={{ borderColor }}
@@ -291,22 +312,25 @@ function FeaturedCardMotion({
           </span>
         </div>
       </motion.div>
-    </Link>
+    </button>
   );
 }
 
 function FeaturedStaticCard({
   project: p,
   index,
+  onOpen,
 }: {
   project: (typeof projects)[number];
   index: number;
+  onOpen: () => void;
 }) {
   const num = String(index + 1).padStart(2, "0");
   return (
-    <Link
-      href={`/work/${p.slug}`}
-      className="hud-panel hud-panel-hover group relative block h-full min-h-[460px] overflow-hidden p-7 transition-colors md:p-9"
+    <button
+      type="button"
+      onClick={onOpen}
+      className="hud-panel hud-panel-hover group relative block h-full min-h-[460px] w-full overflow-hidden p-7 text-left transition-colors md:p-9"
     >
       <div className="relative flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
@@ -341,6 +365,6 @@ function FeaturedStaticCard({
           </span>
         ))}
       </div>
-    </Link>
+    </button>
   );
 }

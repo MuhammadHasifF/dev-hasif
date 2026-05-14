@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useMemo, useRef, useState } from "react";
 import { DiagonalArrow } from "@/components/primitives/diagonal-arrow";
 import { AnimatePresence, motion, LayoutGroup } from "framer-motion";
@@ -9,14 +8,17 @@ import { Section } from "@/components/primitives/section";
 import { OrgLogo } from "@/components/primitives/org-tag";
 import { Chip } from "@/components/primitives/chip";
 import { GlitchReveal } from "@/components/primitives/glitch-reveal";
+import { ProjectDrawer } from "@/components/projects/project-drawer";
 import { cn } from "@/lib/utils";
 
 export function ProjectsBento() {
   const [filter, setFilter] = useState<ProjectCategory | "All">("All");
+  const [openSlug, setOpenSlug] = useState<string | null>(null);
   const filtered = useMemo(
     () => (filter === "All" ? projects : projects.filter((p) => p.category === filter)),
     [filter]
   );
+  const openProject = openSlug ? projects.find((p) => p.slug === openSlug) ?? null : null;
 
   return (
     <Section
@@ -60,7 +62,7 @@ export function ProjectsBento() {
               >
                 {/* Odd index → slide in from left, even index → from right */}
                 <GlitchReveal side={i % 2 === 0 ? "left" : "right"} className="group h-full">
-                  <BentoCardLink href={`/work/${p.slug}`}>
+                  <BentoCardButton onClick={() => setOpenSlug(p.slug)}>
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex items-center gap-2">
                         <OrgLogo orgKey={p.orgKey} size="md" />
@@ -90,7 +92,7 @@ export function ProjectsBento() {
                       <span>{p.year}</span>
                       <span>{p.org}</span>
                     </div>
-                  </BentoCardLink>
+                  </BentoCardButton>
                 </GlitchReveal>
               </motion.div>
             ))}
@@ -98,27 +100,24 @@ export function ProjectsBento() {
         </div>
       </LayoutGroup>
 
-      <div className="mt-10 flex justify-center">
-        <Link
-          href="/work"
-          className="inline-flex h-10 items-center gap-2 rounded-sm border border-[var(--color-accent)]/50 bg-[color:color-mix(in_oklab,var(--color-accent)_6%,var(--color-bg-1))] px-5 font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--color-text-0)] transition-[border-color,background-color,box-shadow] hover:border-[var(--color-accent)] hover:bg-[color:color-mix(in_oklab,var(--color-accent)_14%,var(--color-bg-1))] hover:shadow-[0_0_24px_-4px_color-mix(in_oklab,var(--color-accent)_60%,transparent)]"
-        >
-          All projects <DiagonalArrow />
-        </Link>
-      </div>
+      <ProjectDrawer
+        project={openProject}
+        open={openSlug !== null}
+        onClose={() => setOpenSlug(null)}
+      />
     </Section>
   );
 }
 
-function BentoCardLink({
-  href,
+function BentoCardButton({
+  onClick,
   children,
 }: {
-  href: string;
+  onClick: () => void;
   children: React.ReactNode;
 }) {
-  const ref = useRef<HTMLAnchorElement>(null);
-  const onMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const ref = useRef<HTMLButtonElement>(null);
+  const onMove = (e: React.MouseEvent<HTMLButtonElement>) => {
     const el = ref.current;
     if (!el) return;
     const r = el.getBoundingClientRect();
@@ -126,11 +125,12 @@ function BentoCardLink({
     el.style.setProperty("--my", `${e.clientY - r.top}px`);
   };
   return (
-    <Link
+    <button
+      type="button"
       ref={ref}
-      href={href}
+      onClick={onClick}
       onMouseMove={onMove}
-      className="hud-panel hud-panel-hover group/card relative flex h-full min-h-[170px] flex-col justify-between overflow-hidden p-6 transition-colors"
+      className="hud-panel hud-panel-hover group/card relative flex h-full min-h-[170px] flex-col justify-between overflow-hidden p-6 text-left transition-colors w-full"
       style={{ ["--mx" as string]: "50%", ["--my" as string]: "50%" } as React.CSSProperties}
     >
       <div
@@ -151,6 +151,6 @@ function BentoCardLink({
         }}
       />
       {children}
-    </Link>
+    </button>
   );
 }

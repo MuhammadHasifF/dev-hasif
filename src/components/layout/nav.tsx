@@ -150,13 +150,17 @@ export function Nav() {
           href="/"
           aria-label="Home"
           className="group inline-flex items-center gap-2 font-mono text-sm tracking-tight"
+          style={{
+            opacity: "calc(1 - var(--hero-logo-on, 0))",
+            transition: "opacity 220ms steps(2, end)",
+          }}
         >
-          <span className="relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-full ring-1 ring-[var(--color-accent)]/50 ring-offset-1 ring-offset-[var(--color-bg-0)] shadow-[0_0_12px_-4px_var(--color-accent)]">
+          <span className="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-full ring-1 ring-[var(--color-accent)]/60 ring-offset-1 ring-offset-[var(--color-bg-0)] shadow-[0_0_14px_-4px_var(--color-accent)]">
             <Image
               src="/me/bamboo-forest.jpg"
               alt="Hasif"
-              width={48}
-              height={48}
+              width={56}
+              height={56}
               priority
               className="h-full w-full object-cover"
               style={{ objectPosition: "50% 30%" }}

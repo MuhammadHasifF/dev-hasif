@@ -6,16 +6,17 @@ import { useEffect, useState } from "react";
 type Orientation = "horizontal" | "vertical";
 
 /**
- * Animated burning flame at the leading edge of a progress bar.
+ * Animated flame that sits at the leading edge of a progress bar.
  *
- * The flame body is a single SVG with three layered paths that morph
- * between four keyframes via SMIL animate (real motion, not transform
- * tricks that can stutter when chained with other transitions). A halo
- * pulses behind it. Six spark particles fly off the back in randomized
- * directions, each on its own loop.
+ * Critical: the flame uses the SAME positioning source as the bar fill
+ * (a single percent value), so there's no second tween to drift. Built
+ * as a single absolutely-positioned wrapper that translates via CSS
+ * left/top; no transition lag. SVG paths animate via lightweight CSS
+ * scale + a couple of SMIL morphs at the very tip.
  *
- * Driven by a single position prop (number 0..1 OR a MotionValue) so
- * everything lives in one element, with no overlapping bars to desync.
+ * 4 spark particles only (was 12). Smoke wisp removed. The flame body
+ * pulses via CSS keyframe (scale x/y on opposing axes) which is GPU-only
+ * — no React state, no per-frame work.
  *
  * Reduced motion: static flame, no sparks.
  */
@@ -42,7 +43,7 @@ export function FlameTip({
     ? { left: isMV ? undefined : `${(progress as number) * 100}%`, top: "50%" }
     : { top: isMV ? undefined : `${(progress as number) * 100}%`, left: "50%" };
 
-  const w = size * 0.65;
+  const w = size * 0.6;
   const h = size;
   const transform = horizontal
     ? "translate(-50%, -68%)"
@@ -60,7 +61,7 @@ export function FlameTip({
             : { top: progress as MotionValue<number> }
           : {}),
         transform,
-        willChange: "transform",
+        willChange: "left, top",
       }}
     >
       <FlameSvg width={w} height={h} animated={!reduce} />
@@ -78,103 +79,50 @@ function FlameSvg({
   height: number;
   animated: boolean;
 }) {
-  // 4 keyframe paths for each flame layer — outer, middle, core.
-  // SMIL animateMotion is not used; we morph `d` directly.
-  const outer = [
-    "M12 32 C 4 26, 4 18, 8 12 C 9 14, 10 14, 11 13 C 10 8, 12 4, 14 0 C 14 6, 18 8, 19 14 C 21 18, 20 26, 12 32 Z",
-    "M12 32 C 3 27, 5 17, 7 11 C 8 14, 11 13, 11 14 C 9 9, 13 3, 15 1 C 14 7, 19 7, 20 13 C 22 19, 19 27, 12 32 Z",
-    "M12 32 C 5 25, 3 19, 9 13 C 10 15, 10 13, 11 12 C 11 7, 11 5, 13 1 C 15 7, 17 9, 18 15 C 20 17, 21 27, 12 32 Z",
-    "M12 32 C 4 27, 5 18, 8 13 C 9 13, 11 14, 11 13 C 10 8, 12 5, 14 0 C 14 7, 18 7, 19 14 C 21 18, 20 26, 12 32 Z",
-  ];
-  const mid = [
-    "M12 31 C 6 25, 6 19, 9 14 C 10 16, 10.5 16, 11 15 C 10 10, 12.5 6, 14 2 C 14 8, 17 10, 18 15 C 19 19, 18 25, 12 31 Z",
-    "M12 31 C 5 26, 7 18, 8 13 C 9 16, 11 15, 11 16 C 10 11, 13 5, 15 3 C 14 9, 18 9, 19 14 C 20 20, 18 26, 12 31 Z",
-    "M12 31 C 7 25, 5 20, 10 15 C 10 17, 10 15, 11 14 C 11 9, 11 7, 13 3 C 15 9, 16 11, 17 16 C 18 18, 19 26, 12 31 Z",
-    "M12 31 C 6 26, 7 19, 9 14 C 10 15, 11 16, 11 15 C 10 10, 13 7, 14 2 C 14 9, 17 9, 18 15 C 19 19, 18 25, 12 31 Z",
-  ];
-  const core = [
-    "M12 29 C 8 24, 8 19, 10.5 16 C 11 17, 11.5 17, 11.7 16 C 11.5 13, 13 9, 14 6 C 14 11, 16 13, 16.5 17 C 17.5 20, 16.5 24, 12 29 Z",
-    "M12 29 C 7 25, 9 18, 10 16 C 11 17, 12 16, 12 17 C 11 14, 13 10, 15 7 C 14 12, 17 12, 17 17 C 18 21, 16 24, 12 29 Z",
-    "M12 29 C 9 23, 7 19, 11 17 C 11 17, 11 17, 11 16 C 11 13, 12 11, 13 7 C 15 12, 16 14, 16 17 C 17 19, 17 24, 12 29 Z",
-    "M12 29 C 8 24, 8 19, 10.5 16 C 11 16, 12 17, 11.7 16 C 11.5 13, 13 9, 14 6 C 14 11, 16 13, 16.5 17 C 17.5 20, 16.5 24, 12 29 Z",
-  ];
-
   return (
     <svg
       width={width}
       height={height}
       viewBox="0 0 24 32"
-      style={{ overflow: "visible" }}
+      style={{
+        overflow: "visible",
+        animation: animated ? "flameBodyPulse 0.32s ease-in-out infinite alternate" : undefined,
+        filter:
+          "drop-shadow(0 0 6px color-mix(in oklab, var(--color-accent) 80%, transparent)) drop-shadow(0 0 14px color-mix(in oklab, var(--color-accent) 50%, transparent))",
+        transformOrigin: "50% 100%",
+      }}
     >
       <defs>
-        <filter id="flame-glow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="1.2" />
-        </filter>
         <radialGradient id="flame-halo" cx="50%" cy="65%" r="50%">
-          <stop offset="0" stopColor="#ff5560" stopOpacity="0.7" />
+          <stop offset="0" stopColor="#ff5560" stopOpacity="0.75" />
           <stop offset="1" stopColor="#ff5560" stopOpacity="0" />
         </radialGradient>
       </defs>
-      {/* Halo */}
       <ellipse
         cx="12"
         cy="22"
         rx="11"
         ry="14"
         fill="url(#flame-halo)"
-        opacity="0.85"
-      >
-        {animated && (
-          <animate
-            attributeName="opacity"
-            values="0.6;0.95;0.55;0.85;0.6"
-            dur="0.42s"
-            repeatCount="indefinite"
-          />
-        )}
-        {animated && (
-          <animate
-            attributeName="rx"
-            values="11;13;10;12;11"
-            dur="0.42s"
-            repeatCount="indefinite"
-          />
-        )}
-      </ellipse>
-      {/* Outer dark-red shell */}
-      <path d={outer[0]} fill="#8b0a0a" filter="url(#flame-glow)">
-        {animated && (
-          <animate
-            attributeName="d"
-            values={`${outer[0]};${outer[1]};${outer[2]};${outer[3]};${outer[0]}`}
-            dur="0.36s"
-            repeatCount="indefinite"
-          />
-        )}
-      </path>
-      {/* Middle red-orange */}
-      <path d={mid[0]} fill="#ff3a2a" opacity="0.95">
-        {animated && (
-          <animate
-            attributeName="d"
-            values={`${mid[0]};${mid[1]};${mid[2]};${mid[3]};${mid[0]}`}
-            dur="0.32s"
-            repeatCount="indefinite"
-          />
-        )}
-      </path>
-      {/* White-hot core */}
-      <path d={core[0]} fill="#fff5e0" opacity="0.9">
-        {animated && (
-          <animate
-            attributeName="d"
-            values={`${core[0]};${core[1]};${core[2]};${core[3]};${core[0]}`}
-            dur="0.28s"
-            repeatCount="indefinite"
-          />
-        )}
-      </path>
-      {/* Inner pinprick */}
+        style={animated ? { animation: "flameHaloPulse 0.42s ease-in-out infinite alternate" } : undefined}
+      />
+      <path
+        d="M12 32 C 4 26, 4 18, 8 12 C 9 14, 10 14, 11 13 C 10 8, 12 4, 14 0 C 14 6, 18 8, 19 14 C 21 18, 20 26, 12 32 Z"
+        fill="#8b0a0a"
+      />
+      <path
+        d="M12 31 C 6 25, 6 19, 9 14 C 10 16, 10.5 16, 11 15 C 10 10, 12.5 6, 14 2 C 14 8, 17 10, 18 15 C 19 19, 18 25, 12 31 Z"
+        fill="#ff3a2a"
+        opacity="0.95"
+        style={animated ? { animation: "flameMidWiggle 0.24s steps(4, end) infinite" } : undefined}
+        transform-origin="50% 100%"
+      />
+      <path
+        d="M12 29 C 8 24, 8 19, 10.5 16 C 11 17, 11.5 17, 11.7 16 C 11.5 13, 13 9, 14 6 C 14 11, 16 13, 16.5 17 C 17.5 20, 16.5 24, 12 29 Z"
+        fill="#fff5e0"
+        opacity="0.9"
+        style={animated ? { animation: "flameCoreWiggle 0.18s steps(3, end) infinite" } : undefined}
+      />
       <ellipse cx="12.5" cy="22" rx="1.3" ry="3" fill="#ffffff" opacity="0.9">
         {animated && (
           <animate
@@ -191,20 +139,11 @@ function FlameSvg({
 
 function Sparks({ orientation }: { orientation: Orientation }) {
   const horizontal = orientation === "horizontal";
-  // Twelve independent sparks with staggered timing + varied directions.
   const sparks = [
-    { d: 1.1, t: 0.0, x: -22, y: 6, s: 3 },
-    { d: 1.4, t: 0.12, x: -28, y: -4, s: 2 },
-    { d: 0.85, t: 0.24, x: -16, y: 10, s: 3 },
-    { d: 1.55, t: 0.36, x: -34, y: 3, s: 2 },
-    { d: 1.0, t: 0.48, x: -18, y: -10, s: 3 },
-    { d: 1.3, t: 0.6, x: -26, y: 8, s: 2 },
-    { d: 1.2, t: 0.72, x: -20, y: -6, s: 3 },
-    { d: 1.45, t: 0.84, x: -30, y: 12, s: 2 },
-    { d: 0.95, t: 0.96, x: -14, y: -8, s: 3 },
-    { d: 1.6, t: 1.08, x: -36, y: 5, s: 2 },
-    { d: 1.15, t: 1.2, x: -24, y: -3, s: 3 },
-    { d: 1.35, t: 1.32, x: -28, y: 9, s: 2 },
+    { d: 1.1, t: 0.0, x: -22, y: 6 },
+    { d: 1.4, t: 0.35, x: -28, y: -4 },
+    { d: 0.95, t: 0.7, x: -18, y: 10 },
+    { d: 1.25, t: 1.05, x: -24, y: -7 },
   ];
   return (
     <>
@@ -214,12 +153,10 @@ function Sparks({ orientation }: { orientation: Orientation }) {
         return (
           <span
             key={i}
-            className="absolute rounded-full"
+            className="absolute h-[3px] w-[3px] rounded-full"
             style={{
               top: horizontal ? "32%" : "68%",
               left: horizontal ? 0 : "55%",
-              width: s.s,
-              height: s.s,
               background:
                 "radial-gradient(circle, #fff5e0 0%, #ff5560 55%, transparent 100%)",
               boxShadow:
@@ -232,20 +169,6 @@ function Sparks({ orientation }: { orientation: Orientation }) {
           />
         );
       })}
-      {/* Ember smoke wisp rising above the flame */}
-      <span
-        className="absolute"
-        style={{
-          top: horizontal ? "-40%" : "120%",
-          left: horizontal ? "30%" : "55%",
-          width: horizontal ? 18 : 4,
-          height: horizontal ? 4 : 18,
-          background:
-            "radial-gradient(circle, color-mix(in oklab, var(--color-accent) 30%, transparent) 0%, transparent 70%)",
-          filter: "blur(2px)",
-          animation: "emberWisp 1.6s linear infinite",
-        }}
-      />
     </>
   );
 }

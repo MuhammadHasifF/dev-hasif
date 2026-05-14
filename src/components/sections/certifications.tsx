@@ -78,9 +78,13 @@ function CertRow({
   const reduce = useReducedMotion();
   return (
     <motion.li
-      initial={reduce ? { opacity: 0 } : { opacity: 0, x: -14 }}
-      whileInView={{ opacity: 1, x: 0, transition: { duration: 0.45, delay: index * 0.05, ease: [0.32, 0.72, 0, 1] } }}
-      exit={reduce ? { opacity: 0 } : { opacity: 0, x: -14 }}
+      initial={reduce ? { opacity: 0 } : { opacity: 0, clipPath: "inset(0 100% 0 0)" }}
+      whileInView={{
+        opacity: 1,
+        clipPath: "inset(0 0% 0 0)",
+        transition: { duration: 0.7, delay: index * 0.07, ease: [0.32, 0.72, 0, 1] },
+      }}
+      exit={reduce ? { opacity: 0 } : { opacity: 0, clipPath: "inset(0 100% 0 0)" }}
       viewport={{ once: false, amount: 0.4 }}
       className="flex items-center gap-4 px-4 py-4"
     >
@@ -125,19 +129,22 @@ function TrophyCard({
       exit="hidden"
       viewport={{ once: false, amount: 0.4 }}
       variants={{
-        hidden: { opacity: 0, rotateY: -85, scale: 0.85 },
+        hidden: {
+          opacity: 0,
+          clipPath: "circle(0% at 50% 50%)",
+          filter: "brightness(2.2)",
+        },
         visible: {
           opacity: 1,
-          rotateY: 0,
-          scale: 1,
+          clipPath: "circle(140% at 50% 50%)",
+          filter: "brightness(1)",
           transition: {
-            duration: 0.7,
-            delay: index * 0.08,
+            duration: 0.8,
+            delay: index * 0.1,
             ease: [0.32, 0.72, 0, 1],
           },
         },
       }}
-      style={{ transformPerspective: 800, transformStyle: "preserve-3d" }}
       className="group relative aspect-square overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-1)] p-4 transition-colors hover:border-[var(--color-accent)]"
     >
       <TrophyInner award={award} Glyph={Glyph} gradient={gradient} />

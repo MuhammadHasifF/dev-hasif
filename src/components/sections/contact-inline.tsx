@@ -122,7 +122,7 @@ export function ContactInline() {
     >
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="relative grid gap-4 overflow-hidden rounded-2xl border border-[var(--color-accent)]/35 bg-gradient-to-br from-[#0b0307] via-[#1a0610] to-[#2a0418] p-6 shadow-[0_0_60px_-12px_color-mix(in_oklab,var(--color-accent)_55%,transparent)] md:grid-cols-2 md:p-8"
+        className="contact-channel relative grid gap-4 overflow-hidden rounded-2xl border border-[var(--color-accent)]/35 bg-gradient-to-br from-[#0b0307] via-[#1a0610] to-[#2a0418] p-6 shadow-[0_0_60px_-12px_color-mix(in_oklab,var(--color-accent)_55%,transparent)] md:grid-cols-2 md:p-8"
         aria-live="polite"
       >
         {/* Pink/cyber atmospheric gradients */}
