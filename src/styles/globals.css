@@ -148,6 +148,14 @@
     33%      { transform: translateY(-1px) scaleY(1.1); }
     66%      { transform: translateY(0) scaleY(0.92); }
   }
+  @keyframes tipSpin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  @keyframes tipHaloPulse {
+    from { opacity: 0.4; r: 8; }
+    to   { opacity: 0.85; r: 10.5; }
+  }
   @keyframes skillChipPop {
     0%   { opacity: 0; transform: translateY(4px) scale(0.96); filter: blur(2px); }
     60%  { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
@@ -161,6 +169,41 @@
     0%   { opacity: 0; clip-path: inset(0 100% 0 0); transform: translateX(-12px); }
     60%  { opacity: 1; clip-path: inset(0 0 0 0); transform: translateX(0); }
     100% { opacity: 1; clip-path: inset(0 0 0 0); transform: translateX(0); }
+  }
+  @keyframes redGlitchReveal {
+    0%   { opacity: 0; transform: translateX(0); filter: blur(4px); }
+    8%   { opacity: 0.3; transform: translateX(-6px); }
+    16%  { opacity: 0.6; transform: translateX(4px); filter: blur(2px); }
+    24%  { opacity: 0.2; transform: translateX(-2px); }
+    36%  { opacity: 0.85; transform: translateX(0); filter: blur(1px); }
+    50%  { opacity: 0.4; transform: translateX(2px); }
+    100% { opacity: 1; transform: translateX(0); filter: blur(0); }
+  }
+  @keyframes redGlitchGhost {
+    0%, 100% { opacity: 0; transform: translateX(0); }
+    10%      { opacity: 0.9; transform: translateX(-7px); }
+    20%      { opacity: 0.7; transform: translateX(5px); }
+    30%      { opacity: 0.5; transform: translateX(-3px); }
+    45%      { opacity: 0.3; transform: translateX(2px); }
+    65%      { opacity: 0; transform: translateX(0); }
+  }
+  @keyframes redGlitchScanline {
+    0%, 100% { opacity: 0; transform: translateY(-12%); }
+    10%      { opacity: 1; transform: translateY(40%); }
+    25%      { opacity: 1; transform: translateY(85%); }
+    35%      { opacity: 0; transform: translateY(112%); }
+  }
+  @keyframes certWipe {
+    from { opacity: 0; clip-path: inset(0 100% 0 0); }
+    to   { opacity: 1; clip-path: inset(0 0 0 0); }
+  }
+  @keyframes trophyUnfold {
+    from { opacity: 0; clip-path: circle(0% at 50% 50%); filter: brightness(2); }
+    to   { opacity: 1; clip-path: circle(140% at 50% 50%); filter: brightness(1); }
+  }
+  @keyframes platformTilt {
+    from { opacity: 0; transform: perspective(900px) rotateX(-18deg) translateY(28px) scale(0.94); }
+    to   { opacity: 1; transform: perspective(900px) rotateX(0) translateY(0) scale(1); }
   }
   @keyframes glitchWordA {
     0%, 100% { transform: translate3d(0, 0, 0); opacity: 0; clip-path: inset(0 0 0 0); }
@@ -482,6 +525,126 @@
   .skill-chip {
     animation: skillChipPop 0.5s cubic-bezier(0.32, 0.72, 0, 1) both;
     animation-delay: var(--delay, 0ms);
+  }
+
+  /* ── Platform banner tilt-in ── */
+  .platform-reveal {
+    opacity: 0;
+    transform: perspective(900px) rotateX(-18deg) translateY(28px) scale(0.94);
+    transform-origin: 50% 100%;
+  }
+  .platform-reveal.in-view {
+    animation: platformTilt 0.7s cubic-bezier(0.32, 0.72, 0, 1) both;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .platform-reveal {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+  }
+
+  /* ── Cert row wipe + trophy unfold (CSS-only) ── */
+  .cert-row {
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+  }
+  .cert-list.in-view .cert-row {
+    animation: certWipe 0.7s cubic-bezier(0.32, 0.72, 0, 1) both;
+  }
+  .trophy-card {
+    opacity: 0;
+    clip-path: circle(0% at 50% 50%);
+  }
+  .trophy-grid.in-view .trophy-card {
+    animation: trophyUnfold 0.8s cubic-bezier(0.32, 0.72, 0, 1) both;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cert-row,
+    .trophy-card {
+      opacity: 1 !important;
+      clip-path: none !important;
+      animation: none !important;
+    }
+  }
+
+  /* ── Skill chip red-glitch reveal. Hidden until parent has .in-view ── */
+  .skill-chip-glitch {
+    opacity: 0;
+    transform: translateX(-6px);
+    filter: blur(2px);
+  }
+  .skill-chip-list.in-view .skill-chip-glitch {
+    animation: redGlitchReveal 0.55s cubic-bezier(0.32, 0.72, 0, 1) both;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .skill-chip-glitch {
+      opacity: 1 !important;
+      transform: none !important;
+      filter: none !important;
+      animation: none !important;
+    }
+  }
+
+  /* ── Red glitch reveal (CSS-only, IntersectionObserver-driven) ── */
+  .glitch-reveal-in {
+    position: relative;
+    opacity: 0;
+  }
+  .glitch-reveal-in::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    height: 2px;
+    top: 0;
+    background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--color-accent) 95%, transparent), transparent);
+    box-shadow: 0 0 14px color-mix(in oklab, var(--color-accent) 70%, transparent);
+    opacity: 0;
+  }
+  .glitch-reveal-in::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    background: linear-gradient(90deg, color-mix(in oklab, var(--color-accent) 20%, transparent), transparent 60%);
+    mix-blend-mode: screen;
+    opacity: 0;
+  }
+  .glitch-reveal-in.in-view {
+    animation: redGlitchReveal 0.65s cubic-bezier(0.32, 0.72, 0, 1) both;
+  }
+  .glitch-reveal-in.in-view::before {
+    animation: redGlitchScanline 0.5s linear both;
+    animation-delay: 0.08s;
+  }
+  .glitch-reveal-in.in-view::after {
+    animation: redGlitchGhost 0.55s linear both;
+  }
+
+  /* Section title glitch */
+  .glitch-title-in {
+    opacity: 0;
+    filter: blur(4px);
+  }
+  .glitch-title-in.in-view {
+    animation: redGlitchReveal 0.55s cubic-bezier(0.32, 0.72, 0, 1) both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .glitch-reveal-in,
+    .glitch-title-in {
+      opacity: 1 !important;
+      filter: none !important;
+      animation: none !important;
+    }
+    .glitch-reveal-in::before,
+    .glitch-reveal-in::after {
+      animation: none !important;
+      opacity: 0 !important;
+    }
   }
 
   /* ── Open-channel sweep: each child slides + clips in left-to-right ── */

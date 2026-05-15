@@ -22,6 +22,7 @@ export function ProjectsBento() {
 
   return (
     <Section
+      id="all-projects"
       eyebrow="ARCHIVE"
       index={3}
       total={7}

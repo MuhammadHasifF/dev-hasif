@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import {
   motion,
@@ -128,18 +127,24 @@ export function FeaturedRail() {
             </div>
           ))}
           <div className="shrink-0 w-[80vw] md:w-[60vw] lg:w-[44vw]">
-            <Link
-              href="/work"
-              className="hud-panel group flex h-full min-h-[460px] flex-col items-center justify-center gap-3 p-12 text-center transition-colors hover:border-[var(--color-accent)]"
+            <button
+              type="button"
+              onClick={() => {
+                const target = document.getElementById("all-projects");
+                if (target) {
+                  target.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+              }}
+              className="hud-panel group flex h-full min-h-[460px] w-full flex-col items-center justify-center gap-3 p-12 text-center transition-colors hover:border-[var(--color-accent)]"
             >
               <span className="font-display text-3xl text-[var(--color-text-0)] md:text-4xl">
                 See every project
               </span>
               <span className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--color-text-1)] transition-colors group-hover:text-[var(--color-accent)]">
-                Browse the full grid
+                Browse the full grid below
                 <DiagonalArrow />
               </span>
-            </Link>
+            </button>
           </div>
         </motion.div>
       </div>
@@ -164,19 +169,37 @@ function SubtleAccent({
   x: MotionValue<string>;
   progress: MotionValue<number>;
 }) {
-  const accent = useTransform(
+  const primary = useTransform(
     x,
     (px) =>
-      `radial-gradient(36% 56% at ${px} 50%, color-mix(in oklab, var(--color-accent) 18%, transparent) 0%, color-mix(in oklab, var(--color-accent) 6%, transparent) 50%, transparent 80%)`,
+      `radial-gradient(60% 85% at ${px} 50%, color-mix(in oklab, var(--color-accent) 60%, transparent) 0%, color-mix(in oklab, var(--color-accent) 28%, transparent) 35%, color-mix(in oklab, var(--color-accent) 10%, transparent) 65%, transparent 85%)`,
   );
-  const accentOpacity = useTransform(progress, [0, 0.15, 1], [0, 0.85, 0.85]);
+  const secondary = useTransform(
+    x,
+    (px) =>
+      `radial-gradient(120% 80% at ${px} 50%, color-mix(in oklab, #ff5560 30%, transparent) 0%, transparent 70%)`,
+  );
+  const primaryOpacity = useTransform(progress, [0, 0.15, 1], [0, 1, 1]);
+  const secondaryOpacity = useTransform(progress, [0, 0.15, 1], [0, 0.7, 0.85]);
 
   return (
-    <motion.div
-      aria-hidden="true"
-      className="pointer-events-none absolute inset-0 -z-10"
-      style={{ background: accent, opacity: accentOpacity, mixBlendMode: "screen" }}
-    />
+    <>
+      <motion.div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10"
+        style={{ background: primary, opacity: primaryOpacity, mixBlendMode: "screen" }}
+      />
+      <motion.div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10"
+        style={{
+          background: secondary,
+          opacity: secondaryOpacity,
+          mixBlendMode: "screen",
+          filter: "blur(20px)",
+        }}
+      />
+    </>
   );
 }
 

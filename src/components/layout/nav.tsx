@@ -145,7 +145,7 @@ export function Nav() {
       )}
     >
       <NavMonster scopeRef={headerRef} />
-      <nav className="relative z-[2] mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6">
+      <nav className="relative z-[2] mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
         <Link
           href="/"
           aria-label="Home"
@@ -155,18 +155,18 @@ export function Nav() {
             transition: "opacity 220ms steps(2, end)",
           }}
         >
-          <span className="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-full ring-1 ring-[var(--color-accent)]/60 ring-offset-1 ring-offset-[var(--color-bg-0)] shadow-[0_0_14px_-4px_var(--color-accent)]">
+          <span className="relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-full ring-2 ring-[var(--color-accent)]/70 ring-offset-2 ring-offset-[var(--color-bg-0)] shadow-[0_0_18px_-4px_var(--color-accent)]">
             <Image
               src="/me/bamboo-forest.jpg"
               alt="Hasif"
-              width={56}
-              height={56}
+              width={72}
+              height={72}
               priority
               className="h-full w-full object-cover"
               style={{ objectPosition: "50% 30%" }}
             />
           </span>
-          <span className="hidden sm:block text-[var(--color-text-0)]">
+          <span className="hidden sm:block text-base text-[var(--color-text-0)]">
             hasif<span className="text-[var(--color-accent)]">.</span>dev
           </span>
         </Link>
