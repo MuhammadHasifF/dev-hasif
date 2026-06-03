@@ -4,30 +4,33 @@ import Image from "next/image";
 import { useEffect, useRef } from "react";
 
 /**
- * Large avatar mark that lives next to the hero headline.
+ * Large circular avatar mark next to the hero headline.
  *
- * Visibility rules:
+ * Visibility:
  *   - In hero view → driven by --hero-logo-on (1 when hero is on screen)
  *   - First word state → --hero-word-dev (1 when headline is showing "DEV",
- *     0 when showing "MUHAMMAD"). The avatar only shows next to "DEV HASIF",
- *     so it glitches in when the headline glitches to DEV and glitches out
- *     when it swaps back to MUHAMMAD.
- *   - Nav logo binds to (1 - hero-logo-on), so it owns the spot whenever
- *     the hero is off screen, regardless of the swap state.
+ *     0 when showing "MUHAMMAD"). Avatar only shows next to "DEV HASIF",
+ *     glitches in/out exactly when the headline glitches in/out.
+ *   - Nav logo opacity = 1 - hero-logo-on so it owns the spot when the
+ *     hero scrolls off.
  *
- * Size: matches the headline text height — clamp matches the h1 in
- * glitch-headline.tsx (3rem → 14vw → 11rem).
+ * Glitch sync: GlitchHeadline dispatches a "hero-word-swap" CustomEvent
+ * at the same beat as the text swap. This component listens and toggles
+ * a one-shot `.is-glitching` class for ~520ms so the RGB-shift ghosts +
+ * stepped scale-up play at the EXACT instant the word changes. No fade.
  */
 export function HeroLogoBridge() {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const root = document.documentElement;
-    // Start: hero is on, headline shows MUHAMMAD → logo hidden.
+    // Start: hero on, headline shows MUHAMMAD → logo hidden, no glitch.
     root.style.setProperty("--hero-logo-on", "1");
     root.style.setProperty("--hero-word-dev", "0");
+
     const el = ref.current;
     if (!el) return;
+
     const io = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
@@ -37,8 +40,23 @@ export function HeroLogoBridge() {
       { rootMargin: "-72px 0px -50% 0px", threshold: 0 },
     );
     io.observe(el);
+
+    // Trigger one-shot glitch class on every word swap.
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    const onSwap = () => {
+      el.classList.remove("is-glitching");
+      // Force reflow so the animation restarts.
+      void el.offsetWidth;
+      el.classList.add("is-glitching");
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(() => el.classList.remove("is-glitching"), 540);
+    };
+    window.addEventListener("hero-word-swap", onSwap);
+
     return () => {
       io.disconnect();
+      window.removeEventListener("hero-word-swap", onSwap);
+      if (timer) clearTimeout(timer);
       root.style.setProperty("--hero-logo-on", "0");
       root.style.setProperty("--hero-word-dev", "0");
     };
@@ -49,44 +67,58 @@ export function HeroLogoBridge() {
       ref={ref}
       aria-hidden="true"
       className="hero-logo-mark relative inline-flex shrink-0 items-center justify-center"
-      style={
-        {
-          // height = headline line-height × text size, clamp-matched. Tighter
-          // on phone (2rem floor) so headline + avatar still fit at 375px.
-          width: "calc(clamp(2rem, 10vw, 9rem) * var(--hero-word-dev, 0))",
-          height: "clamp(2rem, 10vw, 9rem)",
-          marginLeft: "calc(var(--hero-word-dev, 0) * 0.4rem)",
-          // visibility = hero-on AND headline shows "DEV"
-          opacity: "calc(var(--hero-logo-on, 1) * var(--hero-word-dev, 0))",
-          transform:
-            "scale(calc(0.6 + var(--hero-word-dev, 0) * 0.4))",
-          transition:
-            "opacity 180ms steps(3, end), transform 220ms cubic-bezier(0.32, 0.72, 0, 1), width 220ms cubic-bezier(0.32, 0.72, 0, 1), margin-left 220ms cubic-bezier(0.32, 0.72, 0, 1)",
-          filter:
-            "drop-shadow(0 0 14px color-mix(in oklab, var(--color-accent) 80%, transparent)) drop-shadow(0 0 28px color-mix(in oklab, var(--color-accent) 45%, transparent))",
-          overflow: "hidden",
-        } as React.CSSProperties
-      }
     >
-      <span className="relative inline-flex h-full w-full items-center justify-center overflow-hidden rounded-full ring-[3px] ring-[var(--color-accent)] shadow-[0_0_48px_-6px_var(--color-accent)]">
+      {/* Ambient red glow halo — no hard ring */}
+      <span
+        aria-hidden="true"
+        className="hero-logo-halo pointer-events-none absolute"
+        style={{
+          inset: "-22%",
+          background:
+            "radial-gradient(closest-side, color-mix(in oklab, var(--color-accent) 50%, transparent) 0%, color-mix(in oklab, var(--color-accent) 18%, transparent) 55%, transparent 80%)",
+          filter: "blur(8px)",
+          opacity: "calc(var(--hero-logo-on, 1) * var(--hero-word-dev, 0) * 0.85)",
+          transition: "opacity 200ms steps(3, end)",
+        }}
+      />
+      <span className="hero-logo-circle relative inline-flex h-full w-full items-center justify-center overflow-hidden rounded-full">
+        {/* Cyan RGB-split ghost */}
+        <span
+          aria-hidden="true"
+          className="hero-logo-ghost hero-logo-ghost-cyan pointer-events-none absolute inset-0 overflow-hidden rounded-full"
+        >
+          <Image
+            src="/me/bamboo-forest.jpg"
+            alt=""
+            width={400}
+            height={400}
+            className="h-full w-full object-cover"
+            style={{ objectPosition: "50% 30%", filter: "hue-rotate(180deg) saturate(1.6)" }}
+          />
+        </span>
+        {/* Red RGB-split ghost */}
+        <span
+          aria-hidden="true"
+          className="hero-logo-ghost hero-logo-ghost-red pointer-events-none absolute inset-0 overflow-hidden rounded-full"
+        >
+          <Image
+            src="/me/bamboo-forest.jpg"
+            alt=""
+            width={400}
+            height={400}
+            className="h-full w-full object-cover"
+            style={{ objectPosition: "50% 30%", filter: "saturate(1.6) brightness(1.1)" }}
+          />
+        </span>
+        {/* Main photo */}
         <Image
           src="/me/bamboo-forest.jpg"
           alt=""
           width={400}
           height={400}
-          className="h-full w-full object-cover"
+          className="relative h-full w-full object-cover"
           style={{ objectPosition: "50% 30%" }}
           priority
-        />
-        {/* Red overlay on top so the photo reads "cyber red" not neutral */}
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(120% 100% at 50% 50%, transparent 30%, color-mix(in oklab, var(--color-accent) 35%, transparent) 100%)",
-            mixBlendMode: "screen",
-          }}
         />
       </span>
     </div>

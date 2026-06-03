@@ -169,6 +169,26 @@
     from { opacity: 0.75; transform: translateY(0) scaleY(1); }
     to   { opacity: 1; transform: translateY(-1px) scaleY(1.18); }
   }
+  @keyframes heroLogoGlitchRed {
+    0%, 100% { transform: translate3d(0, 0, 0); opacity: 0; }
+    20%      { transform: translate3d(-7px, 2px, 0); opacity: 0.85; }
+    40%      { transform: translate3d(5px, -3px, 0); opacity: 0.7; }
+    60%      { transform: translate3d(-3px, 1px, 0); opacity: 0.55; }
+    80%      { transform: translate3d(2px, 0, 0); opacity: 0.3; }
+  }
+  @keyframes heroLogoGlitchCyan {
+    0%, 100% { transform: translate3d(0, 0, 0); opacity: 0; }
+    20%      { transform: translate3d(7px, -2px, 0); opacity: 0.7; }
+    40%      { transform: translate3d(-5px, 3px, 0); opacity: 0.55; }
+    60%      { transform: translate3d(3px, -1px, 0); opacity: 0.4; }
+    80%      { transform: translate3d(-2px, 0, 0); opacity: 0.2; }
+  }
+  @keyframes heroLogoArrive {
+    0%   { clip-path: inset(40% 0 40% 0); transform: scale(0.85); filter: brightness(2.2); }
+    35%  { clip-path: inset(15% 0 50% 0); transform: scale(0.95); filter: brightness(1.5); }
+    65%  { clip-path: inset(60% 0 10% 0); transform: scale(1.05); filter: brightness(1.2); }
+    100% { clip-path: inset(0); transform: scale(1); filter: brightness(1); }
+  }
   @keyframes skillChipPop {
     0%   { opacity: 0; transform: translateY(4px) scale(0.96); filter: blur(2px); }
     60%  { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
@@ -538,6 +558,41 @@
   .skill-chip {
     animation: skillChipPop 0.5s cubic-bezier(0.32, 0.72, 0, 1) both;
     animation-delay: var(--delay, 0ms);
+  }
+
+  /* ── Hero avatar (logo bridge): bigger, no hard ring, RGB-glitch sync ── */
+  .hero-logo-mark {
+    width: calc(clamp(2.4rem, 13vw, 12rem) * var(--hero-word-dev, 0));
+    height: clamp(2.4rem, 13vw, 12rem);
+    margin-left: calc(var(--hero-word-dev, 0) * 0.5rem);
+    opacity: calc(var(--hero-logo-on, 1) * var(--hero-word-dev, 0));
+    transform: scale(calc(0.65 + var(--hero-word-dev, 0) * 0.35));
+    transition:
+      opacity 180ms steps(3, end),
+      transform 240ms cubic-bezier(0.32, 0.72, 0, 1),
+      width 240ms cubic-bezier(0.32, 0.72, 0, 1),
+      margin-left 240ms cubic-bezier(0.32, 0.72, 0, 1);
+    overflow: visible;
+  }
+  .hero-logo-ghost {
+    opacity: 0;
+    mix-blend-mode: screen;
+    will-change: transform, opacity;
+  }
+  .hero-logo-mark.is-glitching .hero-logo-circle {
+    animation: heroLogoArrive 0.5s cubic-bezier(0.32, 0.72, 0, 1) both;
+  }
+  .hero-logo-mark.is-glitching .hero-logo-ghost-red {
+    animation: heroLogoGlitchRed 0.52s steps(8, end) both;
+  }
+  .hero-logo-mark.is-glitching .hero-logo-ghost-cyan {
+    animation: heroLogoGlitchCyan 0.52s steps(8, end) both;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-logo-mark.is-glitching .hero-logo-circle,
+    .hero-logo-mark.is-glitching .hero-logo-ghost {
+      animation: none !important;
+    }
   }
 
   /* ── Platform banner tilt-in ── */
