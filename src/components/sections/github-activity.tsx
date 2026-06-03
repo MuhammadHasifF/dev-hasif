@@ -24,10 +24,12 @@ function relativeTime(iso: string) {
  * are static identity cards (avatar + role + deep link).
  */
 export async function GitHubActivity() {
-  const [repos, events] = await Promise.all([fetchRepos(5), fetchEvents(10)]);
+  // Pull deeper feeds so PushEvents survive even when stars/PRs/watches
+  // dominate the recent window.
+  const [repos, events] = await Promise.all([fetchRepos(6), fetchEvents(60)]);
   const commits = events
     .filter((e) => e.type === "PushEvent" && e.payload?.commits?.length)
-    .slice(0, 5);
+    .slice(0, 6);
 
   return (
     <Section

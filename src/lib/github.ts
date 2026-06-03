@@ -30,13 +30,15 @@ if (process.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${process.env.GITH
 
 export async function fetchRepos(limit = 6): Promise<GitHubRepo[]> {
   try {
+    // Always pull a wider window from GitHub, then slice locally. Avoids
+    // missing recent activity when the caller asks for a small N.
     const res = await fetch(
-      `${GH}/users/${siteConfig.github.username}/repos?sort=updated&per_page=${limit}`,
-      { headers, next: { revalidate: 60 * 60 } }
+      `${GH}/users/${siteConfig.github.username}/repos?sort=updated&per_page=30`,
+      { headers, next: { revalidate: 60 * 30 } },
     );
     if (!res.ok) return [];
     const data = (await res.json()) as GitHubRepo[];
-    return data.filter((r) => !r.full_name.endsWith(".github.io"));
+    return data.filter((r) => !r.full_name.endsWith(".github.io")).slice(0, limit);
   } catch {
     return [];
   }
@@ -44,12 +46,15 @@ export async function fetchRepos(limit = 6): Promise<GitHubRepo[]> {
 
 export async function fetchEvents(limit = 10): Promise<GitHubEvent[]> {
   try {
+    // Pull GitHub's max page (100) so we still surface PushEvents when the
+    // tail of the feed is dominated by Watch/Star/PR events.
     const res = await fetch(
-      `${GH}/users/${siteConfig.github.username}/events/public?per_page=${limit}`,
-      { headers, next: { revalidate: 60 * 60 } }
+      `${GH}/users/${siteConfig.github.username}/events/public?per_page=100`,
+      { headers, next: { revalidate: 60 * 30 } },
     );
     if (!res.ok) return [];
-    return (await res.json()) as GitHubEvent[];
+    const data = (await res.json()) as GitHubEvent[];
+    return data.slice(0, limit);
   } catch {
     return [];
   }
