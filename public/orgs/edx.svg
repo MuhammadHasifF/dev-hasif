@@ -1,4 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
-  <rect width="64" height="64" fill="#02262B"/>
-  <text x="32" y="42" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="22" fill="#fff" font-style="italic">edX</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 64">
+  <!-- Top-left parallelogram -->
+  <path d="M2 8 L62 8 L52 38 L2 38 Z" fill="#02262d"/>
+  <!-- Bottom-right parallelogram, shifted down + right for the staggered staircase look -->
+  <path d="M44 30 L94 30 L84 60 L34 60 Z" fill="#02262d"/>
+  <!-- White italic "edX" wordmark -->
+  <text x="6" y="33" fill="#ffffff" font-family="Helvetica, Arial, sans-serif" font-weight="800" font-size="26" font-style="italic" letter-spacing="-1">ed</text>
+  <text x="50" y="56" fill="#ffffff" font-family="Helvetica, Arial, sans-serif" font-weight="800" font-size="32" font-style="italic" letter-spacing="-1">X</text>
 </svg>
