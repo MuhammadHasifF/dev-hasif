@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Github, Linkedin, Mail, FileText } from "lucide-react";
 import { siteConfig } from "@/../site.config";
 import { SettingsMenu } from "@/components/layout/settings-menu";
-import { GlitchWord } from "@/components/primitives/glitch-word";
+import { GlitchSwap } from "@/components/primitives/glitch-swap";
 
 const buildTime = new Date().toISOString();
 
@@ -15,17 +15,11 @@ export function Footer() {
             <span>Let&rsquo;s build</span>
             <br />
             <span className="text-[var(--color-text-1)]">something </span>
-            <GlitchWord intensity={1.4}>
-              <span
-                className="text-[var(--color-accent)]"
-                style={{
-                  textShadow:
-                    "0 0 18px color-mix(in oklab, var(--color-accent) 60%, transparent)",
-                }}
-              >
-                amazing.
-              </span>
-            </GlitchWord>
+            <GlitchSwap
+              words={["amazing.", "real."]}
+              intensity={1.2}
+              className="text-[var(--color-accent)]"
+            />
           </div>
           <p className="mt-6 max-w-md text-sm text-[var(--color-text-1)]">
             I&rsquo;m open to research collaborations, engineering roles, and
