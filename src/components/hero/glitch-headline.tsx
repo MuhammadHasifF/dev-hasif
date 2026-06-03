@@ -121,9 +121,17 @@ export function GlitchHeadline({ className }: { className?: string }) {
           invert: heavy && Math.random() < 0.4,
         });
         setPhase("burst");
-        // mid-burst, swap the first word
+        // mid-burst, swap the first word + publish to CSS for HeroLogoBridge.
         if (swap && i === Math.floor(beats / 2)) {
-          setFirst((f) => (f === "MUHAMMAD" ? "DEV" : "MUHAMMAD"));
+          setFirst((f) => {
+            const next = f === "MUHAMMAD" ? "DEV" : "MUHAMMAD";
+            // 1 = "DEV" (show logo inline), 0 = "MUHAMMAD" (hide inline logo)
+            document.documentElement.style.setProperty(
+              "--hero-word-dev",
+              next === "DEV" ? "1" : "0",
+            );
+            return next;
+          });
           setPhase("swap");
         }
         timeouts.push(setTimeout(() => runBeats(i + 1), 70 + Math.random() * 90));
