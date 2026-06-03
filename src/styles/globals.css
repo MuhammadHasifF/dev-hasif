@@ -148,13 +148,26 @@
     33%      { transform: translateY(-1px) scaleY(1.1); }
     66%      { transform: translateY(0) scaleY(0.92); }
   }
-  @keyframes tipSpin {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
+  @keyframes redFlameHalo {
+    from { opacity: 0.55; transform: scale(0.96, 1.04); }
+    to   { opacity: 0.95; transform: scale(1.08, 0.94); }
   }
-  @keyframes tipHaloPulse {
-    from { opacity: 0.4; r: 8; }
-    to   { opacity: 0.85; r: 10.5; }
+  @keyframes redFlameOuter {
+    from { transform: translateY(0) scaleY(1) scaleX(1); }
+    to   { transform: translateY(-0.5px) scaleY(1.06) scaleX(0.96); }
+  }
+  @keyframes redFlameMid {
+    from { transform: translateY(0) scaleY(1) scaleX(1); }
+    50%  { transform: translateY(-1px) scaleY(1.05) scaleX(0.97); }
+    to   { transform: translateY(0) scaleY(0.97) scaleX(1.03); }
+  }
+  @keyframes redFlameCore {
+    from { transform: translateY(0) scaleY(1) scaleX(1); }
+    to   { transform: translateY(-1.5px) scaleY(1.08) scaleX(0.94); }
+  }
+  @keyframes redFlameHeart {
+    from { opacity: 0.75; transform: translateY(0) scaleY(1); }
+    to   { opacity: 1; transform: translateY(-1px) scaleY(1.18); }
   }
   @keyframes skillChipPop {
     0%   { opacity: 0; transform: translateY(4px) scale(0.96); filter: blur(2px); }

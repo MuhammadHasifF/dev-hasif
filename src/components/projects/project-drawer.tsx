@@ -76,9 +76,9 @@ export function ProjectDrawer({
                 type="button"
                 onClick={onClose}
                 aria-label="Close project details"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-sm border border-[var(--color-border)] text-[var(--color-text-1)] transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-sm border border-[var(--color-border)] text-[var(--color-text-1)] transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
               >
-                <X className="h-4 w-4" />
+                <X className="h-5 w-5" />
               </button>
             </header>
 

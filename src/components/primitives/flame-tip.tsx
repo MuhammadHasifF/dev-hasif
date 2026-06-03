@@ -5,18 +5,25 @@ import { motion, type MotionValue, useReducedMotion } from "framer-motion";
 type Orientation = "horizontal" | "vertical";
 
 /**
- * Cyber tip indicator. The animated flame was unreliable across browsers,
- * so the tip is now a small geometric mark — a glowing red diamond with
- * a chevron crosshair through it. Rotates slowly + pulses. Sits on the
- * leading edge of a progress bar and tracks it cleanly because it lives
- * in the SAME parent that drives the bar's position (via --p).
+ * Small red flame at the leading edge of a progress bar.
  *
- * Reduced motion: static diamond, no rotation, no pulse.
+ * Three layered flame shapes (outer dark-red shell, middle red-orange,
+ * inner white-hot core) animated by separate CSS keyframes so the
+ * paths visibly waver rather than just pulsing in place. Slightly
+ * slower than before (700–900ms periods instead of 280–360ms) so it
+ * reads as a real flame, not a strobe. Inner whitish-red glow + outer
+ * red halo bloom.
+ *
+ * Lives in the SAME parent as the progress fill (the parent sets a CSS
+ * variable that positions both), so there is no transition lag between
+ * fill edge and flame.
+ *
+ * Reduced motion: static flame, no flicker.
  */
 export function FlameTip({
   progress,
   orientation = "horizontal",
-  size = 18,
+  size = 20,
 }: {
   progress: number | MotionValue<number>;
   orientation?: Orientation;
@@ -30,9 +37,10 @@ export function FlameTip({
     ? { left: isMV ? undefined : `${(progress as number) * 100}%`, top: "50%" }
     : { top: isMV ? undefined : `${(progress as number) * 100}%`, left: "50%" };
 
+  // Flame body sits ABOVE the bar (horizontal) or BELOW the bar (vertical).
   const transform = horizontal
-    ? "translate(-50%, -50%)"
-    : "translate(-50%, -50%)";
+    ? "translate(-50%, -78%)"
+    : "translate(-50%, -22%) rotate(180deg)";
 
   return (
     <motion.div
@@ -46,57 +54,69 @@ export function FlameTip({
             : { top: progress as MotionValue<number> }
           : {}),
         transform,
-        width: size,
-        height: size,
         willChange: "left, top",
       }}
     >
-      <TipMark size={size} animated={!reduce} />
+      <RedFlame size={size} animated={!reduce} />
     </motion.div>
   );
 }
 
-function TipMark({ size, animated }: { size: number; animated: boolean }) {
+function RedFlame({ size, animated }: { size: number; animated: boolean }) {
+  const w = size * 0.62;
+  const h = size;
   return (
     <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
+      width={w}
+      height={h}
+      viewBox="0 0 24 32"
       style={{
         overflow: "visible",
-        animation: animated ? "tipSpin 2.8s linear infinite" : undefined,
         filter:
-          "drop-shadow(0 0 6px var(--color-accent)) drop-shadow(0 0 14px color-mix(in oklab, var(--color-accent) 60%, transparent))",
+          "drop-shadow(0 0 4px #ff5560) drop-shadow(0 0 10px color-mix(in oklab, var(--color-accent) 80%, transparent)) drop-shadow(0 0 22px color-mix(in oklab, var(--color-accent) 45%, transparent))",
       }}
     >
-      {/* Outer glow halo */}
-      <circle
+      {/* Glow halo */}
+      <ellipse
         cx="12"
-        cy="12"
-        r="9"
-        fill="color-mix(in oklab, var(--color-accent) 20%, transparent)"
-        style={
-          animated ? { animation: "tipHaloPulse 0.9s ease-in-out infinite alternate" } : undefined
-        }
+        cy="22"
+        rx="11"
+        ry="14"
+        fill="color-mix(in oklab, #ff5560 50%, transparent)"
+        style={animated ? { animation: "redFlameHalo 0.85s ease-in-out infinite alternate" } : undefined}
       />
-      {/* Diamond core */}
+      {/* Outer dark-red shell */}
       <path
-        d="M12 2 L22 12 L12 22 L2 12 Z"
-        fill="none"
-        stroke="var(--color-accent)"
-        strokeWidth="1.4"
+        d="M12 32 C 4 26, 5 18, 8 12 C 9 14, 10 14, 11 13 C 10 8, 12 4, 14 0 C 14 6, 18 8, 19 14 C 21 18, 20 26, 12 32 Z"
+        fill="#8b0a0a"
+        style={animated ? { animation: "redFlameOuter 0.9s ease-in-out infinite alternate" } : undefined}
+        transform-origin="50% 100%"
       />
+      {/* Middle red-orange */}
       <path
-        d="M12 5 L19 12 L12 19 L5 12 Z"
-        fill="color-mix(in oklab, var(--color-accent) 80%, transparent)"
+        d="M12 31 C 6 25, 6 19, 9 14 C 10 16, 10.5 16, 11 15 C 10 10, 12.5 6, 14 2 C 14 8, 17 10, 18 15 C 19 19, 18 25, 12 31 Z"
+        fill="#ff3a2a"
+        opacity="0.95"
+        style={animated ? { animation: "redFlameMid 0.75s ease-in-out infinite alternate" } : undefined}
+        transform-origin="50% 100%"
       />
-      {/* Inner crosshair */}
-      <line x1="12" y1="0" x2="12" y2="6" stroke="var(--color-accent)" strokeWidth="1" />
-      <line x1="12" y1="18" x2="12" y2="24" stroke="var(--color-accent)" strokeWidth="1" />
-      <line x1="0" y1="12" x2="6" y2="12" stroke="var(--color-accent)" strokeWidth="1" />
-      <line x1="18" y1="12" x2="24" y2="12" stroke="var(--color-accent)" strokeWidth="1" />
-      {/* White-hot center */}
-      <circle cx="12" cy="12" r="2" fill="#fff5e0" />
+      {/* Inner whitish-red glow */}
+      <path
+        d="M12 28 C 8 24, 8 19, 10.5 16 C 11 17, 11.5 17, 11.7 16 C 11.5 13, 13 9, 14 6 C 14 11, 16 13, 16.5 17 C 17.5 20, 16.5 24, 12 28 Z"
+        fill="#ffd6c2"
+        opacity="0.9"
+        style={animated ? { animation: "redFlameCore 0.7s ease-in-out infinite alternate" } : undefined}
+        transform-origin="50% 100%"
+      />
+      {/* White-hot pinprick at the heart of the flame */}
+      <ellipse
+        cx="12.5"
+        cy="22"
+        rx="1.6"
+        ry="3.6"
+        fill="#fff7ec"
+        style={animated ? { animation: "redFlameHeart 0.5s ease-in-out infinite alternate" } : undefined}
+      />
     </svg>
   );
 }

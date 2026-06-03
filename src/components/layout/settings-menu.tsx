@@ -46,9 +46,9 @@ export function SettingsMenu() {
         type="button"
         aria-label="Open settings"
         onClick={() => setOpen((v) => !v)}
-        className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-[var(--color-border)] text-[var(--color-text-1)] hover:text-[var(--color-text-0)]"
+        className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[var(--color-border)] text-[var(--color-text-1)] hover:text-[var(--color-text-0)]"
       >
-        <Settings className="h-3.5 w-3.5" />
+        <Settings className="h-4 w-4" />
       </button>
       {open && (
         <div
