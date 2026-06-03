@@ -45,8 +45,8 @@ export function Hero() {
         {/* Editorial display title — masked-line reveal + cyberpunk glitch.
             The avatar mark sits inline so the logo lives in two coordinated
             positions: here in the hero, and in the top-left nav after scroll. */}
-        <div className="flex items-center gap-[0.18em]">
-          <GlitchHeadline className="flex-1" />
+        <div className="flex min-w-0 items-center gap-[0.18em]">
+          <GlitchHeadline className="min-w-0 flex-1" />
           <HeroLogoBridge />
         </div>
 

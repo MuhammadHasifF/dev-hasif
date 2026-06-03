@@ -51,17 +51,20 @@ export function HeroLogoBridge() {
       className="hero-logo-mark relative inline-flex shrink-0 items-center justify-center"
       style={
         {
-          // height = headline line-height (0.88) × text size, clamp-matched.
-          width: "clamp(2.6rem, 12vw, 9.5rem)",
-          height: "clamp(2.6rem, 12vw, 9.5rem)",
+          // height = headline line-height × text size, clamp-matched. Tighter
+          // on phone (2rem floor) so headline + avatar still fit at 375px.
+          width: "calc(clamp(2rem, 10vw, 9rem) * var(--hero-word-dev, 0))",
+          height: "clamp(2rem, 10vw, 9rem)",
+          marginLeft: "calc(var(--hero-word-dev, 0) * 0.4rem)",
           // visibility = hero-on AND headline shows "DEV"
           opacity: "calc(var(--hero-logo-on, 1) * var(--hero-word-dev, 0))",
           transform:
-            "scale(calc(0.6 + var(--hero-word-dev, 0) * 0.4)) translateX(calc((1 - var(--hero-word-dev, 0)) * -12px))",
+            "scale(calc(0.6 + var(--hero-word-dev, 0) * 0.4))",
           transition:
-            "opacity 180ms steps(3, end), transform 220ms cubic-bezier(0.32, 0.72, 0, 1), filter 200ms steps(3, end)",
+            "opacity 180ms steps(3, end), transform 220ms cubic-bezier(0.32, 0.72, 0, 1), width 220ms cubic-bezier(0.32, 0.72, 0, 1), margin-left 220ms cubic-bezier(0.32, 0.72, 0, 1)",
           filter:
             "drop-shadow(0 0 14px color-mix(in oklab, var(--color-accent) 80%, transparent)) drop-shadow(0 0 28px color-mix(in oklab, var(--color-accent) 45%, transparent))",
+          overflow: "hidden",
         } as React.CSSProperties
       }
     >
