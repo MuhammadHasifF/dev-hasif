@@ -27,12 +27,26 @@ export function HomeBgRamp() {
 
     let pending = false;
     let p = 0;
+    let lastRamp = -1;
+    let lastGateStep = -1;
+    const root = document.documentElement;
     const apply = () => {
       pending = false;
-      el.style.setProperty("--ramp", p.toFixed(4));
-      // Gate (0 → 1) ramps from scroll 0.82 to 0.97.
-      const gate = Math.max(0, Math.min(1, (p - 0.82) * 6.5)) * (1 - Math.max(0, (p - 0.97) * 5));
-      document.documentElement.style.setProperty("--burn-gate", gate.toFixed(4));
+      // Round ramp to 3 decimals so we don't write the same value repeatedly.
+      const ramp = Math.round(p * 1000) / 1000;
+      if (ramp !== lastRamp) {
+        lastRamp = ramp;
+        el.style.setProperty("--ramp", ramp.toFixed(3));
+      }
+      // Gate STEPPED to 25 positions (0.04 each). Each step write triggers a
+      // global color-mix recalc on every element bound to --color-text-{1,2};
+      // continuous writes were the lag source from Skills onwards.
+      const gateRaw = Math.max(0, Math.min(1, (p - 0.82) * 6.5)) * (1 - Math.max(0, (p - 0.97) * 5));
+      const gateStep = Math.round(gateRaw * 25);
+      if (gateStep !== lastGateStep) {
+        lastGateStep = gateStep;
+        root.style.setProperty("--burn-gate", (gateStep / 25).toFixed(2));
+      }
     };
     const update = () => {
       const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
@@ -49,7 +63,7 @@ export function HomeBgRamp() {
     return () => {
       window.removeEventListener("scroll", update);
       window.removeEventListener("resize", update);
-      document.documentElement.style.removeProperty("--burn-gate");
+      root.style.removeProperty("--burn-gate");
     };
   }, []);
 
