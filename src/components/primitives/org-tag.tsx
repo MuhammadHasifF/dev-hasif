@@ -4,12 +4,13 @@ import { useState } from "react";
 import { getOrg, hueFromString, monogramFor } from "@/lib/logos";
 import { cn } from "@/lib/utils";
 
-type Size = "sm" | "md" | "lg";
+type Size = "sm" | "md" | "lg" | "xl";
 
 const sizeMap: Record<Size, { box: string; text: string; gap: string }> = {
   sm: { box: "h-5 w-5", text: "text-[10px]", gap: "gap-1.5" },
   md: { box: "h-6 w-6", text: "text-xs", gap: "gap-2" },
   lg: { box: "h-9 w-9", text: "text-sm", gap: "gap-3" },
+  xl: { box: "h-11 w-11", text: "text-base", gap: "gap-3.5" },
 };
 
 export function OrgLogo({
