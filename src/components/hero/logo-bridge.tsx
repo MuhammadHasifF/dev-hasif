@@ -1,30 +1,31 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+
+type Phase = "idle" | "enter" | "exit";
 
 /**
- * Large circular avatar mark next to the hero headline.
+ * Hero avatar that GLITCHES in/out in sync with the MUHAMMAD ↔ DEV swap.
  *
- * Visibility:
- *   - In hero view → driven by --hero-logo-on (1 when hero is on screen)
- *   - First word state → --hero-word-dev (1 when headline is showing "DEV",
- *     0 when showing "MUHAMMAD"). Avatar only shows next to "DEV HASIF",
- *     glitches in/out exactly when the headline glitches in/out.
- *   - Nav logo opacity = 1 - hero-logo-on so it owns the spot when the
- *     hero scrolls off.
+ * Previous version transitioned width/opacity/margin smoothly → read as
+ * a slide, not a glitch. This version snaps the layout instantly and
+ * uses two dedicated keyframes for the enter and exit beats so the
+ * avatar pops + RGB-splits + clip-slices the same family as the text.
  *
- * Glitch sync: GlitchHeadline dispatches a "hero-word-swap" CustomEvent
- * at the same beat as the text swap. This component listens and toggles
- * a one-shot `.is-glitching` class for ~520ms so the RGB-shift ghosts +
- * stepped scale-up play at the EXACT instant the word changes. No fade.
+ *  - GlitchHeadline dispatches `hero-word-swap` with detail.word.
+ *  - When word === "DEV":  setVisible(true) immediately → enter glitch.
+ *  - When word === "MUHAMMAD": exit glitch plays → after 480ms hide.
+ *  - --hero-logo-on (hero off-screen) overrides everything to hidden.
  */
 export function HeroLogoBridge() {
   const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  const [phase, setPhase] = useState<Phase>("idle");
+  const [heroOn, setHeroOn] = useState(true);
 
   useEffect(() => {
     const root = document.documentElement;
-    // Start: hero on, headline shows MUHAMMAD → logo hidden, no glitch.
     root.style.setProperty("--hero-logo-on", "1");
     root.style.setProperty("--hero-word-dev", "0");
 
@@ -34,41 +35,68 @@ export function HeroLogoBridge() {
     const io = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
-          root.style.setProperty("--hero-logo-on", e.isIntersecting ? "1" : "0");
+          const on = e.isIntersecting;
+          root.style.setProperty("--hero-logo-on", on ? "1" : "0");
+          setHeroOn(on);
         }
       },
       { rootMargin: "-72px 0px -50% 0px", threshold: 0 },
     );
     io.observe(el);
 
-    // Trigger one-shot glitch class on every word swap.
-    let timer: ReturnType<typeof setTimeout> | null = null;
-    const onSwap = () => {
-      el.classList.remove("is-glitching");
-      // Force reflow so the animation restarts.
-      void el.offsetWidth;
-      el.classList.add("is-glitching");
-      if (timer) clearTimeout(timer);
-      timer = setTimeout(() => el.classList.remove("is-glitching"), 540);
+    let exitTimer: ReturnType<typeof setTimeout> | null = null;
+    let phaseTimer: ReturnType<typeof setTimeout> | null = null;
+
+    const onSwap = (e: Event) => {
+      const word = (e as CustomEvent<{ word: "DEV" | "MUHAMMAD" }>).detail?.word;
+      root.style.setProperty(
+        "--hero-word-dev",
+        word === "DEV" ? "1" : "0",
+      );
+      if (word === "DEV") {
+        // Make visible IMMEDIATELY so the enter glitch has something to mask.
+        if (exitTimer) clearTimeout(exitTimer);
+        if (phaseTimer) clearTimeout(phaseTimer);
+        setVisible(true);
+        setPhase("enter");
+        phaseTimer = setTimeout(() => setPhase("idle"), 500);
+      } else {
+        // Play the exit glitch first, hide after.
+        if (phaseTimer) clearTimeout(phaseTimer);
+        setPhase("exit");
+        phaseTimer = setTimeout(() => setPhase("idle"), 500);
+        if (exitTimer) clearTimeout(exitTimer);
+        exitTimer = setTimeout(() => setVisible(false), 480);
+      }
     };
-    window.addEventListener("hero-word-swap", onSwap);
+
+    window.addEventListener("hero-word-swap", onSwap as EventListener);
 
     return () => {
       io.disconnect();
-      window.removeEventListener("hero-word-swap", onSwap);
-      if (timer) clearTimeout(timer);
+      window.removeEventListener("hero-word-swap", onSwap as EventListener);
+      if (exitTimer) clearTimeout(exitTimer);
+      if (phaseTimer) clearTimeout(phaseTimer);
       root.style.setProperty("--hero-logo-on", "0");
       root.style.setProperty("--hero-word-dev", "0");
     };
   }, []);
 
+  const stateClass = !visible || !heroOn ? "is-hidden" : "is-visible";
+  const phaseClass =
+    phase === "enter"
+      ? "is-glitch-in"
+      : phase === "exit"
+        ? "is-glitch-out"
+        : "";
+
   return (
     <div
       ref={ref}
       aria-hidden="true"
-      className="hero-logo-mark relative inline-flex shrink-0 items-center justify-center"
+      className={`hero-logo-mark relative inline-flex shrink-0 items-center justify-center ${stateClass} ${phaseClass}`}
     >
-      {/* Ambient red glow halo — no hard ring */}
+      {/* Ambient red glow halo */}
       <span
         aria-hidden="true"
         className="hero-logo-halo pointer-events-none absolute"
@@ -77,8 +105,6 @@ export function HeroLogoBridge() {
           background:
             "radial-gradient(closest-side, color-mix(in oklab, var(--color-accent) 50%, transparent) 0%, color-mix(in oklab, var(--color-accent) 18%, transparent) 55%, transparent 80%)",
           filter: "blur(8px)",
-          opacity: "calc(var(--hero-logo-on, 1) * var(--hero-word-dev, 0) * 0.85)",
-          transition: "opacity 200ms steps(3, end)",
         }}
       />
       <span className="hero-logo-circle relative inline-flex h-full w-full items-center justify-center overflow-hidden rounded-full">

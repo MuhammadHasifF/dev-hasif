@@ -189,6 +189,27 @@
     65%  { clip-path: inset(60% 0 10% 0); transform: scale(1.05); filter: brightness(1.2); }
     100% { clip-path: inset(0); transform: scale(1); filter: brightness(1); }
   }
+  @keyframes heroLogoDepart {
+    0%   { clip-path: inset(0); transform: scale(1); filter: brightness(1); }
+    25%  { clip-path: inset(20% 0 40% 0); transform: scale(1.04); filter: brightness(1.6); }
+    55%  { clip-path: inset(55% 0 15% 0); transform: scale(0.96); filter: brightness(1.3); }
+    80%  { clip-path: inset(45% 0 45% 0); transform: scale(0.88); filter: brightness(2); }
+    100% { clip-path: inset(50% 0 50% 0); transform: scale(0.6); filter: brightness(2.6); opacity: 0; }
+  }
+  @keyframes heroLogoExitRed {
+    0%   { transform: translate3d(0, 0, 0); opacity: 0; }
+    25%  { transform: translate3d(8px, -2px, 0); opacity: 0.9; }
+    50%  { transform: translate3d(-6px, 3px, 0); opacity: 0.7; }
+    75%  { transform: translate3d(12px, 0, 0); opacity: 0.5; }
+    100% { transform: translate3d(18px, 0, 0); opacity: 0; }
+  }
+  @keyframes heroLogoExitCyan {
+    0%   { transform: translate3d(0, 0, 0); opacity: 0; }
+    25%  { transform: translate3d(-8px, 2px, 0); opacity: 0.7; }
+    50%  { transform: translate3d(6px, -3px, 0); opacity: 0.55; }
+    75%  { transform: translate3d(-12px, 0, 0); opacity: 0.35; }
+    100% { transform: translate3d(-18px, 0, 0); opacity: 0; }
+  }
   @keyframes skillChipPop {
     0%   { opacity: 0; transform: translateY(4px) scale(0.96); filter: blur(2px); }
     60%  { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
@@ -560,45 +581,59 @@
     animation-delay: var(--delay, 0ms);
   }
 
-  /* ── Hero avatar (logo bridge) — sized to match (and slightly exceed)
-       the full height of both headline lines combined. Headline is
-       text-[clamp(3rem,14vw,11rem)] font-bold leading 0.88. Two stacked
-       bold lines visually clear ≈ 1.85-1.95 × font-size; the avatar's
-       ring/halo + scale 0.65→1 on the swap mean the resting size is
-       effectively 35% smaller than the clamp ceiling, so the clamp
-       itself needs headroom. Tuned to clamp(6.5rem, 28vw, 24rem). ── */
+  /* ── Hero avatar (logo bridge) — sized to span the full headline block.
+       Visibility is driven by .is-visible / .is-hidden classes (NOT by
+       CSS variable transitions) so there is no slide. The enter / exit
+       beats run dedicated glitch keyframes that match the text family. ── */
   .hero-logo-mark {
-    width: calc(clamp(6.5rem, 28vw, 24rem) * var(--hero-word-dev, 0));
+    width: clamp(6.5rem, 28vw, 24rem);
     height: clamp(6.5rem, 28vw, 24rem);
-    margin-left: calc(var(--hero-word-dev, 0) * 0.6rem);
-    opacity: calc(var(--hero-logo-on, 1) * var(--hero-word-dev, 0));
-    transform: scale(calc(0.65 + var(--hero-word-dev, 0) * 0.35));
-    transition:
-      opacity 180ms steps(3, end),
-      transform 240ms cubic-bezier(0.32, 0.72, 0, 1),
-      width 240ms cubic-bezier(0.32, 0.72, 0, 1),
-      margin-left 240ms cubic-bezier(0.32, 0.72, 0, 1);
+    margin-left: 0.6rem;
     overflow: visible;
+    transition: none;
+  }
+  .hero-logo-mark.is-hidden {
+    width: 0;
+    height: clamp(6.5rem, 28vw, 24rem);
+    margin-left: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .hero-logo-mark.is-visible {
+    opacity: 1;
   }
   .hero-logo-ghost {
     opacity: 0;
     mix-blend-mode: screen;
     will-change: transform, opacity;
   }
-  .hero-logo-mark.is-glitching .hero-logo-circle {
-    animation: heroLogoArrive 0.5s cubic-bezier(0.32, 0.72, 0, 1) both;
+  /* ENTER beat: clip-slices in + RGB ghosts split apart and recover. */
+  .hero-logo-mark.is-glitch-in .hero-logo-circle {
+    animation: heroLogoArrive 0.5s steps(6, end) both;
   }
-  .hero-logo-mark.is-glitching .hero-logo-ghost-red {
-    animation: heroLogoGlitchRed 0.52s steps(8, end) both;
+  .hero-logo-mark.is-glitch-in .hero-logo-ghost-red {
+    animation: heroLogoGlitchRed 0.5s steps(8, end) both;
   }
-  .hero-logo-mark.is-glitching .hero-logo-ghost-cyan {
-    animation: heroLogoGlitchCyan 0.52s steps(8, end) both;
+  .hero-logo-mark.is-glitch-in .hero-logo-ghost-cyan {
+    animation: heroLogoGlitchCyan 0.5s steps(8, end) both;
+  }
+  /* EXIT beat: photo clip-slices OUT + RGB ghosts splatter outward. */
+  .hero-logo-mark.is-glitch-out .hero-logo-circle {
+    animation: heroLogoDepart 0.48s steps(6, end) both;
+  }
+  .hero-logo-mark.is-glitch-out .hero-logo-ghost-red {
+    animation: heroLogoExitRed 0.48s steps(8, end) both;
+  }
+  .hero-logo-mark.is-glitch-out .hero-logo-ghost-cyan {
+    animation: heroLogoExitCyan 0.48s steps(8, end) both;
   }
   @media (prefers-reduced-motion: reduce) {
-    .hero-logo-mark.is-glitching .hero-logo-circle,
-    .hero-logo-mark.is-glitching .hero-logo-ghost {
+    .hero-logo-mark .hero-logo-circle,
+    .hero-logo-mark .hero-logo-ghost {
       animation: none !important;
     }
+    .hero-logo-mark.is-hidden { opacity: 0 !important; }
+    .hero-logo-mark.is-visible { opacity: 1 !important; }
   }
 
   /* ── Platform banner tilt-in ── */
