@@ -45,6 +45,7 @@ export function HeroLogoBridge() {
     io.observe(el);
 
     let phaseTimer: ReturnType<typeof setTimeout> | null = null;
+    let hideTimer: ReturnType<typeof setTimeout> | null = null;
 
     const onSwap = (e: Event) => {
       const word = (e as CustomEvent<{ word: "DEV" | "MUHAMMAD" }>).detail?.word;
@@ -52,12 +53,22 @@ export function HeroLogoBridge() {
         "--hero-word-dev",
         word === "DEV" ? "1" : "0",
       );
-      // SYNC: change visibility INSTANTLY at the exact moment the text
-      // swaps. No 480ms exit delay. Glitch class plays simultaneously.
       if (phaseTimer) clearTimeout(phaseTimer);
-      setVisible(word === "DEV");
-      setPhase(word === "DEV" ? "enter" : "exit");
-      phaseTimer = setTimeout(() => setPhase("idle"), 420);
+      if (hideTimer) clearTimeout(hideTimer);
+      if (word === "DEV") {
+        // ENTER: visibility flips ON immediately, glitch class plays.
+        setVisible(true);
+        setPhase("enter");
+        phaseTimer = setTimeout(() => setPhase("idle"), 420);
+      } else {
+        // EXIT: keep the photo visible for ~280ms so the glitch-off
+        // animation can actually be seen (jitter + ghost burst + stepped
+        // opacity), then snap to hidden. Glitch class total is ~420ms,
+        // long enough to land cleanly on the hidden state.
+        setPhase("exit");
+        hideTimer = setTimeout(() => setVisible(false), 280);
+        phaseTimer = setTimeout(() => setPhase("idle"), 420);
+      }
     };
 
     window.addEventListener("hero-word-swap", onSwap as EventListener);
@@ -66,6 +77,7 @@ export function HeroLogoBridge() {
       io.disconnect();
       window.removeEventListener("hero-word-swap", onSwap as EventListener);
       if (phaseTimer) clearTimeout(phaseTimer);
+      if (hideTimer) clearTimeout(hideTimer);
       root.style.setProperty("--hero-logo-on", "0");
       root.style.setProperty("--hero-word-dev", "0");
     };

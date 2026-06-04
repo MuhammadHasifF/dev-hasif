@@ -11,15 +11,38 @@ export function CyberGrid() {
     const hover = window.matchMedia("(hover: hover)").matches;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    // The 12+ visual layers each consume --sp via calc()/color-mix()
+    // expressions. Writing --sp on every rAF with 4-decimal precision
+    // forces a fresh recalc + repaint of all of them per frame, which
+    // shows up as scroll jank. Quantize to 200 steps (0.005 each), and
+    // only write to the DOM when a value actually moves to a new step.
     let pending = false;
     let mx = 0;
     let my = 0;
     let sp = 0;
+    let lastSpStep = -1;
+    let lastMxStep = -2;
+    let lastMyStep = -2;
     const apply = () => {
       pending = false;
-      el.style.setProperty("--mx", `${mx}px`);
-      el.style.setProperty("--my", `${my}px`);
-      el.style.setProperty("--sp", `${sp.toFixed(4)}`);
+      const spStep = Math.round(sp * 200);
+      if (spStep !== lastSpStep) {
+        lastSpStep = spStep;
+        el.style.setProperty("--sp", (spStep / 200).toFixed(3));
+      }
+      // Round pointer coords to 4px buckets — spotlight gradient doesn't
+      // benefit visually from sub-pixel precision and the writes are
+      // expensive at high mouse-move frequency.
+      const mxStep = Math.round(mx / 4);
+      const myStep = Math.round(my / 4);
+      if (mxStep !== lastMxStep) {
+        lastMxStep = mxStep;
+        el.style.setProperty("--mx", `${mxStep * 4}px`);
+      }
+      if (myStep !== lastMyStep) {
+        lastMyStep = myStep;
+        el.style.setProperty("--my", `${myStep * 4}px`);
+      }
     };
     const schedule = () => {
       if (pending) return;

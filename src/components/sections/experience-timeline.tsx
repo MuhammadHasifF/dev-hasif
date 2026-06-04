@@ -31,7 +31,7 @@ export function ExperienceTimeline() {
       <div ref={wrapRef} className="relative">
         <div
           aria-hidden="true"
-          className="absolute left-[18px] top-0 h-full w-px md:left-1/2 md:-translate-x-1/2"
+          className="absolute left-[31px] top-0 h-full w-[3px] rounded-full md:left-1/2 md:-translate-x-1/2"
           style={{
             background:
               "linear-gradient(var(--color-border), color-mix(in oklab, var(--color-border) 80%, transparent), var(--color-border))",
@@ -40,14 +40,15 @@ export function ExperienceTimeline() {
         <motion.div
           aria-hidden="true"
           style={{ height: lineHeight }}
-          className="absolute left-[18px] top-0 w-px origin-top md:left-1/2 md:-translate-x-1/2"
+          className="absolute left-[31px] top-0 w-[3px] origin-top rounded-full md:left-1/2 md:-translate-x-1/2"
         >
           <div
-            className="h-full w-full"
+            className="h-full w-full rounded-full"
             style={{
               background:
                 "linear-gradient(to bottom, transparent, var(--color-accent), var(--color-accent-2))",
-              boxShadow: "0 0 12px color-mix(in oklab, var(--color-accent) 60%, transparent)",
+              boxShadow:
+                "0 0 14px color-mix(in oklab, var(--color-accent) 70%, transparent), 0 0 28px color-mix(in oklab, var(--color-accent) 40%, transparent)",
             }}
           />
         </motion.div>
@@ -59,18 +60,18 @@ export function ExperienceTimeline() {
             return (
               <li
                 key={id}
-                className="relative grid grid-cols-[44px_1fr] items-start gap-4 md:grid-cols-[1fr_44px_1fr] md:gap-10"
+                className="relative grid grid-cols-[64px_1fr] items-start gap-4 md:grid-cols-[1fr_64px_1fr] md:gap-10"
               >
-                <div className="relative z-10 flex h-10 w-10 items-center justify-center md:col-start-2 md:mx-auto">
+                <div className="relative z-10 flex h-16 w-16 items-center justify-center md:col-start-2 md:mx-auto">
                   <span className="absolute inset-0 rounded-full bg-[var(--color-bg-0)]" />
                   <motion.span
                     initial={{ scale: 0.6, opacity: 0 }}
                     whileInView={{ scale: 1, opacity: 1 }}
                     viewport={{ once: true, margin: "-80px" }}
                     transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
-                    className="relative flex h-8 w-8 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-bg-1)]"
+                    className="relative flex h-14 w-14 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-bg-1)]"
                   >
-                    <OrgLogo orgKey={r.orgKey} size="sm" />
+                    <OrgLogo orgKey={r.orgKey} size="xl" />
                   </motion.span>
                 </div>
                 <div className={cn("min-w-0", isLeft ? "md:col-start-1 md:row-start-1" : "md:col-start-3 md:row-start-1")}>

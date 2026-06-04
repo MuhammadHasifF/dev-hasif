@@ -129,7 +129,18 @@
     60%      { transform: translate3d(3px, -1px, 0); opacity: 0.4; }
     80%      { transform: translate3d(-2px, 0, 0); opacity: 0.2; }
   }
-  /* No fade keyframes — text glitch swaps instantly, avatar must too. */
+  /* Glitch-off keyframe: visible jitter + stepped opacity drops, then gone.
+     Used ONLY on .is-glitch-out so MUHAMMAD arrival actually *tears* the
+     photo apart rather than blinking it off. */
+  @keyframes heroLogoGlitchOff {
+    0%   { opacity: 1; transform: translate3d(0, 0, 0); }
+    18%  { opacity: 1; transform: translate3d(-4px, 1px, 0); }
+    32%  { opacity: 0.55; transform: translate3d(6px, -1px, 0); }
+    48%  { opacity: 1; transform: translate3d(-2px, 0, 0); }
+    62%  { opacity: 0.3; transform: translate3d(3px, 1px, 0); }
+    78%  { opacity: 0.7; transform: translate3d(-1px, 0, 0); }
+    100% { opacity: 0; transform: translate3d(0, 0, 0); }
+  }
   @keyframes skillChipPop {
     0%   { opacity: 0; transform: translateY(4px) scale(0.96); filter: blur(2px); }
     60%  { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
@@ -520,16 +531,24 @@
     mix-blend-mode: screen;
     will-change: transform, opacity;
   }
-  /* Same family as MUHAMMAD↔DEV text glitch: photo just appears or
-     disappears INSTANTLY (matching the way the text swaps). The only
-     thing that animates is the RGB ghost layers around it. */
-  .hero-logo-mark.is-glitch-in .hero-logo-ghost-red,
-  .hero-logo-mark.is-glitch-out .hero-logo-ghost-red {
+  /* Enter: photo appears instantly + ghosts split red/cyan briefly. */
+  .hero-logo-mark.is-glitch-in .hero-logo-ghost-red {
     animation: heroLogoGlitchRed 0.42s steps(8, end) both;
   }
-  .hero-logo-mark.is-glitch-in .hero-logo-ghost-cyan,
-  .hero-logo-mark.is-glitch-out .hero-logo-ghost-cyan {
+  .hero-logo-mark.is-glitch-in .hero-logo-ghost-cyan {
     animation: heroLogoGlitchCyan 0.42s steps(8, end) both;
+  }
+  /* Exit: photo visibly TEARS off via heroLogoGlitchOff (jitter + stepped
+     opacity), ghosts splatter at the same time. After ~280ms the wrapper
+     gets .is-hidden which collapses everything. */
+  .hero-logo-mark.is-glitch-out .hero-logo-circle {
+    animation: heroLogoGlitchOff 0.4s steps(7, end) both;
+  }
+  .hero-logo-mark.is-glitch-out .hero-logo-ghost-red {
+    animation: heroLogoGlitchRed 0.4s steps(8, end) both;
+  }
+  .hero-logo-mark.is-glitch-out .hero-logo-ghost-cyan {
+    animation: heroLogoGlitchCyan 0.4s steps(8, end) both;
   }
   @media (prefers-reduced-motion: reduce) {
     .hero-logo-mark .hero-logo-circle,
