@@ -1,6 +1,14 @@
-import { GitCommit, Github, Linkedin, Mail, Star } from "lucide-react";
+import { GitCommit, GitPullRequest, Github, Linkedin, Mail, Star } from "lucide-react";
 import { Section } from "@/components/primitives/section";
-import { fetchEvents, fetchLatestCommits, fetchRepos } from "@/lib/github";
+import {
+  fetchActivityCounts,
+  fetchEvents,
+  fetchLatestCommits,
+  fetchPullRequests,
+  fetchRepos,
+  type GitHubCommit,
+  type GitHubPullRequest,
+} from "@/lib/github";
 import { siteConfig } from "@/../site.config";
 import { PlatformReveal } from "@/components/sections/platform-reveal";
 
@@ -14,28 +22,31 @@ function relativeTime(iso: string) {
   return `${Math.max(1, m)}m ago`;
 }
 
+type TimelineItem =
+  | { kind: "commit"; date: string; data: GitHubCommit }
+  | { kind: "pr"; date: string; data: GitHubPullRequest };
+
 /**
- * Multi-platform live hub. Top row = 4 platform banners (GitHub, LinkedIn,
- * ORCID, Email), each with its own brand-tinted gradient and reveal
- * animation. Bottom row = live GitHub commits + repo cards.
- *
- * GitHub data is fetched server-side with hourly revalidation. LinkedIn /
- * ORCID don't expose free profile APIs without auth, so those banners
- * are static identity cards (avatar + role + deep link).
+ * Multi-platform live hub.
+ *  - Platform banner row: GitHub / LinkedIn / ORCID / Email.
+ *  - Contribution snapshot: count badges for commits + PRs + repos
+ *    touched in the public events window (mirrors the GitHub profile
+ *    contribution panel as closely as a free public API allows).
+ *  - Activity timeline: commits + PRs merged into one chronological
+ *    list with type-coded icons + GitHub deep links.
+ *  - Recent repos panel kept on the right.
  */
 export async function GitHubActivity() {
-  // Primary source: latest commits pulled DIRECTLY from each of the user's
-  // recently-updated public repos. Reliable even when the public events
-  // feed has no PushEvents.
-  // Secondary: events feed for non-PushEvent signals (PR, star, etc).
-  const [repos, directCommits, events] = await Promise.all([
+  const [repos, directCommits, prs, events, counts] = await Promise.all([
     fetchRepos(6),
-    fetchLatestCommits(6, 6, 3),
+    fetchLatestCommits(8, 6, 3),
+    fetchPullRequests(6),
     fetchEvents(40),
+    fetchActivityCounts(),
   ]);
-  // Fall back to PushEvents when the direct-commit fetch returned nothing
-  // (e.g. all top repos have no recent author-matched commits).
-  const pushFallback = events
+
+  // Fall back to PushEvents if direct-commit fetch is empty.
+  const fallbackCommits: GitHubCommit[] = events
     .filter((e) => e.type === "PushEvent" && e.payload?.commits?.length)
     .map((e) => ({
       sha: e.payload.commits![0].sha,
@@ -45,7 +56,15 @@ export async function GitHubActivity() {
       repo: e.repo.name,
       repoUrl: `https://github.com/${e.repo.name}`,
     }));
-  const commits = directCommits.length > 0 ? directCommits : pushFallback.slice(0, 6);
+  const commits = directCommits.length > 0 ? directCommits : fallbackCommits.slice(0, 8);
+
+  // Merge commits + PRs into one timeline sorted by date desc.
+  const timeline: TimelineItem[] = [
+    ...commits.map((c) => ({ kind: "commit" as const, date: c.date, data: c })),
+    ...prs.map((p) => ({ kind: "pr" as const, date: p.created_at, data: p })),
+  ]
+    .sort((a, b) => +new Date(b.date) - +new Date(a.date))
+    .slice(0, 10);
 
   return (
     <Section
@@ -55,7 +74,7 @@ export async function GitHubActivity() {
       total={7}
       stamp="// SIGNAL"
       title={["Shipping", "in the open."]}
-      intro={`Live activity from @${siteConfig.github.username}, plus the rest of the public stack. Pushes + repos refresh hourly.`}
+      intro={`Live activity from @${siteConfig.github.username}. Public commits, pull requests, and repos all in one stream — refreshes every 30 minutes.`}
     >
       {/* Top platform banner row */}
       <div className="mb-8 grid gap-3 md:grid-cols-2 lg:grid-cols-4">
@@ -64,7 +83,7 @@ export async function GitHubActivity() {
             kind="github"
             href={siteConfig.links.github}
             handle={`@${siteConfig.github.username}`}
-            tagline={`${repos.length} active repos`}
+            tagline={`${repos.length} active repos · ${counts.reposTouched} touched`}
           />
         </PlatformReveal>
         <PlatformReveal index={1}>
@@ -93,45 +112,43 @@ export async function GitHubActivity() {
         </PlatformReveal>
       </div>
 
-      {/* Bottom row: live GitHub commits + repos */}
+      {/* Contribution snapshot banner */}
+      <div className="mb-6 grid gap-2 sm:grid-cols-3">
+        <Stat
+          icon={<GitCommit className="h-4 w-4" />}
+          label="Commits"
+          value={counts.commits}
+          sub={`last ${counts.windowDays}d (public)`}
+        />
+        <Stat
+          icon={<GitPullRequest className="h-4 w-4" />}
+          label="Pull requests"
+          value={counts.prs + prs.length}
+          sub={`${prs.filter((p) => p.merged).length} merged`}
+        />
+        <Stat
+          icon={<Github className="h-4 w-4" />}
+          label="Repos touched"
+          value={counts.reposTouched}
+          sub={`across ${counts.windowDays}d`}
+        />
+      </div>
+
+      {/* Activity timeline + recent repos */}
       <div className="grid gap-6 md:grid-cols-5">
         <div className="md:col-span-3">
           <div className="mb-4 flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[var(--color-text-2)]">
-            <GitCommit className="h-3 w-3" /> Recent commits
+            <GitCommit className="h-3 w-3" /> Recent activity
           </div>
           <ol className="hud-panel divide-y divide-[var(--color-border)] overflow-hidden">
-            {commits.length === 0 && (
+            {timeline.length === 0 && (
               <li className="flex items-center gap-3 px-4 py-6 text-sm text-[var(--color-text-1)]">
                 <span className="status-dot" />
                 Listening for the next push.
               </li>
             )}
-            {commits.map((c) => (
-              <li key={c.sha} className="flex items-start gap-3 px-4 py-3 text-sm">
-                <GitCommit className="mt-0.5 h-4 w-4 shrink-0 text-[var(--color-accent)]" />
-                <div className="min-w-0 flex-1">
-                  <a
-                    href={c.repoUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="block truncate font-mono text-xs text-[var(--color-text-0)] hover:text-[var(--color-accent)]"
-                  >
-                    {c.repo}
-                  </a>
-                  <a
-                    href={c.html_url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="block truncate text-[var(--color-text-1)] hover:text-[var(--color-text-0)]"
-                    title={c.message}
-                  >
-                    {c.message}
-                  </a>
-                </div>
-                <div className="shrink-0 font-mono text-[10px] text-[var(--color-text-2)]">
-                  {relativeTime(c.date)}
-                </div>
-              </li>
+            {timeline.map((item) => (
+              <ActivityRow key={item.kind + item.data.html_url} item={item} />
             ))}
           </ol>
         </div>
@@ -177,6 +194,104 @@ export async function GitHubActivity() {
         </div>
       </div>
     </Section>
+  );
+}
+
+function Stat({
+  icon,
+  label,
+  value,
+  sub,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: number;
+  sub: string;
+}) {
+  return (
+    <div className="hud-panel flex items-center gap-3 px-4 py-3">
+      <span className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-[var(--color-accent)]/40 bg-[var(--color-bg-2)] text-[var(--color-accent)]">
+        {icon}
+      </span>
+      <div className="min-w-0 flex-1">
+        <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-text-2)]">
+          {label}
+        </div>
+        <div className="font-display text-2xl leading-none text-[var(--color-text-0)]">{value}</div>
+      </div>
+      <div className="hidden font-mono text-[10px] text-[var(--color-text-2)] sm:block">{sub}</div>
+    </div>
+  );
+}
+
+function ActivityRow({ item }: { item: TimelineItem }) {
+  if (item.kind === "commit") {
+    const c = item.data;
+    return (
+      <li className="flex items-start gap-3 px-4 py-3 text-sm">
+        <GitCommit className="mt-0.5 h-4 w-4 shrink-0 text-[var(--color-accent)]" />
+        <div className="min-w-0 flex-1">
+          <a
+            href={c.repoUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="block truncate font-mono text-xs text-[var(--color-text-0)] hover:text-[var(--color-accent)]"
+          >
+            {c.repo}
+          </a>
+          <a
+            href={c.html_url}
+            target="_blank"
+            rel="noreferrer"
+            className="block truncate text-[var(--color-text-1)] hover:text-[var(--color-text-0)]"
+            title={c.message}
+          >
+            {c.message}
+          </a>
+        </div>
+        <div className="shrink-0 font-mono text-[10px] text-[var(--color-text-2)]">
+          {relativeTime(c.date)}
+        </div>
+      </li>
+    );
+  }
+  const p = item.data;
+  const stateColor = p.merged
+    ? "text-[color:#a371f7]"
+    : p.state === "closed"
+      ? "text-[color:#f85149]"
+      : "text-[color:#3fb950]";
+  return (
+    <li className="flex items-start gap-3 px-4 py-3 text-sm">
+      <GitPullRequest className={`mt-0.5 h-4 w-4 shrink-0 ${stateColor}`} />
+      <div className="min-w-0 flex-1">
+        <a
+          href={p.repoUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="block truncate font-mono text-xs text-[var(--color-text-0)] hover:text-[var(--color-accent)]"
+        >
+          {p.repo}
+        </a>
+        <a
+          href={p.html_url}
+          target="_blank"
+          rel="noreferrer"
+          className="block truncate text-[var(--color-text-1)] hover:text-[var(--color-text-0)]"
+          title={p.title}
+        >
+          PR #{p.number} · {p.title}
+        </a>
+      </div>
+      <div className="shrink-0 text-right">
+        <div className={`font-mono text-[10px] uppercase tracking-[0.18em] ${stateColor}`}>
+          {p.merged ? "merged" : p.state}
+        </div>
+        <div className="font-mono text-[10px] text-[var(--color-text-2)]">
+          {relativeTime(p.created_at)}
+        </div>
+      </div>
+    </li>
   );
 }
 
@@ -268,7 +383,6 @@ function PlatformCard({
         <span className="text-white/55">{tagline}</span>
         <span style={{ color: theme.accent }}>● live</span>
       </div>
-      {/* Scanlines for unity with the rest of the site */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 opacity-20 mix-blend-overlay"
