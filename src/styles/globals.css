@@ -560,11 +560,13 @@
     animation-delay: var(--delay, 0ms);
   }
 
-  /* ── Hero avatar (logo bridge): bigger, no hard ring, RGB-glitch sync ── */
+  /* ── Hero avatar (logo bridge) — spans both headline lines combined.
+       Headline is text-[clamp(3rem,14vw,11rem)] with leading 0.88, so two
+       lines ≈ 1.76 × font-size = clamp(5.3rem, 24.6vw, 19.4rem). ── */
   .hero-logo-mark {
-    width: calc(clamp(2.4rem, 13vw, 12rem) * var(--hero-word-dev, 0));
-    height: clamp(2.4rem, 13vw, 12rem);
-    margin-left: calc(var(--hero-word-dev, 0) * 0.5rem);
+    width: calc(clamp(4.5rem, 22vw, 18rem) * var(--hero-word-dev, 0));
+    height: clamp(4.5rem, 22vw, 18rem);
+    margin-left: calc(var(--hero-word-dev, 0) * 0.6rem);
     opacity: calc(var(--hero-logo-on, 1) * var(--hero-word-dev, 0));
     transform: scale(calc(0.65 + var(--hero-word-dev, 0) * 0.35));
     transition:
