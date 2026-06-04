@@ -560,11 +560,17 @@
     animation-delay: var(--delay, 0ms);
   }
 
-  /* ── Hero avatar (logo bridge): bigger, no hard ring, RGB-glitch sync ── */
+  /* ── Hero avatar (logo bridge) — sized to match (and slightly exceed)
+       the full height of both headline lines combined. Headline is
+       text-[clamp(3rem,14vw,11rem)] font-bold leading 0.88. Two stacked
+       bold lines visually clear ≈ 1.85-1.95 × font-size; the avatar's
+       ring/halo + scale 0.65→1 on the swap mean the resting size is
+       effectively 35% smaller than the clamp ceiling, so the clamp
+       itself needs headroom. Tuned to clamp(6.5rem, 28vw, 24rem). ── */
   .hero-logo-mark {
-    width: calc(clamp(2.4rem, 13vw, 12rem) * var(--hero-word-dev, 0));
-    height: clamp(2.4rem, 13vw, 12rem);
-    margin-left: calc(var(--hero-word-dev, 0) * 0.5rem);
+    width: calc(clamp(6.5rem, 28vw, 24rem) * var(--hero-word-dev, 0));
+    height: clamp(6.5rem, 28vw, 24rem);
+    margin-left: calc(var(--hero-word-dev, 0) * 0.6rem);
     opacity: calc(var(--hero-logo-on, 1) * var(--hero-word-dev, 0));
     transform: scale(calc(0.65 + var(--hero-word-dev, 0) * 0.35));
     transition:
