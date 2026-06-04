@@ -183,24 +183,7 @@
     60%      { transform: translate3d(3px, -1px, 0); opacity: 0.4; }
     80%      { transform: translate3d(-2px, 0, 0); opacity: 0.2; }
   }
-  /* Photo opacity steps through a few frames during the glitch beat. No
-     scale, no clip-path, no brightness. Static silhouette. */
-  @keyframes heroLogoFlickerIn {
-    0%   { opacity: 0; }
-    18%  { opacity: 0.5; }
-    34%  { opacity: 0.15; }
-    52%  { opacity: 0.85; }
-    72%  { opacity: 0.55; }
-    100% { opacity: 1; }
-  }
-  @keyframes heroLogoFlickerOut {
-    0%   { opacity: 1; }
-    20%  { opacity: 0.6; }
-    38%  { opacity: 0.95; }
-    58%  { opacity: 0.25; }
-    78%  { opacity: 0.45; }
-    100% { opacity: 0; }
-  }
+  /* No fade keyframes — text glitch swaps instantly, avatar must too. */
   @keyframes skillChipPop {
     0%   { opacity: 0; transform: translateY(4px) scale(0.96); filter: blur(2px); }
     60%  { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
@@ -598,23 +581,16 @@
     mix-blend-mode: screen;
     will-change: transform, opacity;
   }
-  /* Same family as MUHAMMAD↔DEV text glitch:
-     - Photo itself is STATIC (no scale, no clip, no brightness).
-     - Only the RGB ghost layers shift; main image just steps through
-       a few opacity frames so it pops in or out. */
-  .hero-logo-mark.is-glitch-in {
-    animation: heroLogoFlickerIn 0.48s steps(6, end) both;
-  }
-  .hero-logo-mark.is-glitch-out {
-    animation: heroLogoFlickerOut 0.46s steps(6, end) both;
-  }
+  /* Same family as MUHAMMAD↔DEV text glitch: photo just appears or
+     disappears INSTANTLY (matching the way the text swaps). The only
+     thing that animates is the RGB ghost layers around it. */
   .hero-logo-mark.is-glitch-in .hero-logo-ghost-red,
   .hero-logo-mark.is-glitch-out .hero-logo-ghost-red {
-    animation: heroLogoGlitchRed 0.48s steps(8, end) both;
+    animation: heroLogoGlitchRed 0.42s steps(8, end) both;
   }
   .hero-logo-mark.is-glitch-in .hero-logo-ghost-cyan,
   .hero-logo-mark.is-glitch-out .hero-logo-ghost-cyan {
-    animation: heroLogoGlitchCyan 0.48s steps(8, end) both;
+    animation: heroLogoGlitchCyan 0.42s steps(8, end) both;
   }
   @media (prefers-reduced-motion: reduce) {
     .hero-logo-mark .hero-logo-circle,

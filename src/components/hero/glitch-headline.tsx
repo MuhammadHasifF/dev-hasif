@@ -30,6 +30,29 @@ export function GlitchHeadline({ className }: { className?: string }) {
   const [burst, setBurst] = useState<Burst>(ZERO_BURST);
   const [phase, setPhase] = useState<GlitchPhase>("idle");
 
+  // Side-effect on first-word change: publish CSS var + dispatch swap event
+  // for HeroLogoBridge. MUST live in an effect (not in a state updater),
+  // because React calls updater fns multiple times in StrictMode/dev and
+  // dispatching from inside the updater fired the event 2x per swap, which
+  // caused HeroLogoBridge to flicker.
+  // Skip the initial render so the very first effect call doesn't fire a
+  // spurious MUHAMMAD swap event on mount.
+  const isInitialFirstChange = useRef(true);
+  useEffect(() => {
+    if (isInitialFirstChange.current) {
+      isInitialFirstChange.current = false;
+      document.documentElement.style.setProperty("--hero-word-dev", "0");
+      return;
+    }
+    document.documentElement.style.setProperty(
+      "--hero-word-dev",
+      first === "DEV" ? "1" : "0",
+    );
+    window.dispatchEvent(
+      new CustomEvent("hero-word-swap", { detail: { word: first } }),
+    );
+  }, [first]);
+
   // Reveal on enter
   useEffect(() => {
     const el = ref.current;
@@ -121,21 +144,12 @@ export function GlitchHeadline({ className }: { className?: string }) {
           invert: heavy && Math.random() < 0.4,
         });
         setPhase("burst");
-        // mid-burst, swap the first word + publish to CSS + dispatch event
-        // so the HeroLogoBridge can glitch in/out on the same beat.
+        // Mid-burst, swap the first word. PURE state updater — side
+        // effects (CSS var + dispatch event) live in the useEffect above
+        // because StrictMode can call this updater 2x and we'd fire the
+        // event twice per swap, causing avatar flicker.
         if (swap && i === Math.floor(beats / 2)) {
-          setFirst((f) => {
-            const next = f === "MUHAMMAD" ? "DEV" : "MUHAMMAD";
-            // 1 = "DEV" (show logo inline), 0 = "MUHAMMAD" (hide inline logo)
-            document.documentElement.style.setProperty(
-              "--hero-word-dev",
-              next === "DEV" ? "1" : "0",
-            );
-            window.dispatchEvent(
-              new CustomEvent("hero-word-swap", { detail: { word: next } }),
-            );
-            return next;
-          });
+          setFirst((f) => (f === "MUHAMMAD" ? "DEV" : "MUHAMMAD"));
           setPhase("swap");
         }
         timeouts.push(setTimeout(() => runBeats(i + 1), 70 + Math.random() * 90));
