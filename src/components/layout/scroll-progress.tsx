@@ -48,35 +48,38 @@ export function ScrollProgress() {
 
   return (
     <>
+      {/* Outer wrapper is taller than the bar so the flame can render fully
+          downward into the viewport without being clipped. The bar still
+          sits at the very top edge (h-[3px] on the inner div). */}
       <div
         ref={ref}
         aria-hidden="true"
-        className="pointer-events-none fixed inset-x-0 top-0 z-[70] h-[3px]"
-        style={{ ["--p" as string]: "0" } as React.CSSProperties}
+        className="pointer-events-none fixed inset-x-0 top-0 z-[70] h-[42px]"
+        style={{ ["--p" as string]: "0", overflow: "visible" } as React.CSSProperties}
       >
         {/* Fill bar — scaleX driven by --p, no transition */}
         <div
-          className="h-full origin-left"
+          className="origin-left"
           style={{
             transform: "scaleX(var(--p))",
+            height: "3px",
             background:
               "linear-gradient(90deg, transparent 0%, color-mix(in oklab, var(--color-accent) 35%, transparent) 30%, color-mix(in oklab, var(--color-accent) 80%, transparent) 70%, var(--color-accent) 100%)",
             boxShadow:
               "0 0 6px color-mix(in oklab, var(--color-accent) 70%, transparent), 0 0 14px color-mix(in oklab, var(--color-accent) 35%, transparent)",
           }}
         />
-        {/* Flame at the tip — positioned by --p on the SAME parent so they
-            always move together on the same frame */}
+        {/* Flame at the tip — sits in the same DOM parent driven by --p,
+            so they always update on the same frame. */}
         {hasProgress && (
           <div
             className="absolute"
             style={{
               left: "calc(var(--p) * 100%)",
-              top: "50%",
-              transform: "translate(-50%, -50%)",
+              top: 0,
             }}
           >
-            <FlameTip progress={1} orientation="horizontal" size={22} />
+            <FlameTip progress={1} orientation="horizontal" size={28} />
           </div>
         )}
       </div>
