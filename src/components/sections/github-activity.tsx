@@ -1,6 +1,6 @@
 import { GitCommit, Github, Linkedin, Mail, Star } from "lucide-react";
 import { Section } from "@/components/primitives/section";
-import { fetchEvents, fetchRepos } from "@/lib/github";
+import { fetchEvents, fetchLatestCommits, fetchRepos } from "@/lib/github";
 import { siteConfig } from "@/../site.config";
 import { PlatformReveal } from "@/components/sections/platform-reveal";
 
@@ -24,12 +24,28 @@ function relativeTime(iso: string) {
  * are static identity cards (avatar + role + deep link).
  */
 export async function GitHubActivity() {
-  // Pull deeper feeds so PushEvents survive even when stars/PRs/watches
-  // dominate the recent window.
-  const [repos, events] = await Promise.all([fetchRepos(6), fetchEvents(60)]);
-  const commits = events
+  // Primary source: latest commits pulled DIRECTLY from each of the user's
+  // recently-updated public repos. Reliable even when the public events
+  // feed has no PushEvents.
+  // Secondary: events feed for non-PushEvent signals (PR, star, etc).
+  const [repos, directCommits, events] = await Promise.all([
+    fetchRepos(6),
+    fetchLatestCommits(6, 6, 3),
+    fetchEvents(40),
+  ]);
+  // Fall back to PushEvents when the direct-commit fetch returned nothing
+  // (e.g. all top repos have no recent author-matched commits).
+  const pushFallback = events
     .filter((e) => e.type === "PushEvent" && e.payload?.commits?.length)
-    .slice(0, 6);
+    .map((e) => ({
+      sha: e.payload.commits![0].sha,
+      html_url: `https://github.com/${e.repo.name}/commit/${e.payload.commits![0].sha}`,
+      message: e.payload.commits![0].message.split("\n")[0],
+      date: e.created_at,
+      repo: e.repo.name,
+      repoUrl: `https://github.com/${e.repo.name}`,
+    }));
+  const commits = directCommits.length > 0 ? directCommits : pushFallback.slice(0, 6);
 
   return (
     <Section
@@ -90,24 +106,30 @@ export async function GitHubActivity() {
                 Listening for the next push.
               </li>
             )}
-            {commits.map((e) => (
-              <li key={e.id} className="flex items-start gap-3 px-4 py-3 text-sm">
+            {commits.map((c) => (
+              <li key={c.sha} className="flex items-start gap-3 px-4 py-3 text-sm">
                 <GitCommit className="mt-0.5 h-4 w-4 shrink-0 text-[var(--color-accent)]" />
                 <div className="min-w-0 flex-1">
                   <a
-                    href={`https://github.com/${e.repo.name}`}
+                    href={c.repoUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="truncate font-mono text-xs text-[var(--color-text-0)] hover:text-[var(--color-accent)]"
+                    className="block truncate font-mono text-xs text-[var(--color-text-0)] hover:text-[var(--color-accent)]"
                   >
-                    {e.repo.name}
+                    {c.repo}
                   </a>
-                  <div className="truncate text-[var(--color-text-1)]">
-                    {e.payload.commits?.[0]?.message?.split("\n")[0]}
-                  </div>
+                  <a
+                    href={c.html_url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="block truncate text-[var(--color-text-1)] hover:text-[var(--color-text-0)]"
+                    title={c.message}
+                  >
+                    {c.message}
+                  </a>
                 </div>
                 <div className="shrink-0 font-mono text-[10px] text-[var(--color-text-2)]">
-                  {relativeTime(e.created_at)}
+                  {relativeTime(c.date)}
                 </div>
               </li>
             ))}
