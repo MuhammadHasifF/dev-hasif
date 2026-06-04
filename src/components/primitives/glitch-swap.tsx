@@ -18,11 +18,15 @@ export function GlitchSwap({
   words,
   className,
   intensity = 1,
+  reserve,
 }: {
   /** Two or more words to cycle between. */
   words: [string, string, ...string[]];
   className?: string;
   intensity?: number;
+  /** A string to reserve layout width for, so the slot doesn't shrink/grow
+   *  as words swap. Default: longest word in `words`. */
+  reserve?: string;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
   const [index, setIndex] = useState(0);
@@ -96,6 +100,10 @@ export function GlitchSwap({
 
   const text = words[index];
   const burst = phase === "burst";
+  // Reserve width: render the longest word invisibly, then absolute-position
+  // the active word over it so the slot can't shrink/grow between swaps.
+  const reserveWord =
+    reserve ?? words.reduce((a, b) => (b.length > a.length ? b : a), words[0]);
 
   return (
     <span
@@ -106,6 +114,10 @@ export function GlitchSwap({
         transition: "transform 60ms linear",
       }}
     >
+      {/* Width reservation: invisible longest word locks the slot size. */}
+      <span aria-hidden="true" style={{ visibility: "hidden" }}>
+        {reserveWord}
+      </span>
       {/* Red ghost */}
       <span
         aria-hidden="true"
@@ -139,7 +151,8 @@ export function GlitchSwap({
       >
         {text}
       </span>
-      <span className="relative">{text}</span>
+      {/* Active word, absolutely positioned so it doesn't shift the slot */}
+      <span className="absolute inset-0">{text}</span>
     </span>
   );
 }

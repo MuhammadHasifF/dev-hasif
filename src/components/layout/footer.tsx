@@ -11,15 +11,22 @@ export function Footer() {
     <footer className="glass relative mt-32 border-t border-[var(--color-border)]">
       <div className="mx-auto grid max-w-6xl gap-12 px-4 py-16 sm:px-6 md:grid-cols-4">
         <div className="md:col-span-2">
-          <div className="font-display text-4xl leading-none text-[var(--color-text-0)] md:text-6xl">
+          <div className="font-display text-4xl leading-none text-[var(--color-text-0)] md:text-5xl lg:text-6xl">
             <span>Let&rsquo;s build</span>
             <br />
-            <span className="text-[var(--color-text-1)]">something </span>
-            <GlitchSwap
-              words={["amazing.", "real."]}
-              intensity={1.2}
-              className="text-[var(--color-accent)]"
-            />
+            {/* whitespace-nowrap forces "something amazing." onto a single
+                line regardless of column width. GlitchSwap reserves the
+                width of the LONGEST word so swapping to "real." doesn't
+                shift any sibling layout. */}
+            <span className="whitespace-nowrap">
+              <span className="text-[var(--color-text-1)]">something </span>
+              <GlitchSwap
+                words={["amazing.", "real."]}
+                reserve="amazing."
+                intensity={1.2}
+                className="text-[var(--color-accent)]"
+              />
+            </span>
           </div>
           <p className="mt-6 max-w-md text-sm text-[var(--color-text-1)]">
             I&rsquo;m open to research collaborations, engineering roles, and
