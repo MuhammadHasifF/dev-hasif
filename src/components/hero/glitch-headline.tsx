@@ -121,7 +121,8 @@ export function GlitchHeadline({ className }: { className?: string }) {
           invert: heavy && Math.random() < 0.4,
         });
         setPhase("burst");
-        // mid-burst, swap the first word + publish to CSS for HeroLogoBridge.
+        // mid-burst, swap the first word + publish to CSS + dispatch event
+        // so the HeroLogoBridge can glitch in/out on the same beat.
         if (swap && i === Math.floor(beats / 2)) {
           setFirst((f) => {
             const next = f === "MUHAMMAD" ? "DEV" : "MUHAMMAD";
@@ -129,6 +130,9 @@ export function GlitchHeadline({ className }: { className?: string }) {
             document.documentElement.style.setProperty(
               "--hero-word-dev",
               next === "DEV" ? "1" : "0",
+            );
+            window.dispatchEvent(
+              new CustomEvent("hero-word-swap", { detail: { word: next } }),
             );
             return next;
           });
