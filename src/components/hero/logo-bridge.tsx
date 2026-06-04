@@ -44,7 +44,6 @@ export function HeroLogoBridge() {
     );
     io.observe(el);
 
-    let exitTimer: ReturnType<typeof setTimeout> | null = null;
     let phaseTimer: ReturnType<typeof setTimeout> | null = null;
 
     const onSwap = (e: Event) => {
@@ -53,21 +52,12 @@ export function HeroLogoBridge() {
         "--hero-word-dev",
         word === "DEV" ? "1" : "0",
       );
-      if (word === "DEV") {
-        // Make visible IMMEDIATELY so the enter glitch has something to mask.
-        if (exitTimer) clearTimeout(exitTimer);
-        if (phaseTimer) clearTimeout(phaseTimer);
-        setVisible(true);
-        setPhase("enter");
-        phaseTimer = setTimeout(() => setPhase("idle"), 500);
-      } else {
-        // Play the exit glitch first, hide after.
-        if (phaseTimer) clearTimeout(phaseTimer);
-        setPhase("exit");
-        phaseTimer = setTimeout(() => setPhase("idle"), 500);
-        if (exitTimer) clearTimeout(exitTimer);
-        exitTimer = setTimeout(() => setVisible(false), 480);
-      }
+      // SYNC: change visibility INSTANTLY at the exact moment the text
+      // swaps. No 480ms exit delay. Glitch class plays simultaneously.
+      if (phaseTimer) clearTimeout(phaseTimer);
+      setVisible(word === "DEV");
+      setPhase(word === "DEV" ? "enter" : "exit");
+      phaseTimer = setTimeout(() => setPhase("idle"), 420);
     };
 
     window.addEventListener("hero-word-swap", onSwap as EventListener);
@@ -75,7 +65,6 @@ export function HeroLogoBridge() {
     return () => {
       io.disconnect();
       window.removeEventListener("hero-word-swap", onSwap as EventListener);
-      if (exitTimer) clearTimeout(exitTimer);
       if (phaseTimer) clearTimeout(phaseTimer);
       root.style.setProperty("--hero-logo-on", "0");
       root.style.setProperty("--hero-word-dev", "0");
@@ -107,44 +96,35 @@ export function HeroLogoBridge() {
           filter: "blur(8px)",
         }}
       />
-      <span className="hero-logo-circle relative inline-flex h-full w-full items-center justify-center overflow-hidden rounded-full">
-        {/* Cyan RGB-split ghost */}
-        <span
-          aria-hidden="true"
-          className="hero-logo-ghost hero-logo-ghost-cyan pointer-events-none absolute inset-0 overflow-hidden rounded-full"
-        >
-          <Image
-            src="/me/bamboo-forest.jpg"
-            alt=""
-            width={400}
-            height={400}
-            className="h-full w-full object-cover"
-            style={{ objectPosition: "50% 30%", filter: "hue-rotate(180deg) saturate(1.6)" }}
-          />
-        </span>
-        {/* Red RGB-split ghost */}
-        <span
-          aria-hidden="true"
-          className="hero-logo-ghost hero-logo-ghost-red pointer-events-none absolute inset-0 overflow-hidden rounded-full"
-        >
-          <Image
-            src="/me/bamboo-forest.jpg"
-            alt=""
-            width={400}
-            height={400}
-            className="h-full w-full object-cover"
-            style={{ objectPosition: "50% 30%", filter: "saturate(1.6) brightness(1.1)" }}
-          />
-        </span>
-        {/* Main photo */}
+      <span className="hero-logo-circle relative inline-flex h-full w-full items-center justify-center overflow-visible rounded-full">
+        {/* Main photo — static, no animation */}
         <Image
           src="/me/bamboo-forest.jpg"
           alt=""
           width={400}
           height={400}
-          className="relative h-full w-full object-cover"
+          className="relative z-[2] h-full w-full rounded-full object-cover"
           style={{ objectPosition: "50% 30%" }}
           priority
+        />
+        {/* Red RGB-split ghost: solid red circle, mix-blend-mode screen so it
+            tints the photo where it overlaps. Animated by heroLogoGlitchRed. */}
+        <span
+          aria-hidden="true"
+          className="hero-logo-ghost hero-logo-ghost-red pointer-events-none absolute inset-0 rounded-full"
+          style={{
+            background: "#ff1e3c",
+            mixBlendMode: "screen",
+          }}
+        />
+        {/* Cyan RGB-split ghost: solid cyan circle, opposite-direction shift. */}
+        <span
+          aria-hidden="true"
+          className="hero-logo-ghost hero-logo-ghost-cyan pointer-events-none absolute inset-0 rounded-full"
+          style={{
+            background: "#00e5ff",
+            mixBlendMode: "screen",
+          }}
         />
       </span>
     </div>

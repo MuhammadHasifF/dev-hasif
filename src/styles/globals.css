@@ -114,61 +114,7 @@
     87%  { transform: scale(1.02, 0.98) translateY(0); }
     100% { transform: scale(1, 1) translateY(0); }
   }
-  @keyframes sparkFly {
-    0%   { opacity: 0; transform: translate(0, 0) scale(1); }
-    15%  { opacity: 1; transform: translate(calc(var(--dx) * 0.25), calc(var(--dy) * 0.25)) scale(1.1); }
-    100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0.3); }
-  }
-  @keyframes sparkFlyV {
-    0%   { opacity: 0; transform: translate(0, 0) scale(1); }
-    15%  { opacity: 1; transform: translate(calc(var(--dx) * 0.25), calc(var(--dy) * 0.25)) scale(1.1); }
-    100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0.3); }
-  }
-  @keyframes emberWisp {
-    0%   { opacity: 0; transform: translate(0, 0) scale(0.6); }
-    35%  { opacity: 0.5; transform: translate(-6px, -8px) scale(1); }
-    100% { opacity: 0; transform: translate(-14px, -22px) scale(1.6); }
-  }
-  @keyframes flameBodyPulse {
-    from { transform: scale(0.95, 1.05); }
-    to   { transform: scale(1.06, 0.94); }
-  }
-  @keyframes flameHaloPulse {
-    from { opacity: 0.55; transform: scale(0.96, 1.04); }
-    to   { opacity: 0.95; transform: scale(1.08, 0.92); }
-  }
-  @keyframes flameMidWiggle {
-    0%, 100% { transform: scaleY(1) translateY(0); }
-    25%      { transform: scaleY(1.08) translateY(-1px); }
-    50%      { transform: scaleY(0.94) translateY(0); }
-    75%      { transform: scaleY(1.05) translateY(-1px); }
-  }
-  @keyframes flameCoreWiggle {
-    0%, 100% { transform: translateY(0) scaleY(1); }
-    33%      { transform: translateY(-1px) scaleY(1.1); }
-    66%      { transform: translateY(0) scaleY(0.92); }
-  }
-  @keyframes redFlameHalo {
-    from { opacity: 0.55; transform: scale(0.96, 1.04); }
-    to   { opacity: 0.95; transform: scale(1.08, 0.94); }
-  }
-  @keyframes redFlameOuter {
-    from { transform: translateY(0) scaleY(1) scaleX(1); }
-    to   { transform: translateY(-0.5px) scaleY(1.06) scaleX(0.96); }
-  }
-  @keyframes redFlameMid {
-    from { transform: translateY(0) scaleY(1) scaleX(1); }
-    50%  { transform: translateY(-1px) scaleY(1.05) scaleX(0.97); }
-    to   { transform: translateY(0) scaleY(0.97) scaleX(1.03); }
-  }
-  @keyframes redFlameCore {
-    from { transform: translateY(0) scaleY(1) scaleX(1); }
-    to   { transform: translateY(-1.5px) scaleY(1.08) scaleX(0.94); }
-  }
-  @keyframes redFlameHeart {
-    from { opacity: 0.75; transform: translateY(0) scaleY(1); }
-    to   { opacity: 1; transform: translateY(-1px) scaleY(1.18); }
-  }
+  /* Flame + spark keyframes removed — primitive was buggy, user pulled it. */
   @keyframes heroLogoGlitchRed {
     0%, 100% { transform: translate3d(0, 0, 0); opacity: 0; }
     20%      { transform: translate3d(-7px, 2px, 0); opacity: 0.85; }
@@ -248,13 +194,6 @@
     40%      { transform: translate3d(0, 0, 0); opacity: 0; clip-path: inset(0 0 0 0); }
     60%      { transform: translate3d(calc(var(--glitch-intensity, 1) * 3px), 0, 0); opacity: 0.55; clip-path: inset(0 0 80% 0); }
     66%      { transform: translate3d(0, 0, 0); opacity: 0; clip-path: inset(0 0 0 0); }
-  }
-  @keyframes sparkFlicker {
-    0%   { opacity: 0.65; transform: translate(-30%, -55%) scaleX(0.85) scaleY(1); }
-    25%  { opacity: 1;    transform: translate(-30%, -60%) scaleX(1.05) scaleY(1.1); }
-    50%  { opacity: 0.8;  transform: translate(-30%, -50%) scaleX(0.9)  scaleY(0.95); }
-    75%  { opacity: 1;    transform: translate(-30%, -65%) scaleX(1.15) scaleY(1.05); }
-    100% { opacity: 0.7;  transform: translate(-30%, -55%) scaleX(0.95) scaleY(1); }
   }
   @keyframes lineDraw {
     from { transform: scaleX(0); }
