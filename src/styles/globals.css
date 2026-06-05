@@ -217,13 +217,13 @@
   --burn-gate: 0;
 }
 
-/* As the home page's red wash intensifies (--burn-gate ramps 0 → 1 from scroll
- * ~0.82 onward), shift the muted greys toward warm off-white so labels stay
- * legible against the red. The accent (brand red) is intentionally untouched.
- * Only readability-affecting tokens move. */
-:where(body) {
-  --color-text-1: color-mix(in oklab, #8a8b95 calc((1 - var(--burn-gate)) * 100%), #f8e6e9 calc(var(--burn-gate) * 100%));
-  --color-text-2: color-mix(in oklab, #54555f calc((1 - var(--burn-gate)) * 100%), #f0c5cc calc(var(--burn-gate) * 100%));
+/* Instant text-contrast swap when the perimeter border completes its loop
+ * (CrawlingBorder writes documentElement[data-fully-bordered="true"]).
+ * No interpolation, no continuous color-mix on scroll — costs nothing
+ * mid-scroll and only re-renders once at the boundary. */
+html[data-fully-bordered="true"] body {
+  --color-text-1: #f8e6e9;
+  --color-text-2: #f0c5cc;
 }
 
 .high-contrast {
@@ -503,6 +503,49 @@
   .skill-chip {
     animation: skillChipPop 0.5s cubic-bezier(0.32, 0.72, 0, 1) both;
     animation-delay: var(--delay, 0ms);
+  }
+
+  /* ── Crawling perimeter "loading bar" ──
+       Two fixed boxes anchored at opposite corners. JS writes --cw and
+       --ch (each 0..1) which scale width / height of each box. The
+       visible-side borders draw the perimeter as the boxes grow. */
+  .crawl-border {
+    position: fixed;
+    z-index: 75;
+    pointer-events: none;
+    width: calc(var(--cw, 0) * 100%);
+    height: calc(var(--ch, 0) * 100%);
+    box-shadow:
+      0 0 8px color-mix(in oklab, var(--color-accent) 70%, transparent),
+      0 0 18px color-mix(in oklab, var(--color-accent) 40%, transparent);
+  }
+  .crawl-border-one {
+    bottom: 0;
+    left: 0;
+    border-bottom: 3px solid var(--color-accent);
+    border-right: 3px solid var(--color-accent);
+  }
+  .crawl-border-two {
+    top: 0;
+    right: 0;
+    border-top: 3px solid var(--color-accent);
+    border-left: 3px solid var(--color-accent);
+  }
+
+  /* Red flood — invisible by default, snaps on when the border loop
+     completes. No transition — instant per user request. */
+  .red-flood {
+    position: fixed;
+    inset: 0;
+    z-index: -15;
+    pointer-events: none;
+    opacity: 0;
+    background:
+      radial-gradient(120% 120% at 50% 60%, color-mix(in oklab, #ff1e3c 78%, transparent) 0%, color-mix(in oklab, var(--color-accent) 50%, transparent) 45%, color-mix(in oklab, var(--color-accent) 22%, transparent) 80%, transparent 100%);
+    mix-blend-mode: screen;
+  }
+  html[data-fully-bordered="true"] .red-flood {
+    opacity: 0.95;
   }
 
   /* ── Hero avatar (logo bridge) — sized to span the full headline block.
