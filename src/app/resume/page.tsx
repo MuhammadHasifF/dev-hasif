@@ -17,8 +17,8 @@ export default function ResumePage() {
       index={1}
       total={1}
       stamp="// PDF"
-      title={["Condensed into", "a single page."]}
-      intro="The PDF version. Drop your copy in /public/resume.pdf and it'll render here, ready for download."
+      title={["Two pages.", "Built to scan."]}
+      intro="A concise overview of my experience across applied AI, data analytics, machine learning, research engineering, and full-stack development."
     >
       <div className="flex flex-wrap items-center gap-3">
         <a
@@ -47,9 +47,8 @@ export default function ResumePage() {
           <div className="flex h-80 flex-col items-center justify-center gap-3 p-6 text-center">
             <FileText className="h-8 w-8 text-[var(--color-text-2)]" />
             <p className="text-sm text-[var(--color-text-1)]">
-              No PDF preview available. Drop your resume at{" "}
-              <code className="font-mono text-[var(--color-text-0)]">/public/resume.pdf</code> and it
-              will render here.
+              Your browser could not display the PDF preview. Use Download PDF or Open in new tab
+              above to view the resume.
             </p>
           </div>
         </object>
