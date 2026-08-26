@@ -83,7 +83,7 @@ export async function GitHubActivity() {
             kind="github"
             href={siteConfig.links.github}
             handle={`@${siteConfig.github.username}`}
-            tagline={`${repos.length} active repos · ${counts.reposTouched} touched`}
+            tagline={`${repos.length} recent repos · ${counts.reposTouched} touched`}
           />
         </PlatformReveal>
         <PlatformReveal index={1}>
@@ -99,7 +99,7 @@ export async function GitHubActivity() {
             kind="orcid"
             href={siteConfig.links.orcid}
             handle="0009-0001-0939-6369"
-            tagline="CHI '25 · DIS '26"
+            tagline="Research identity"
           />
         </PlatformReveal>
         <PlatformReveal index={3}>
@@ -122,8 +122,8 @@ export async function GitHubActivity() {
         />
         <Stat
           icon={<GitPullRequest className="h-4 w-4" />}
-          label="Pull requests"
-          value={counts.prs + prs.length}
+          label="Recent pull requests"
+          value={prs.length}
           sub={`${prs.filter((p) => p.merged).length} merged`}
         />
         <Stat

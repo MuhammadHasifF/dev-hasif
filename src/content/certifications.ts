@@ -13,21 +13,9 @@ export const certifications: Certification[] = [
     date: "2025",
   },
   {
-    title: "Senior Officer Course",
-    issuer: "Singapore Police Force",
-    orgKey: "spf",
-    date: "2024",
-  },
-  {
-    title: "Police Basic Course",
-    issuer: "Singapore Police Force",
-    orgKey: "spf",
-    date: "2023",
-  },
-  {
     title: "CS50: Introduction to Computer Science",
-    issuer: "Harvard University (edX)",
-    orgKey: "harvard",
+    issuer: "HarvardX · edX",
+    orgKey: "edx",
     date: "2023",
   },
   {

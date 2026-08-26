@@ -6,6 +6,7 @@ import { Section } from "@/components/primitives/section";
 import { OrgLogo } from "@/components/primitives/org-tag";
 import { certifications } from "@/content/certifications";
 import { awards } from "@/content/awards";
+import { education } from "@/content/education";
 
 function awardGlyph(title: string) {
   const t = title.toLowerCase();
@@ -27,7 +28,7 @@ const trophyGradients = [
 
 function useInViewClass(amount = 0.3) {
   const ref = useRef<HTMLElement | null>(null);
-  const [inView, setInView] = useState(false);
+  const [inView, setInView] = useState(true);
   useEffect(() => {
     const el = ref.current;
     if (!el || typeof IntersectionObserver === "undefined") return;
@@ -51,9 +52,32 @@ export function CertificationsAwards() {
       index={5}
       total={7}
       stamp="// PAPER TRAIL"
-      title={["Certifications", "& recognitions."]}
-      intro="The paper trail. Certifications, awards, and honors earned along the way."
+      title={["Education", "& credentials."]}
+      intro="Formal study, focused technical training, and recognitions that complement the work above."
     >
+      <div className="mb-10">
+        <div className="mb-4 font-mono text-xs uppercase tracking-widest text-[var(--color-text-2)]">
+          Education
+        </div>
+        <div className="grid gap-4 md:grid-cols-2">
+          {education.map((item) => (
+            <article key={item.school} className="hud-panel p-5">
+              <div className="flex items-start gap-4">
+                <OrgLogo orgKey={item.orgKey} size="lg" />
+                <div className="min-w-0">
+                  <h3 className="font-display text-xl text-[var(--color-text-0)]">{item.school}</h3>
+                  <p className="mt-1 text-sm text-[var(--color-text-1)]">{item.credential}</p>
+                  <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--color-accent)]">
+                    {item.start ? `${item.start} → ` : ""}{item.end}
+                  </p>
+                </div>
+              </div>
+              {item.note && <p className="mt-4 text-sm leading-relaxed text-[var(--color-text-1)]">{item.note}</p>}
+            </article>
+          ))}
+        </div>
+      </div>
+
       <div className="grid gap-10 md:grid-cols-5">
         <div className="md:col-span-3">
           <div className="mb-4 font-mono text-xs uppercase tracking-widest text-[var(--color-text-2)]">
@@ -88,7 +112,7 @@ function CertList({ items }: { items: typeof certifications }) {
         >
           <OrgLogo orgKey={c.orgKey} size="md" />
           <div className="min-w-0 flex-1">
-            <div className="truncate text-sm text-[var(--color-text-0)]">{c.title}</div>
+            <div className="text-sm leading-snug text-[var(--color-text-0)]">{c.title}</div>
             <div className="text-xs text-[var(--color-text-1)]">{c.issuer}</div>
           </div>
           <div className="font-mono text-[11px] text-[var(--color-text-2)]">{c.date}</div>
@@ -111,7 +135,7 @@ function TrophyGrid({ awards: list }: { awards: typeof awards }) {
         return (
           <div
             key={a.title + a.year + i}
-            className="trophy-card group relative aspect-square overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-1)] p-4 transition-colors hover:border-[var(--color-accent)]"
+            className="trophy-card group relative min-h-40 overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-1)] p-4 transition-colors hover:border-[var(--color-accent)]"
             style={{ animationDelay: `${i * 100}ms` } as React.CSSProperties}
           >
             <div

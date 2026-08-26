@@ -1,8 +1,8 @@
 # Hasif — Portfolio
 
 A dark-first, scroll-driven, WebGL-accented personal portfolio for
-**Muhammad Hasif Bin Mohd Faisal** — research engineer & applied AI
-undergrad in Singapore.
+**Muhammad Hasif Bin Mohd Faisal** — applied AI undergraduate and research
+developer in Singapore.
 
 ## Stack
 
@@ -24,8 +24,7 @@ undergrad in Singapore.
 ```
 src/
 ├── app/
-│   ├── (routes: /, /about, /work, /work/[slug], /experience,
-│   │   /contact, /resume, /writing)
+│   ├── (routes: /, /work, /work/[slug], /resume, /writing)
 │   ├── api/contact      # POST: validated + rate-limited Resend send
 │   ├── api/og           # edge: dynamic OG image
 │   ├── sitemap.ts
@@ -72,16 +71,14 @@ Copy `.env.example` to `.env.local` and fill in:
 - Education: [`src/content/education.ts`](./src/content/education.ts)
 - Skills: [`src/content/skills.ts`](./src/content/skills.ts)
 - Certifications: [`src/content/certifications.ts`](./src/content/certifications.ts)
-- Awards + leadership: [`src/content/awards.ts`](./src/content/awards.ts)
+- Awards: [`src/content/awards.ts`](./src/content/awards.ts)
 
 ## Adding a case study
 
 1. Add a project entry to `src/content/projects.ts` with a unique `slug`.
 2. The route `/work/<slug>` is generated automatically via
    `generateStaticParams`.
-3. A richer MDX version can be layered in later — the loader is ready;
-   just drop `.mdx` files next to a matching slug and extend
-   `src/app/work/[slug]/page.tsx` to render it.
+3. Add `approach`, `outcomes`, links, and stack details to populate the case study.
 
 ## Accessibility
 
@@ -125,13 +122,6 @@ npm run start       # serve production
 npm run lint        # next lint
 npm run typecheck   # tsc --noEmit
 ```
-
-## Roadmap
-
-- Pinned GSAP horizontal scroll gallery for featured work
-- Full MDX case studies with embedded media
-- Physics-based skills constellation (R3F + d3-force)
-- Resume dynamic generation from `content/experience.ts`
 
 ## License
 

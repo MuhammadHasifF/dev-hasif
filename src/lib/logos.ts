@@ -3,7 +3,7 @@ export type OrgEntry = {
   name: string;
   short?: string;
   domain?: string;
-  /** Local logo path under /public if available — preferred over Clearbit. */
+  /** Local logo path under /public. Missing artwork falls back to a monogram. */
   localLogo?: string;
   /** Whether the logo should be inverted in dark mode (for dark-on-white marks) */
   invertOnDark?: boolean;
@@ -31,6 +31,8 @@ export const orgs: Record<string, OrgEntry> = {
   github: { key: "github", name: "GitHub", short: "GH", domain: "github.com", localLogo: "/orgs/github.svg" },
   sfa: { key: "sfa", name: "Singapore Food Agency", short: "SFA", domain: "sfa.gov.sg", localLogo: "/orgs/sfa.svg" },
   edx: { key: "edx", name: "edX", short: "edX", domain: "edx.org", localLogo: "/orgs/edx.svg" },
+  tencent: { key: "tencent", name: "Tencent Cloud", short: "TC" },
+  alibaba: { key: "alibaba", name: "Alibaba Cloud", short: "AC" },
 };
 
 // Deterministic hue from a string (HSL)

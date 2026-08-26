@@ -30,10 +30,7 @@ export function OrgLogo({
   const hue = hueFromString(orgKey);
   const monogram = org ? monogramFor(org) : orgKey.slice(0, 2).toUpperCase();
   const localLogo = org?.localLogo ?? null;
-  const clearbit = org?.domain
-    ? `https://logo.clearbit.com/${org.domain}?size=80`
-    : null;
-  const src = localLogo ?? clearbit;
+  const src = localLogo;
 
   return (
     <span
@@ -42,13 +39,14 @@ export function OrgLogo({
         sz,
         className
       )}
-      aria-label={label}
+      role="img"
+      aria-label={`${label} logo`}
     >
       {src && !failed ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={src}
-          alt={`${label} logo`}
+          alt=""
           width={64}
           height={64}
           loading="lazy"

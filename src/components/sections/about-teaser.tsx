@@ -22,19 +22,17 @@ export function AboutTeaser() {
       <div className="grid items-start gap-12 md:grid-cols-2">
         <Reveal>
           <p className="text-pretty text-lg leading-relaxed text-[var(--color-text-0)]/90">
-            Applied AI undergraduate (SIT, Honours, expected 2028) building
-            production grade{" "}
-            <span className="text-[var(--color-accent)]">machine learning</span>,{" "}
-            <span className="text-[var(--color-accent)]">LLM</span>, and{" "}
-            <span className="text-[var(--color-accent)]">data systems</span>{" "}
-            end to end.
+            I&rsquo;m an Applied Artificial Intelligence undergraduate at SIT,
+            graduating in 2028, and a research developer working across{" "}
+            <span className="text-[var(--color-accent)]">data analytics</span>,{" "}
+            <span className="text-[var(--color-accent)]">machine learning</span>, and{" "}
+            <span className="text-[var(--color-accent)]">AI engineering</span>.
           </p>
           <p className="mt-6 max-w-xl text-[var(--color-text-1)]">
-            Hands on experience with Generative AI (Llama 3.3, Groq, LangChain,
-            RAG), time-series forecasting (ARIMA, XGBoost, LightGBM), full stack
-            data platforms (Python, Flask/Django, Vue/React, Pandas, Apache
-            ECharts), and geospatial analytics (ArcGIS) across Deloitte, HTX,
-            Singapore Police Force, MOM, and SIT research labs.
+            My work connects reliable data pipelines and evaluated models to
+            usable software—from maritime condition monitoring and browser-based
+            3D research tools to LLM applications, forecasting, automation, and
+            cybersecurity operations.
           </p>
 
           {/* Inline expand. Vertical reveal animation unique to About. */}
@@ -42,6 +40,7 @@ export function AboutTeaser() {
             {expanded && (
               <motion.div
                 key="long"
+                id="about-long-version"
                 initial={reduce ? { opacity: 0 } : { height: 0, opacity: 0, y: -8 }}
                 animate={
                   reduce
@@ -53,28 +52,25 @@ export function AboutTeaser() {
               >
                 <div className="mt-6 max-w-xl space-y-4 border-l border-[var(--color-accent)]/40 pl-5 text-[var(--color-text-1)]">
                   <p>
-                    Currently architecting an end to end data platform for the
-                    SIT Future Ship &amp; System Design (FSSD) project. Raw
-                    maritime alarm data flows through Pandas based ETL into a
-                    Flask/Django + Vue/React fault diagnosis app, with Apache
-                    ECharts dashboards that translate operational alarm
-                    streams into stakeholder facing diagnostic insights.
+                    I currently develop an end-to-end maritime platform for
+                    SIT&rsquo;s Future Ship &amp; Systems Design project. It turns
+                    electric-harbour-craft SCADA, sensor, and alarm data into
+                    near-real-time vessel-health monitoring, explainable fault
+                    evidence, and engineering decision support using Django REST
+                    Framework, SQL Server, React, TypeScript, and Python.
                   </p>
                   <p className="text-[var(--color-accent)]/85 font-mono text-sm uppercase tracking-[0.18em]">
-                    &gt; Strong record of shipping mission critical,
-                    stakeholder facing solutions under pressure.
+                    &gt; I care about traceable data, honest evaluation, and
+                    software that survives real users and imperfect inputs.
                   </p>
                   <p>
-                    Earlier work spans an MSIG travel insurance LLM prototype
-                    at SingHacks 2025 (Llama 3.3 70B, Groq, LangChain, RAG),
-                    R3CAP open source 3D reconstruction at SIT&rsquo;s Centre
-                    of Immersification (Python, Babylon.js, WebXR,
-                    contributions backing CHI &rsquo;25 and DIS &rsquo;26
-                    submissions), HTX SOC automation in Python, and Deloitte
-                    forecasting work that lifted accuracy by ~12% over baseline
-                    ARIMA on client datasets. I move between research,
-                    engineering, and stakeholders fluently, and I write code
-                    that ships.
+                    Earlier roles span R3CAP&rsquo;s open-source 3D digital-twin
+                    stack, SOC monitoring and incident response at HTX, public
+                    sector data and automation, and forecasting work at Deloitte.
+                    Outside work, I build and test AI products around active
+                    recall, care coordination, productivity agents, and model
+                    evaluation. I&rsquo;m seeking 2026 internships where I can
+                    contribute across data, ML, or applied AI engineering.
                   </p>
                 </div>
               </motion.div>
@@ -86,6 +82,7 @@ export function AboutTeaser() {
               type="button"
               onClick={() => setExpanded((v) => !v)}
               aria-expanded={expanded}
+              aria-controls="about-long-version"
               className="group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-text-0)] transition-colors hover:text-[var(--color-accent)]"
             >
               {expanded ? "Collapse" : "Read the long version"}

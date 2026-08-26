@@ -38,7 +38,7 @@ export function Hero() {
           </div>
           <div className="flex items-center gap-3">
             <span className="status-dot" />
-            <span>OPEN TO DATA, AI &amp; ENGINEERING ROLES</span>
+            <span>OPEN TO 2026 DATA, ML &amp; AI INTERNSHIPS</span>
           </div>
         </div>
 
@@ -63,10 +63,10 @@ export function Hero() {
           </div>
 
           <div className="grid grid-cols-2 gap-x-4 gap-y-6 md:col-span-5 md:grid-cols-2">
-            <HeroMeta k="ROLE" v="Data / AI / Engineering" />
+            <HeroMeta k="FOCUS" v="Data Analytics / ML / AI" />
             <HeroMeta k="LOCALE" v={(<><MapPin className="mr-1 inline h-3 w-3 text-[var(--color-accent)]" />Singapore</>)} />
             <HeroMeta k="STATUS" v={(<><span className="mr-2 inline-block h-1.5 w-1.5 translate-y-[-2px] rounded-full bg-[var(--color-accent)] shadow-[0_0_8px_var(--color-accent)]" />Online</>)} />
-            <HeroMeta k="VERSION" v="v3.0 / 2026" />
+            <HeroMeta k="VERSION" v="v4.0 / 2026" />
           </div>
         </div>
 
@@ -99,4 +99,3 @@ function HeroMeta({ k, v }: { k: string; v: React.ReactNode }) {
     </div>
   );
 }
-

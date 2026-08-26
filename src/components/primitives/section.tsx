@@ -12,6 +12,7 @@ export function Section({
   stamp,
   title,
   intro,
+  headingAs = "h2",
   children,
   className,
 }: {
@@ -22,6 +23,7 @@ export function Section({
   stamp?: string;
   title?: ReactNode;
   intro?: ReactNode;
+  headingAs?: "h1" | "h2";
   children?: ReactNode;
   className?: string;
 }) {
@@ -94,7 +96,7 @@ export function Section({
 
           {title && (
             <RevealLines
-              as="h2"
+              as={headingAs}
               className="mt-10 font-display text-balance text-5xl font-medium leading-[0.95] tracking-tight text-[var(--color-text-0)] md:text-7xl"
               stagger={70}
             >

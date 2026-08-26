@@ -167,7 +167,7 @@ export function Nav() {
             />
           </span>
           <span className="hidden sm:block text-base text-[var(--color-text-0)]">
-            hasif<span className="text-[var(--color-accent)]">.</span>dev
+            devhasif<span className="text-[var(--color-accent)]">.</span>
           </span>
         </Link>
 
@@ -239,7 +239,7 @@ export function Nav() {
       {open && (
         <>
           <div
-            className="fixed inset-0 top-14 z-40 bg-black/50 backdrop-blur-sm md:hidden"
+            className="fixed inset-0 top-16 z-40 bg-black/50 backdrop-blur-sm md:hidden"
             onClick={() => setOpen(false)}
             aria-hidden="true"
           />
@@ -247,7 +247,7 @@ export function Nav() {
             role="dialog"
             aria-modal="true"
             aria-label="Site navigation"
-            className="absolute inset-x-0 top-14 z-50 border-t border-[var(--color-border)] bg-[var(--color-bg-0)]/95 backdrop-blur-md md:hidden"
+            className="absolute inset-x-0 top-16 z-50 border-t border-[var(--color-border)] bg-[var(--color-bg-0)]/95 backdrop-blur-md md:hidden"
           >
             <div className="mx-auto max-w-6xl px-4 py-4">
               <ul className="flex flex-col gap-1">

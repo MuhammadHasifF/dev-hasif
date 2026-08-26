@@ -131,7 +131,7 @@ export function GlitchHeadline({ className }: { className?: string }) {
         if (i >= beats) {
           setBurst(ZERO_BURST);
           setPhase("idle");
-          const wait = 300 + Math.random() * 525;
+          const wait = 1800 + Math.random() * 2400;
           timeouts.push(setTimeout(trigger, wait));
           return;
         }
@@ -158,7 +158,7 @@ export function GlitchHeadline({ className }: { className?: string }) {
       runBeats(0);
     };
 
-    timeouts.push(setTimeout(trigger, 225));
+    timeouts.push(setTimeout(trigger, 1200));
     return () => {
       cancelled = true;
       timeouts.forEach(clearTimeout);
@@ -183,7 +183,7 @@ export function GlitchHeadline({ className }: { className?: string }) {
 
   return (
     <div ref={ref} className={cn("relative", className)}>
-      <h1 className="font-display text-[clamp(3rem,14vw,11rem)] font-bold leading-[0.88] tracking-[-0.04em] text-[var(--color-text-0)]">
+      <h1 aria-label="Muhammad Hasif" className="font-display text-[clamp(3rem,14vw,11rem)] font-bold leading-[0.88] tracking-[-0.04em] text-[var(--color-text-0)]">
         <GlitchLine revealed={revealed} delay={0}>
           <GlitchWord
             text={first}

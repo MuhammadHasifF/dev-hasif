@@ -29,8 +29,8 @@ export function Footer() {
             </span>
           </div>
           <p className="mt-6 max-w-md text-sm text-[var(--color-text-1)]">
-            I&rsquo;m open to research collaborations, engineering roles, and
-            interesting problems at the edges of AI, data, and the physical world.
+            I&rsquo;m open to 2026 data, machine-learning, and applied-AI
+            internships, research collaborations, and thoughtful engineering problems.
           </p>
           <div className="mt-6 flex flex-wrap gap-2">
             <Link

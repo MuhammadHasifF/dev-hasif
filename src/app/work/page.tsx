@@ -5,7 +5,9 @@ import { PageBackground } from "@/components/layout/page-background";
 
 export const metadata: Metadata = {
   title: "Work",
-  description: "Research, government operations, cybersecurity, and data projects.",
+  description: "Selected applied AI, machine learning, data analytics, and full-stack projects by Muhammad Hasif.",
+  alternates: { canonical: "/work" },
+  openGraph: { url: "/work" },
 };
 
 export default function WorkPage() {
@@ -18,7 +20,8 @@ export default function WorkPage() {
       total={1}
       stamp="// FULL ARCHIVE"
       title={["Every project,", "filtered your way."]}
-      intro="Filter by category. Click a card for the full case study."
+      headingAs="h1"
+      intro="Explore six independent projects by category, then open a case study for implementation details and measured outcomes."
     >
       <ProjectsGrid />
     </Section>

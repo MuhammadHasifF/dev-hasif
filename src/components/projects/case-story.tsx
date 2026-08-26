@@ -6,6 +6,7 @@ import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion
 type Project = {
   title: string;
   description: string;
+  approach?: string[];
   outcomes?: string[];
   impact?: string[];
   stack: string[];
@@ -26,18 +27,15 @@ export function CaseStory({ project: p }: { project: Project }) {
       title: "What this is",
       body: p.description,
     },
+    ...(p.approach && p.approach.length > 0
+      ? [{ eyebrow: "Approach", title: "How it came together", body: p.approach }]
+      : []),
     ...(p.outcomes && p.outcomes.length > 0
-      ? [{ eyebrow: "Outcomes", title: "What it shipped", body: p.outcomes }]
+      ? [{ eyebrow: "Outcomes", title: "What it demonstrated", body: p.outcomes }]
       : []),
     ...(p.impact && p.impact.length > 0
       ? [{ eyebrow: "Impact", title: "What it changed", body: p.impact }]
       : []),
-    {
-      eyebrow: "Approach",
-      title: "How it came together",
-      body:
-        "A fuller MDX writeup with screenshots, architecture diagrams, and decision notes lands as the content matures. Reach out if you'd like to dig in.",
-    },
   ];
 
   const visualRotate = useTransform(scrollYProgress, [0, 1], [0, 90]);
@@ -130,7 +128,7 @@ function StoryBlock({
   return (
     <motion.div
       style={{ opacity, x }}
-      className="flex min-h-[60vh] flex-col justify-center py-12 first:pt-0"
+      className="flex min-h-[42vh] flex-col justify-center py-10 first:pt-0"
     >
       <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--color-text-2)]">
         {section.eyebrow}

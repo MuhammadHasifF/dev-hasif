@@ -10,21 +10,21 @@ const orgs = [
   "deloitte",
   "hitachi",
   "temasek-poly",
-  "govtech",
-  "harvard",
-  "uipath",
+  "tencent",
+  "alibaba",
+  "msig",
 ];
 
 export function Marquee() {
   const items = [...orgs, ...orgs];
   return (
     <section
-      aria-label="Organizations I've worked with"
+      aria-label="Organizations across work, study, and projects"
       className="relative border-y border-[var(--color-border)] bg-[color:color-mix(in_oklab,var(--color-bg-1)_50%,transparent)]"
     >
       {/* Top mono bar */}
       <div className="flex items-center justify-between border-b border-[var(--color-border)] px-4 py-3 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-text-2)] sm:px-6">
-        <span className="text-[var(--color-text-1)]">{"/// PARTNERS & ORGS"}</span>
+        <span className="text-[var(--color-text-1)]">{"/// WORK · STUDY · PROJECTS"}</span>
         <span className="flex items-center gap-2">
           <span>{orgs.length.toString().padStart(2, "0")} NODES</span>
           <span aria-hidden="true" className="relative inline-flex h-2 w-2 items-center justify-center">

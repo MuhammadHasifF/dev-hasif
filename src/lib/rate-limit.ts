@@ -4,6 +4,11 @@ const store = new Map<string, Bucket>();
 
 export function rateLimit(ip: string, limit = 5, windowMs = 10 * 60 * 1000) {
   const now = Date.now();
+  if (store.size > 1000) {
+    for (const [key, bucket] of store) {
+      if (bucket.resetAt < now) store.delete(key);
+    }
+  }
   const b = store.get(ip);
   if (!b || b.resetAt < now) {
     store.set(ip, { count: 1, resetAt: now + windowMs });

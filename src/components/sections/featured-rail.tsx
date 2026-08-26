@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import {
   motion,
@@ -12,7 +13,6 @@ import { projects } from "@/content/projects";
 import { Section } from "@/components/primitives/section";
 import { OrgLogo } from "@/components/primitives/org-tag";
 import { DiagonalArrow } from "@/components/primitives/diagonal-arrow";
-import { ProjectDrawer } from "@/components/projects/project-drawer";
 
 const featured = projects.filter((p) => p.featured).slice(0, 5);
 
@@ -20,8 +20,6 @@ export function FeaturedRail() {
   const targetRef = useRef<HTMLDivElement>(null);
   const railRef = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
-  const [openSlug, setOpenSlug] = useState<string | null>(null);
-  const openProject = openSlug ? featured.find((p) => p.slug === openSlug) ?? null : null;
   const { scrollYProgress } = useScroll({
     target: targetRef,
     offset: ["start start", "end end"],
@@ -72,15 +70,9 @@ export function FeaturedRail() {
               key={p.slug}
               project={p}
               index={i}
-              onOpen={() => setOpenSlug(p.slug)}
             />
           ))}
         </div>
-        <ProjectDrawer
-          project={openProject}
-          open={openSlug !== null}
-          onClose={() => setOpenSlug(null)}
-        />
       </Section>
     );
   }
@@ -91,7 +83,7 @@ export function FeaturedRail() {
     <section
       ref={targetRef}
       aria-label="Featured projects rail"
-      className="relative h-[400vh]"
+      className="relative h-[340vh]"
     >
       <div className="sticky top-0 flex h-[100dvh] flex-col justify-center overflow-hidden">
         {/* Subtle drifting accent only — no heavy bg, no stripes. The page's
@@ -122,19 +114,12 @@ export function FeaturedRail() {
                 progress={scrollYProgress}
                 total={total}
                 count={featured.length}
-                onOpen={() => setOpenSlug(p.slug)}
               />
             </div>
           ))}
           <div className="shrink-0 w-[80vw] md:w-[60vw] lg:w-[44vw]">
-            <button
-              type="button"
-              onClick={() => {
-                const target = document.getElementById("all-projects");
-                if (target) {
-                  target.scrollIntoView({ behavior: "smooth", block: "start" });
-                }
-              }}
+            <Link
+              href="/#all-projects"
               className="hud-panel group flex h-full min-h-[460px] w-full flex-col items-center justify-center gap-3 p-12 text-center transition-colors hover:border-[var(--color-accent)]"
             >
               <span className="font-display text-3xl text-[var(--color-text-0)] md:text-4xl">
@@ -144,15 +129,10 @@ export function FeaturedRail() {
                 Browse the full grid below
                 <DiagonalArrow />
               </span>
-            </button>
+            </Link>
           </div>
         </motion.div>
       </div>
-      <ProjectDrawer
-        project={openProject}
-        open={openSlug !== null}
-        onClose={() => setOpenSlug(null)}
-      />
     </section>
   );
 }
@@ -209,14 +189,12 @@ function FeaturedCardMotion({
   progress,
   total,
   count,
-  onOpen,
 }: {
   project: (typeof projects)[number];
   index: number;
   progress: MotionValue<number>;
   total: number;
   count: number;
-  onOpen: () => void;
 }) {
   const slot = index / Math.max(1, total - 1);
 
@@ -238,7 +216,7 @@ function FeaturedCardMotion({
   const totalStr = String(count).padStart(2, "0");
 
   return (
-    <button type="button" onClick={onOpen} className="block h-full w-full text-left">
+    <Link href={`/work/${p.slug}`} className="block h-full w-full text-left">
       <motion.div
         className="hud-panel group relative flex h-full min-h-[460px] flex-col overflow-hidden p-7 transition-[border-color,box-shadow,background] md:p-9"
         style={{ borderColor }}
@@ -335,24 +313,21 @@ function FeaturedCardMotion({
           </span>
         </div>
       </motion.div>
-    </button>
+    </Link>
   );
 }
 
 function FeaturedStaticCard({
   project: p,
   index,
-  onOpen,
 }: {
   project: (typeof projects)[number];
   index: number;
-  onOpen: () => void;
 }) {
   const num = String(index + 1).padStart(2, "0");
   return (
-    <button
-      type="button"
-      onClick={onOpen}
+    <Link
+      href={`/work/${p.slug}`}
       className="hud-panel hud-panel-hover group relative block h-full min-h-[460px] w-full overflow-hidden p-7 text-left transition-colors md:p-9"
     >
       <div className="relative flex items-start justify-between gap-3">
@@ -388,6 +363,6 @@ function FeaturedStaticCard({
           </span>
         ))}
       </div>
-    </button>
+    </Link>
   );
 }

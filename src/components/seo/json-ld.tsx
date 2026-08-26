@@ -16,7 +16,7 @@ export function JsonLd() {
           addressCountry: "SG",
         },
         sameAs: [siteConfig.links.github, siteConfig.links.linkedin, siteConfig.links.orcid],
-        jobTitle: "Research Engineer",
+        jobTitle: "Assistant Research and Full-Stack Developer",
         worksFor: { "@type": "Organization", name: "Singapore Institute of Technology" },
       },
       {
@@ -24,11 +24,6 @@ export function JsonLd() {
         url: siteConfig.url,
         name: siteConfig.shortName,
         description: siteConfig.description,
-        potentialAction: {
-          "@type": "SearchAction",
-          target: `${siteConfig.url}/work?q={search_term_string}`,
-          "query-input": "required name=search_term_string",
-        },
       },
     ],
   };

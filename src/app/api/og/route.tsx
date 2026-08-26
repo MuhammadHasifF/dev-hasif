@@ -33,7 +33,7 @@ export async function GET(req: Request) {
             width: 600,
             height: 600,
             borderRadius: 9999,
-            background: "radial-gradient(circle, #7c5cff66, transparent 70%)",
+            background: "radial-gradient(circle, #ff1e3c66, transparent 70%)",
           }}
         />
         <div
@@ -44,7 +44,7 @@ export async function GET(req: Request) {
             width: 600,
             height: 600,
             borderRadius: 9999,
-            background: "radial-gradient(circle, #00d4ff55, transparent 70%)",
+            background: "radial-gradient(circle, #ff556055, transparent 70%)",
           }}
         />
 
@@ -62,7 +62,7 @@ export async function GET(req: Request) {
             style={{
               width: 44,
               height: 44,
-              background: "linear-gradient(135deg,#7c5cff,#00d4ff)",
+              background: "linear-gradient(135deg,#ff1e3c,#8a0a1c)",
               borderRadius: 10,
               display: "flex",
               alignItems: "center",
@@ -74,7 +74,7 @@ export async function GET(req: Request) {
           >
             H
           </div>
-          hasif.dev
+          devhasif.vercel.app
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
@@ -110,7 +110,7 @@ export async function GET(req: Request) {
             fontFamily: "monospace",
           }}
         >
-          <span>Muhammad Hasif · Applied AI undergrad & full-stack engineer · Singapore</span>
+          <span>Muhammad Hasif · Applied AI undergraduate & research developer · Singapore</span>
           <span>{new Date().getFullYear()}</span>
         </div>
       </div>

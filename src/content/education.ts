@@ -15,7 +15,7 @@ export const education: Education[] = [
     credential: "Bachelor of Science with Honours, Applied Artificial Intelligence",
     start: "08/2025",
     end: "Expected 09/2028",
-    note: "Building research and engineering work on R3CAP and the FSSD maritime platform alongside studies. Contributions support CHI '25 and DIS '26 academic submissions.",
+    note: "Current undergraduate studies in applied AI, machine learning, data engineering, software development, and responsible AI practice.",
   },
   {
     school: "Temasek Polytechnic",
@@ -23,6 +23,6 @@ export const education: Education[] = [
     credential: "Diploma in Financial Business Informatics",
     start: "04/2020",
     end: "05/2023",
-    note: "Capstone: Time-Series Forecasting Techniques Research Project. Edusave Good Progress Award (top 10%). Relevant coursework: Data Mining & Business Analytics, Data Visualisation & Analytics, Data Storytelling, Data Structures & Algorithms, Database Application Development, Computational Thinking, IT Systems Security Essentials, FinTech Innovations, Open Banking App Development, Risk & Governance, Mobile App Development.",
+    note: "Relevant coursework included data mining and business analytics, data visualisation, data structures and algorithms, database development, systems security, FinTech, and risk and governance. Completed an individual M5 forecasting capstone supervised by Deloitte.",
   },
 ];

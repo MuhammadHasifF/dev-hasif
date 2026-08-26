@@ -2,16 +2,16 @@ export const siteConfig = {
   name: "Muhammad Hasif",
   fullName: "Muhammad Hasif Bin Mohd Faisal",
   shortName: "Hasif",
-  title: "Hasif · Applied AI Undergrad & Full-Stack Engineer",
+  title: "Muhammad Hasif · Applied AI & Data Portfolio",
   description:
-    "Applied AI undergraduate (SIT, Hons., expected 2028) building production grade machine learning, LLM, and data systems. Generative AI (Llama 3.3, Groq, LangChain, RAG), time-series forecasting (ARIMA, XGBoost, LightGBM), full stack data platforms (Python, Flask/Django, Vue/React, Pandas, Apache ECharts), and geospatial analytics (ArcGIS) across Deloitte, HTX, Singapore Police Force, MOM, and SIT research labs.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://hasif.dev",
-  ogImage: "/og.png",
+    "Applied AI undergraduate and research developer building data pipelines, evaluated ML models, LLM applications, and full-stack systems in Singapore.",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://devhasif.vercel.app",
+  ogImage: "/api/og",
   tagline:
-    "Applied AI undergraduate building production grade machine learning, LLM, and full stack data systems. Shipping across Deloitte, HTX, SPF, MOM, and SIT research labs.",
+    "Applied AI undergraduate and research developer turning complex data into reliable pipelines, evaluated models, and useful AI-enabled products.",
   taglineAlt:
-    "Generative AI (Llama 3.3, Groq, LangChain, RAG), time-series forecasting (ARIMA, XGBoost, LightGBM), full stack data platforms (Python, Flask/Django, Vue/React, Pandas, Apache ECharts), and geospatial analytics (ArcGIS).",
-  location: "Singapore 400412",
+    "Hands-on experience across maritime analytics, machine learning, LLM applications, full-stack engineering, 3D research systems, automation, and cybersecurity operations.",
+  location: "Singapore",
   email: "muhammad.hasif.faisal@gmail.com",
   phone: "+65 8896 6503",
   resume: "/resume.pdf",

@@ -41,11 +41,16 @@ export function StatCounter({
     return () => cancelAnimationFrame(raf);
   }, [inView, value, duration, reduce]);
 
+  const exact = `${prefix}${value.toFixed(decimals)}${suffix}`;
+
   return (
-    <span ref={ref} className={cn("tabular-nums", className)}>
-      {prefix}
-      {n.toFixed(decimals)}
-      {suffix}
+    <span className={cn("tabular-nums", className)}>
+      <span className="sr-only">{exact}</span>
+      <span ref={ref} aria-hidden="true">
+        {prefix}
+        {n.toFixed(decimals)}
+        {suffix}
+      </span>
     </span>
   );
 }

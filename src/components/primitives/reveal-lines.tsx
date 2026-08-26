@@ -31,7 +31,10 @@ export function RevealLines({
   as?: "h1" | "h2" | "h3" | "div";
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [active, setActive] = useState(false);
+  // Visible by default so content never disappears if IntersectionObserver
+  // is delayed, blocked, or unavailable. Off-screen instances are reset by
+  // the observer after hydration and still animate when scrolled into view.
+  const [active, setActive] = useState(true);
 
   useEffect(() => {
     const el = ref.current;

@@ -63,10 +63,17 @@ export async function POST(req: Request) {
   const to = process.env.CONTACT_TO_EMAIL ?? siteConfig.email;
 
   if (!apiKey) {
-    console.warn("[contact] RESEND_API_KEY missing, logging payload instead of sending:");
-    console.warn(JSON.stringify({ from: data.email, name: data.name, message: data.message }, null, 2));
+    if (process.env.NODE_ENV !== "production") {
+      console.warn("[contact] RESEND_API_KEY missing, logging payload instead of sending:");
+      console.warn(JSON.stringify({ from: data.email, name: data.name, message: data.message }, null, 2));
+      return NextResponse.json(
+        { ok: true, dev: true, note: "Dev stub. Configure RESEND_API_KEY to send real emails." },
+      );
+    }
+    console.error("[contact] RESEND_API_KEY is not configured in production");
     return NextResponse.json(
-      { ok: true, dev: true, note: "Dev stub. Configure RESEND_API_KEY to send real emails." }
+      { error: "Contact delivery is temporarily unavailable. Please email me directly." },
+      { status: 503 },
     );
   }
 
@@ -77,7 +84,7 @@ export async function POST(req: Request) {
     <div style="font-family:ui-sans-serif,system-ui,sans-serif;background:#0a0a0b;color:#f5f5f7;padding:24px">
       <h2 style="margin:0 0 8px">${escape(data.name)} <span style="color:#a1a1aa;font-weight:400">(${escape(data.email)})</span></h2>
       ${data.company ? `<div style="color:#a1a1aa;margin-bottom:12px">${escape(data.company)}</div>` : ""}
-      <div style="white-space:pre-wrap;line-height:1.55;border-left:3px solid #7c5cff;padding:8px 12px;background:#111113">${escape(data.message)}</div>
+      <div style="white-space:pre-wrap;line-height:1.55;border-left:3px solid #ff1e3c;padding:8px 12px;background:#111113">${escape(data.message)}</div>
       <hr style="border:none;border-top:1px solid #2a2a2f;margin:20px 0" />
       <div style="color:#52525b;font-size:12px">IP: ${escape(ip)} · ${new Date().toISOString()}</div>
     </div>`;

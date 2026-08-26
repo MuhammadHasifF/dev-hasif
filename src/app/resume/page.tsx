@@ -6,6 +6,8 @@ import { PageBackground } from "@/components/layout/page-background";
 export const metadata: Metadata = {
   title: "Resume",
   description: "Download my latest resume as PDF.",
+  alternates: { canonical: "/resume" },
+  openGraph: { url: "/resume" },
 };
 
 export default function ResumePage() {
@@ -18,6 +20,7 @@ export default function ResumePage() {
       total={1}
       stamp="// PDF"
       title={["Two pages.", "Built to scan."]}
+      headingAs="h1"
       intro="A concise overview of my experience across applied AI, data analytics, machine learning, research engineering, and full-stack development."
     >
       <div className="flex flex-wrap items-center gap-3">

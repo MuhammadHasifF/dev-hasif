@@ -9,7 +9,7 @@ import { OrgLogo } from "@/components/primitives/org-tag";
 import { Chip } from "@/components/primitives/chip";
 import { cn } from "@/lib/utils";
 
-type Sort = "recent" | "chronological" | "impact";
+type Sort = "recent" | "chronological";
 
 export function ProjectsGrid() {
   const [filter, setFilter] = useState<ProjectCategory | "All">("All");
@@ -17,9 +17,6 @@ export function ProjectsGrid() {
 
   const list = useMemo(() => {
     const base = filter === "All" ? projects : projects.filter((p) => p.category === filter);
-    if (sort === "impact") {
-      return [...base].sort((a, b) => (b.impact?.length ?? 0) - (a.impact?.length ?? 0));
-    }
     const withYear = (y: string) => parseInt(y.match(/\d{4}/)?.[0] ?? "0", 10);
     return [...base].sort((a, b) =>
       sort === "recent" ? withYear(b.year) - withYear(a.year) : withYear(a.year) - withYear(b.year)
@@ -34,6 +31,7 @@ export function ProjectsGrid() {
             key={c}
             type="button"
             onClick={() => setFilter(c)}
+            aria-pressed={filter === c}
             className={cn(
               "inline-flex h-8 items-center rounded-full border px-3 text-xs transition",
               filter === c
@@ -56,7 +54,6 @@ export function ProjectsGrid() {
           >
             <option value="recent">Recent first</option>
             <option value="chronological">Chronological</option>
-            <option value="impact">By impact</option>
           </select>
         </div>
       </div>
@@ -68,7 +65,7 @@ export function ProjectsGrid() {
               <motion.div
                 key={p.slug}
                 layout
-                initial={{ opacity: 0, y: 12 }}
+                initial={false}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 12 }}
                 transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}

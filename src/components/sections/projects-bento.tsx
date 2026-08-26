@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useRef, useState } from "react";
 import { DiagonalArrow } from "@/components/primitives/diagonal-arrow";
 import { AnimatePresence, motion, LayoutGroup } from "framer-motion";
@@ -8,17 +9,14 @@ import { Section } from "@/components/primitives/section";
 import { OrgLogo } from "@/components/primitives/org-tag";
 import { Chip } from "@/components/primitives/chip";
 import { GlitchReveal } from "@/components/primitives/glitch-reveal";
-import { ProjectDrawer } from "@/components/projects/project-drawer";
 import { cn } from "@/lib/utils";
 
 export function ProjectsBento() {
   const [filter, setFilter] = useState<ProjectCategory | "All">("All");
-  const [openSlug, setOpenSlug] = useState<string | null>(null);
   const filtered = useMemo(
     () => (filter === "All" ? projects : projects.filter((p) => p.category === filter)),
     [filter]
   );
-  const openProject = openSlug ? projects.find((p) => p.slug === openSlug) ?? null : null;
 
   return (
     <Section
@@ -27,8 +25,8 @@ export function ProjectsBento() {
       index={3}
       total={7}
       stamp="// FULL ARCHIVE"
-      title={["All Projects."]}
-      intro="Built for the field, tuned for scale. A cross-section of research engineering, government operations, cybersecurity, and data work I've led or contributed to."
+      title={["Selected Projects."]}
+      intro="Six non-employment projects across applied AI, machine learning, data analytics, and full-stack product development. Each case study separates implementation from measured outcomes."
     >
       <div className="mb-8 flex flex-wrap items-center gap-2">
         {projectCategories.map((c) => (
@@ -36,6 +34,7 @@ export function ProjectsBento() {
             key={c}
             type="button"
             onClick={() => setFilter(c)}
+            aria-pressed={filter === c}
             className={cn(
               "relative inline-flex h-8 items-center rounded-full border px-3 text-xs transition",
               filter === c
@@ -63,7 +62,7 @@ export function ProjectsBento() {
               >
                 {/* Odd index → slide in from left, even index → from right */}
                 <GlitchReveal side={i % 2 === 0 ? "left" : "right"} className="group h-full">
-                  <BentoCardButton onClick={() => setOpenSlug(p.slug)}>
+                  <BentoCardLink href={`/work/${p.slug}`}>
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex items-center gap-2">
                         <OrgLogo orgKey={p.orgKey} size="md" />
@@ -93,32 +92,26 @@ export function ProjectsBento() {
                       <span>{p.year}</span>
                       <span>{p.org}</span>
                     </div>
-                  </BentoCardButton>
+                  </BentoCardLink>
                 </GlitchReveal>
               </motion.div>
             ))}
           </AnimatePresence>
         </div>
       </LayoutGroup>
-
-      <ProjectDrawer
-        project={openProject}
-        open={openSlug !== null}
-        onClose={() => setOpenSlug(null)}
-      />
     </Section>
   );
 }
 
-function BentoCardButton({
-  onClick,
+function BentoCardLink({
+  href,
   children,
 }: {
-  onClick: () => void;
+  href: string;
   children: React.ReactNode;
 }) {
-  const ref = useRef<HTMLButtonElement>(null);
-  const onMove = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const ref = useRef<HTMLAnchorElement>(null);
+  const onMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const el = ref.current;
     if (!el) return;
     const r = el.getBoundingClientRect();
@@ -126,10 +119,9 @@ function BentoCardButton({
     el.style.setProperty("--my", `${e.clientY - r.top}px`);
   };
   return (
-    <button
-      type="button"
+    <Link
       ref={ref}
-      onClick={onClick}
+      href={href}
       onMouseMove={onMove}
       className="hud-panel hud-panel-hover group/card relative flex h-full min-h-[170px] flex-col justify-between overflow-hidden p-6 text-left transition-colors w-full"
       style={{ ["--mx" as string]: "50%", ["--my" as string]: "50%" } as React.CSSProperties}
@@ -152,6 +144,6 @@ function BentoCardButton({
         }}
       />
       {children}
-    </button>
+    </Link>
   );
 }
