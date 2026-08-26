@@ -83,7 +83,7 @@ export function SkillsConstellation() {
 
 function SkillChipList({ items }: { items: string[] }) {
   const ref = useRef<HTMLUListElement>(null);
-  const [inView, setInView] = useState(false);
+  const [inView, setInView] = useState(true);
   useEffect(() => {
     const el = ref.current;
     if (!el || typeof IntersectionObserver === "undefined") return;

@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ExternalLink, LockKeyhole } from "lucide-react";
 import { experience } from "@/content/experience";
 import { Section } from "@/components/primitives/section";
 import { OrgLogo } from "@/components/primitives/org-tag";
@@ -10,7 +10,9 @@ import { Chip } from "@/components/primitives/chip";
 import { cn } from "@/lib/utils";
 
 export function ExperienceTimeline() {
-  const [open, setOpen] = useState<string | null>(experience[0]?.company ?? null);
+  const [open, setOpen] = useState<string | null>(
+    experience[0] ? experience[0].company + experience[0].title : null,
+  );
   const wrapRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: wrapRef,
@@ -25,8 +27,8 @@ export function ExperienceTimeline() {
       index={2}
       total={7}
       stamp="// TIMELINE"
-      title={["Six roles. Six", "very different playbooks."]}
-      intro="Data engineering, ML, full-stack web, and the operational reality behind them, at SIT, Deloitte, MOM, HTX, and SPF. I've shipped across the stack and the chain of command."
+      title={["Different contexts.", "One engineering thread."]}
+      intro="Research, data, full-stack engineering, public operations, and cybersecurity—each role strengthened how I turn ambiguous requirements into reliable systems and clear decisions."
     >
       <div ref={wrapRef} className="relative">
         <div
@@ -65,7 +67,7 @@ export function ExperienceTimeline() {
                 <div className="relative z-10 flex h-16 w-16 items-center justify-center md:col-start-2 md:mx-auto">
                   <span className="absolute inset-0 rounded-full bg-[var(--color-bg-0)]" />
                   <motion.span
-                    initial={{ scale: 0.6, opacity: 0 }}
+                    initial={false}
                     whileInView={{ scale: 1, opacity: 1 }}
                     viewport={{ once: true, margin: "-80px" }}
                     transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
@@ -75,7 +77,7 @@ export function ExperienceTimeline() {
                   </motion.span>
                 </div>
                 <div className={cn("min-w-0", isLeft ? "md:col-start-1 md:row-start-1" : "md:col-start-3 md:row-start-1")}>
-                  <RoleCard r={r} isOpen={isOpen} onToggle={() => setOpen(isOpen ? null : id)} align="left" />
+                  <RoleCard r={r} isOpen={isOpen} onToggle={() => setOpen(isOpen ? null : id)} align="left" panelId={`role-${i}`} />
                 </div>
               </li>
             );
@@ -91,15 +93,17 @@ function RoleCard({
   isOpen,
   onToggle,
   align,
+  panelId,
 }: {
   r: (typeof experience)[number];
   isOpen: boolean;
   onToggle: () => void;
   align: "left" | "right";
+  panelId: string;
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 16 }}
+      initial={false}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
@@ -120,10 +124,34 @@ function RoleCard({
       <div className="mt-1 text-sm text-[var(--color-text-1)]">{r.company}</div>
       <p className="mt-3 text-sm leading-relaxed text-[var(--color-text-1)]">{r.summary}</p>
 
+      {(r.links?.length || r.repositoryNote) && (
+        <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--color-text-2)]">
+          {r.links?.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-[var(--color-text-1)] transition-colors hover:text-[var(--color-accent)]"
+            >
+              <ExternalLink className="h-3 w-3" aria-hidden="true" />
+              {link.label}
+            </a>
+          ))}
+          {r.repositoryNote && (
+            <span className="inline-flex items-center gap-1.5">
+              <LockKeyhole className="h-3 w-3" aria-hidden="true" />
+              {r.repositoryNote}
+            </span>
+          )}
+        </div>
+      )}
+
       <button
         type="button"
         onClick={onToggle}
         aria-expanded={isOpen}
+        aria-controls={panelId}
         className="mt-4 inline-flex items-center gap-1 text-xs font-medium text-[var(--color-text-0)]"
       >
         {isOpen ? "Hide highlights" : "Show highlights"}
@@ -134,6 +162,7 @@ function RoleCard({
       {isOpen && (
         <motion.div
           key="highlights"
+          id={panelId}
           initial={{ height: 0, opacity: 0, y: -6 }}
           animate={{ height: "auto", opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.32, 0.72, 0, 1] } }}
           exit={{ height: 0, opacity: 0, y: -6, transition: { duration: 0.4, ease: [0.32, 0.72, 0, 1] } }}
@@ -147,15 +176,6 @@ function RoleCard({
               </li>
             ))}
           </ul>
-          {r.awards && r.awards.length > 0 && (
-            <div className="mt-4 flex flex-wrap gap-2">
-              {r.awards.map((a) => (
-                <Chip key={a} tone="accent">
-                  🏅 {a}
-                </Chip>
-              ))}
-            </div>
-          )}
           {r.tech && (
             <div className="mt-4 flex flex-wrap gap-1.5">
               {r.tech.map((t) => (

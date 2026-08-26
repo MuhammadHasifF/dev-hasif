@@ -6,7 +6,7 @@ export default function NotFound() {
   return (
     <>
       <PageBackground variant="notfound" />
-      <div className="relative mx-auto flex min-h-[calc(100vh-56px)] max-w-6xl flex-col items-center justify-center px-4 pt-14 text-center sm:px-6">
+      <div className="relative mx-auto flex min-h-[calc(100vh-64px)] max-w-6xl flex-col items-center justify-center px-4 pt-16 text-center sm:px-6">
         <ScatteredFour />
         <div className="-mt-8 max-w-lg">
           <div className="mb-3 inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-[var(--color-accent)]">

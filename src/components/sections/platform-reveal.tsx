@@ -15,7 +15,7 @@ export function PlatformReveal({
   index: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [inView, setInView] = useState(false);
+  const [inView, setInView] = useState(true);
 
   useEffect(() => {
     const el = ref.current;

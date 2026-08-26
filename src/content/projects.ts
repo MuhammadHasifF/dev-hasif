@@ -1,10 +1,4 @@
-export type ProjectCategory =
-  | "Research"
-  | "Government"
-  | "Cybersecurity"
-  | "Data"
-  | "AI"
-  | "Open Source";
+export type ProjectCategory = "AI" | "Data";
 
 export type Project = {
   slug: string;
@@ -17,6 +11,7 @@ export type Project = {
   category: ProjectCategory;
   tags: string[];
   stack: string[];
+  approach?: string[];
   impact?: string[];
   outcomes?: string[];
   links?: { label: string; href: string }[];
@@ -26,234 +21,164 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    slug: "fssd-maritime",
-    title: "FSSD Maritime Data Platform",
-    tagline:
-      "Real time vessel health monitoring and fault diagnosis platform, full stack app with ETL pipelines and interactive stakeholder dashboards.",
-    description:
-      "End to end data platform for the SIT Future Ship & System Design (FSSD) research initiative. Python, Flask/Django, Vue/React, Pandas, and Apache ECharts. Raw maritime alarm data is cleaned and streamed via ETL into an analytics layer, then surfaced through interactive dashboards that translate operational alarm streams into stakeholder facing diagnostic insights.",
-    year: "2026 to Present",
-    org: "Singapore Institute of Technology",
-    orgKey: "sit",
-    category: "Data",
-    tags: ["Maritime", "Time-Series", "Dashboards"],
-    stack: ["Python", "Flask", "Django", "Vue.js", "React", "Pandas", "Apache ECharts"],
-    impact: [
-      "Unified ETL across multi-source alarm + sensor feeds",
-      "Fault cascade tooling for engineering root-cause work",
-      "Per-vessel + fleet-wide dashboards for operations and crew",
+    slug: "kithrelay",
+    title: "KithRelay",
+    tagline: "Privacy-first care coordination that converts local documents into source-linked plans without uploading them to a server.",
+    description: "Co-developed a browser-local care coordination prototype that parses text-based PDFs and structured files into reviewable, source-linked care plans while keeping documents on the user's device.",
+    year: "2026",
+    org: "Tencent Cloud Hackathon · Team Project",
+    orgKey: "tencent",
+    category: "AI",
+    tags: ["Privacy", "Document Processing", "Care Coordination"],
+    stack: ["React", "TypeScript", "PDF.js", "IndexedDB", "File System Access API", "Vitest"],
+    approach: [
+      "Parse supported local files in the browser and retain evidence links back to each source.",
+      "Resolve conflicting entries deterministically and surface mixed-patient, medication, and missing-data checks for human review.",
+      "Require explicit approval before producing portable Markdown plans or sharing through a folder-based WorkBuddy workflow.",
+    ],
+    outcomes: [
+      "Browser-local processing keeps sensitive source documents on-device",
+      "Deterministic reconciliation and evidence views make every proposed change reviewable",
+      "Fifteen automated tests cover the core parsing and plan-generation workflow",
+    ],
+    links: [
+      { label: "Live demo", href: "https://kithrelay.vercel.app/" },
+      { label: "Public repository", href: "https://github.com/MuhammadHasifF/KithRelay_TencentCloud2026" },
     ],
     featured: true,
     hue: "from-[var(--color-accent)] to-[var(--color-accent-2)]",
   },
   {
-    slug: "r3cap",
-    title: "R3CAP Digital Twin Platform",
-    tagline:
-      "Open source near real time 3D reconstruction and collaborative scene authoring tool, with dynamic mesh replacement and semantic segmentation.",
-    description:
-      "Engineered frontend + backend features for R3CAP at SIT's Centre of Immersification. Python and Babylon.js across scene editing, deletion, and real time mesh replacement. Integrated next generation 3D reconstruction and auto-labelling engines for dynamic mesh updates and semantic segmentation in collaborative WebXR environments. Supported CHI '25 and DIS '26 academic submissions.",
-    year: "2025",
-    org: "Singapore Institute of Technology",
-    orgKey: "sit",
-    category: "Research",
-    tags: ["3D", "WebXR", "Research"],
-    stack: ["Python", "Babylon.js", "WebXR", "GCP", "Auto-Labelling"],
+    slug: "campus-mind",
+    title: "Campus Mind",
+    tagline: "Source-grounded active-recall coach that adapts questions, hints, and review queues to demonstrated mastery.",
+    description: "Co-developed in a two-person team, Campus Mind turns uploaded study material into an attempt-first learning loop powered by Qwen, with evidence-linked questions, adaptive hints, feedback, and mastery tracking.",
+    year: "2026",
+    org: "Alibaba Cloud × Qoder · Two-Person Team",
+    orgKey: "alibaba",
+    category: "AI",
+    tags: ["Active Recall", "Adaptive Learning", "Source Grounding"],
+    stack: ["Python", "FastAPI", "Qwen", "Pydantic", "React", "TypeScript", "PyMuPDF", "Docker", "Pytest"],
+    approach: [
+      "Generate structured questions, hints, and feedback from uploaded sources through validated Pydantic schemas.",
+      "Track exponentially weighted mastery, misconceptions, confidence, and hint-adjusted performance to prioritise review.",
+      "Apply source checks, retries, and deterministic fallbacks so malformed model output does not break the study flow.",
+    ],
     outcomes: [
-      "Backed publications at CHI '25 and DIS '26",
-      "Shipped frontend + backend feature set for open-source release",
-      "Integrated next-gen 3D reconstruction + auto-labelling engines",
+      "Attempt-first interaction prevents answers from being revealed before the learner engages",
+      "Adaptive queues focus revision on lower-mastery concepts and recurring misconceptions",
+      "119 automated tests cover API, validation, scoring, and failure-recovery behaviour",
     ],
     links: [
-      { label: "GitHub: singaporetech/r3cap", href: "https://github.com/singaporetech/r3cap" },
+      { label: "Live demo", href: "https://alibabacloud-qoder2026.onrender.com/" },
+      { label: "Public repository", href: "https://github.com/aeomantic/AlibabaCloud_Qoder2026" },
     ],
     featured: true,
     hue: "from-[var(--color-accent-2)] to-[var(--color-accent-3)]",
   },
   {
-    slug: "msig-travel-assistant",
-    title: "MSIG Travel Assistant · SingHacks 2025",
-    tagline:
-      "Ultra low latency conversational AI for travel insurance, RAG over policy data, eligibility aware quoting, itinerary document extraction.",
-    description:
-      "Conversational AI prototype for MSIG built during SingHacks 2025. Python, Llama 3.3 70B served through Groq for ultra low latency inference, and LangChain driven RAG over policy + destination knowledge bases. Side by side policy comparison across TravelEasy, Pre-Ex, and Scootsurance, plus eligibility aware quoting and itinerary document extraction.",
-    year: "2025",
-    org: "MSIG · SingHacks",
-    orgKey: "msig",
+    slug: "braingit",
+    title: "BrainGit",
+    tagline: "Personal productivity assistant with specialised Telegram agents, tool calling, semantic memory, and scheduled workflows.",
+    description: "Built a containerised AI productivity system that connects Telegram to five specialised agents and 17 tools for email, calendar, tasks, notes, reminders, and long-term memory.",
+    year: "2026",
+    org: "Personal Project",
+    orgKey: "github",
     category: "AI",
-    tags: ["GenAI", "RAG", "Hackathon"],
-    stack: ["Python", "Llama 3.3 70B", "Groq", "LangChain", "RAG"],
+    tags: ["AI Agents", "Function Calling", "Semantic Memory"],
+    stack: ["Python", "FastAPI", "Gemini", "PostgreSQL", "pgvector", "OAuth", "Docker", "Pytest"],
+    approach: [
+      "Route Telegram requests through a bounded function-calling loop to specialised productivity agents.",
+      "Store semantic memories with embeddings and pgvector alongside asynchronous SQLAlchemy models and Alembic migrations.",
+      "Protect connected services with OAuth, encrypted tokens, access controls, and mocked integration tests.",
+    ],
     outcomes: [
-      "Shipped end-to-end during SingHacks 2025",
-      "Side by side comparison across TravelEasy, Pre-Ex, Scootsurance",
-      "Eligibility aware quoting + itinerary document extraction",
+      "Five agents coordinate 17 tools across core personal-productivity workflows",
+      "Scheduled reminders and semantic memory support useful follow-up across conversations",
+      "Twenty-seven mocked tests validate tool orchestration without calling live external services",
     ],
-    links: [
-      { label: "GitHub: SingHacks2025", href: "https://github.com/MuhammadHasifF/SingHacks2025" },
-    ],
+    links: [{ label: "Public repository", href: "https://github.com/MuhammadHasifF/BrainGit" }],
     featured: true,
     hue: "from-[var(--color-accent-3)] to-[var(--color-accent)]",
   },
   {
-    slug: "ge2025-rpa",
-    title: "GE2025 Polling Operations Automation",
-    tagline:
-      "UiPath RPA + Excel/VBA across 1,900+ polling stations for GE2025, ~30+ analyst hours saved per cycle.",
-    description:
-      "Designed and deployed UiPath automation and dynamic Excel/VBA tools for backend polling logistics during GE2025 across 1,900+ polling stations. Automated crowd recording and ballot box delivery tracking, eliminating an estimated 30+ analyst hours per polling cycle and processing thousands of operational data points per shift.",
-    year: "2025",
-    org: "Singapore Police Force",
-    orgKey: "spf",
-    category: "Government",
-    tags: ["RPA", "Automation", "Elections"],
-    stack: ["UiPath", "Python", "Excel VBA"],
-    impact: [
-      "Saved ~30+ analyst hours per polling cycle",
-      "Processed thousands of operational data points per shift",
-      "Coverage across 1,900+ polling stations",
+    slug: "ibm-telco-churn",
+    title: "IBM Telco Customer Churn",
+    tagline: "Leakage-controlled churn modelling with train-fold resampling, sealed holdout evaluation, and threshold optimisation.",
+    description: "Co-developed a reproducible classification study of 7,043 telecom customers across 33 source features, focusing on trustworthy evaluation under class imbalance rather than headline accuracy alone.",
+    year: "2026",
+    org: "Team Project",
+    orgKey: "github",
+    category: "Data",
+    tags: ["Classification", "Imbalanced Data", "Model Evaluation"],
+    stack: ["Python", "Pandas", "scikit-learn", "imbalanced-learn", "SMOTE"],
+    approach: [
+      "Seal a final holdout set and apply preprocessing plus SMOTE only within training folds to prevent leakage.",
+      "Compare candidate classifiers with five-fold cross-validation and ablation studies.",
+      "Tune the operating threshold around retention objectives and report precision, recall, F1, and ROC-AUC together.",
     ],
+    outcomes: [
+      "A 0.35-threshold L2 logistic model increased churn recall from 55.3% to 88.5%",
+      "The selected model achieved 46.4% precision, 0.608 F1, and 0.847 ROC-AUC on the sealed holdout",
+      "The workflow clearly separates model selection from final evaluation",
+    ],
+    links: [{ label: "Public repository", href: "https://github.com/MuhammadHasifF/IBM_Telco_Customer_Churn" }],
     featured: true,
     hue: "from-[var(--color-accent)] to-[var(--color-accent-3)]",
+  },
+  {
+    slug: "singhacks-msig",
+    title: "MSIG Travel Assistant · SingHacks",
+    tagline: "Conversational travel-insurance prototype with deterministic policy comparison and itinerary document extraction.",
+    description: "Co-developed a SingHacks prototype that combines a chat interface with structured comparison across three MSIG travel-policy wordings and extraction of itinerary, passenger, cost, and special-requirement details from documents.",
+    year: "2025",
+    org: "MSIG × SingHacks · Team Project",
+    orgKey: "msig",
+    category: "AI",
+    tags: ["Conversational AI", "Policy Comparison", "Document Extraction"],
+    stack: ["Python", "FastAPI", "Streamlit", "LangChain", "Groq-hosted Llama 3.3", "PyMuPDF"],
+    approach: [
+      "Expose session-aware chat and routing through FastAPI with a Streamlit interaction layer.",
+      "Use deterministic product taxonomies and source policy documents for comparison and eligibility logic.",
+      "Extract structured trip details from uploaded itineraries to reduce repeated user input.",
+    ],
+    outcomes: [
+      "Side-by-side comparison across TravelEasy, Pre-Ex, and Scootsurance wordings",
+      "Source-backed answers and structured rules reduce unsupported product claims",
+      "Document extraction pre-fills relevant trip and traveller information",
+    ],
+    links: [{ label: "Public repository", href: "https://github.com/MuhammadHasifF/SingHacks2025_MSIG_TravelAssistant" }],
+    featured: true,
+    hue: "from-[var(--color-accent-3)] to-[var(--color-accent-2)]",
   },
   {
     slug: "m5-forecasting",
-    title: "M5 Forecasting Challenge",
-    tagline:
-      "End to end forecasting pipeline for the Kaggle M5 hierarchical retail sales challenge, ARIMA baseline lifted with XGBoost + LightGBM.",
-    description:
-      "Major project at Deloitte. Owned end to end forecasting pipeline for the Kaggle M5 hierarchical retail sales challenge, including client proposal, company segmentation research, exploratory data analysis, and benchmarking of statistical and ML approaches to deliver a competitive accuracy forecasting script.",
-    year: "2023",
-    org: "Deloitte (Major Project)",
-    orgKey: "deloitte",
+    title: "M5 Accuracy Forecasting Capstone",
+    tagline: "Individual forecasting thesis on the Walmart M5 dataset, from memory-efficient feature engineering to temporal holdout evaluation.",
+    description: "Completed an individual major project and forecasting thesis supervised by Deloitte, benchmarking statistical and machine-learning approaches on the Walmart M5 retail-sales dataset.",
+    year: "2022–2023",
+    org: "Individual Capstone · Deloitte-Supervised",
+    orgKey: "tp",
     category: "Data",
-    tags: ["Forecasting", "ML", "Kaggle"],
-    stack: ["Python", "Jupyter", "ARIMA", "XGBoost", "LightGBM", "Pandas"],
+    tags: ["Forecasting", "Time Series", "Retail Analytics"],
+    stack: ["Python", "Pandas", "LightGBM", "SARIMAX", "XGBoost", "Plotly"],
+    approach: [
+      "Engineer lag, rolling, price, calendar, and hierarchy-aware features for large retail-sales tables.",
+      "Compare statistical and boosted-tree approaches using a chronological 28-day local holdout.",
+      "Document methods, trade-offs, and reproducible workflows as a practical forecasting knowledge guide.",
+    ],
     outcomes: [
-      "Hierarchical retail forecasting across product + store splits",
-      "Statistical baseline (ARIMA) lifted with gradient boosted trees",
+      "Reduced major dataframe memory use by approximately 67.8% to 78.7%",
+      "Trained LightGBM over 57.4 million rows and recorded a 3.497 RMSE on the local 28-day holdout",
+      "Produced a complete thesis and reusable end-to-end forecasting workflow",
     ],
-    links: [
-      { label: "GitHub: Major-Project-M5-Accuracy", href: "https://github.com/MuhammadHasifF/Major-Project-M5-Accuracy" },
-    ],
-    featured: true,
-    hue: "from-[var(--color-accent-3)] to-[var(--color-accent-2)]",
-  },
-  {
-    slug: "movement-tracker",
-    title: "MBFT Personnel Tracking · HTX × Security Command",
-    tagline:
-      "Real time geospatial data system, ArcGIS + Python + REST APIs, live ingest, spatial analytics, ops dashboards.",
-    description:
-      "Co-developed a personnel movement monitoring system with HTX and Security Command using geospatial data. Improved real time visibility and coordination for command staff during high security operations.",
-    year: "2024 to 2025",
-    org: "HTX × SPF",
-    orgKey: "spf",
-    category: "Government",
-    tags: ["Geospatial", "Real-time"],
-    stack: ["ArcGIS", "Python", "REST APIs"],
-    impact: [
-      "Operational visibility during national-level events",
-      "Reduced radio load by surfacing location data on the map",
-    ],
-    hue: "from-[var(--color-accent-2)] to-[var(--color-accent)]",
-  },
-  {
-    slug: "voteq-platform",
-    title: "VoteQ × ArcGIS × CCTV Analytics",
-    tagline:
-      "Multi-source spatial + computer vision analytics platform, VoteQ + ArcGIS + CCTV feeds + facial recognition.",
-    description:
-      "Enhanced the VoteQ election operations platform with GovTech by integrating ArcGIS spatial analytics, CCTV analytics, and facial recognition workflows into operational planning. Sharpened real time crowd monitoring and situational awareness ahead of GE2025.",
-    year: "2025",
-    org: "GovTech × SPF",
-    orgKey: "spf",
-    category: "Government",
-    tags: ["Gov", "Geospatial", "Vision"],
-    stack: ["ArcGIS", "CCTV Analytics", "Facial Recognition"],
-    hue: "from-[var(--color-accent)] to-[var(--color-text-1)]",
-  },
-  {
-    slug: "geospatial-dashboards",
-    title: "Geospatial Operations Dashboards",
-    tagline:
-      "ArcGIS based operational dashboards used by command leadership during GE2025 and NDP2025.",
-    description:
-      "Designed and deployed interactive ArcGIS dashboards merging live operations data with spatial context, used by command leadership to plan, coordinate, and monitor General Election 2025 and National Day Parade 2025.",
-    year: "2024 to 2025",
-    org: "Singapore Police Force",
-    orgKey: "spf",
-    category: "Government",
-    tags: ["Geospatial", "BI"],
-    stack: ["ArcGIS", "Power BI"],
-    hue: "from-[var(--color-accent)] to-[var(--color-accent-3)]",
-  },
-  {
-    slug: "soc-automation",
-    title: "SOC Automation & Reporting",
-    tagline:
-      "Python automation that replaced manual SOC reporting, pandas aggregation, scheduled jobs, structured outputs.",
-    description:
-      "Scripted SOC report and dashboard generation for HTX's Security Operations Centre. Improved operational visibility and accelerated insights delivery during incident response and threat hunting.",
-    year: "2024",
-    org: "HTX",
-    orgKey: "htx",
-    category: "Cybersecurity",
-    tags: ["SOC", "Automation"],
-    stack: ["Python", "SIEM", "Pandas"],
-    impact: [
-      "Automated SOC reporting pipeline",
-      "Supported incident response, DFIR, and proactive threat hunting",
-    ],
-    hue: "from-[var(--color-accent-2)] to-[var(--color-accent-3)]",
-  },
-  {
-    slug: "time-series-forecasting",
-    title: "Time-Series Forecasting (Deloitte)",
-    tagline:
-      "Production forecasting pipeline, ARIMA + gradient-boosted trees, ~12% accuracy lift over baseline ARIMA on client datasets.",
-    description:
-      "Maritime shipping client engagement at Deloitte. ARIMA enhanced with feature engineering, alongside XGBoost and LightGBM in scikit-learn workflows. Approximately 12% accuracy lift over baseline ARIMA. SQL + Python ETL automation supported model iteration and stakeholder reporting.",
-    year: "2022 to 2023",
-    org: "Deloitte",
-    orgKey: "deloitte",
-    category: "Data",
-    tags: ["Forecasting", "ML"],
-    stack: ["Python", "ARIMA", "XGBoost", "LightGBM", "scikit-learn"],
-    outcomes: [
-      "~12% accuracy lift over baseline ARIMA on client datasets",
-      "Automated ETL + modelling pipeline handed over to client team",
-    ],
-    hue: "from-[var(--color-accent-3)] to-[var(--color-accent-2)]",
-  },
-  {
-    slug: "papers-by-hasif",
-    title: "Papers_By_Hasif · Research Archive",
-    tagline: "Public archive of research reading lists, notes, and writeups.",
-    description:
-      "Public GitHub repository collecting research notes across AI, HCI, and systems. Reading lists, paper summaries, and writeups.",
-    year: "Ongoing",
-    org: "GitHub",
-    orgKey: "github",
-    category: "Open Source",
-    tags: ["Research", "Writing"],
-    stack: ["Markdown", "Git"],
-    links: [
-      { label: "View on GitHub", href: "https://github.com/MuhammadHasifF" },
-    ],
+    links: [{ label: "Public repository", href: "https://github.com/MuhammadHasifF/Major_Project_M5Accuracy" }],
     hue: "from-[var(--color-text-1)] to-[var(--color-accent)]",
   },
 ];
 
-export const projectCategories: (ProjectCategory | "All")[] = [
-  "All",
-  "Research",
-  "AI",
-  "Government",
-  "Cybersecurity",
-  "Data",
-  "Open Source",
-];
+export const projectCategories: (ProjectCategory | "All")[] = ["All", "AI", "Data"];
 
 export function getProject(slug: string) {
-  return projects.find((p) => p.slug === slug);
+  return projects.find((project) => project.slug === slug);
 }

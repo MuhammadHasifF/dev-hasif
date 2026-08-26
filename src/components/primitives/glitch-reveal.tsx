@@ -22,7 +22,7 @@ type Props = {
 
 export function GlitchReveal({ children, delay = 0, className = "", amount = 0.25 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
-  const [inView, setInView] = useState(false);
+  const [inView, setInView] = useState(true);
 
   useEffect(() => {
     const el = ref.current;
@@ -62,7 +62,7 @@ export function GlitchTitle({
   className?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [inView, setInView] = useState(false);
+  const [inView, setInView] = useState(true);
 
   useEffect(() => {
     const el = ref.current;

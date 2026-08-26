@@ -7,14 +7,15 @@ import { useEffect, useState } from "react";
 import { Check, Loader2, Send } from "lucide-react";
 import { Section } from "@/components/primitives/section";
 import { cn } from "@/lib/utils";
+import { siteConfig } from "@/../site.config";
 
 /** Cycles through a few example messages as the textarea placeholder. */
 const PLACEHOLDER_CYCLE = [
-  "Hi Hasif, we're hiring a Data/AI engineer and your FSSD work looks like a fit. Open to a chat?",
-  "Got 5 minutes to walk me through how MSIG Travel Assistant routes through Llama 3.3 + Groq?",
-  "We're looking for an ML-leaning full-stack contractor for a 3-month forecasting build. Interested?",
-  "Quick one, what stack would you reach for to ship a vessel-health dashboard MVP in a week?",
-  "Hey, just wanted to say your R3CAP demo was wild. How did the auto-labelling integration land?",
+  "Hi Hasif, we're hiring a data and AI intern and your maritime analytics work looks relevant. Open to a chat?",
+  "Could you walk me through how Campus Mind validates source-grounded model output?",
+  "We're looking for an ML intern with strong Python and evaluation fundamentals. Interested?",
+  "What trade-offs did you make while building BrainGit's agent and memory architecture?",
+  "I'd like to learn more about your work on the open-source R3CAP platform.",
 ];
 
 function useTypingPlaceholder(samples: string[]) {
@@ -104,6 +105,7 @@ export function ContactInline() {
       }
       setStatus("success");
       reset();
+      setHasContent(false);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Something broke on send");
       setStatus("error");
@@ -118,7 +120,7 @@ export function ContactInline() {
       total={7}
       stamp="// OPEN CHANNEL"
       title={["Open a channel."]}
-      intro="Drop a packet. I'll respond from my actual inbox, usually within a few days."
+      intro="Send a message about internships, research collaborations, or engineering projects. I'll reply from my actual inbox, usually within a few days."
     >
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -194,7 +196,7 @@ export function ContactInline() {
             <input id="email" type="email" autoComplete="email" {...register("email")} className={inputCls(!!errors.email)} />
           </Field>
         </div>
-        <div className="relative">
+        <div className="relative md:col-span-2">
           <Field id="company" label="Org (optional)" error={errors.company?.message}>
             <input id="company" autoComplete="organization" {...register("company")} className={inputCls(!!errors.company)} />
           </Field>
@@ -231,8 +233,8 @@ export function ContactInline() {
         <div className="relative md:col-span-2 flex flex-wrap items-center justify-between gap-3">
           <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-text-2)]">
             <span className="text-[var(--color-accent)]">›</span> direct{" "}
-            <a href="mailto:muhammad.hasif.faisal@gmail.com" className="text-[var(--color-text-1)] underline-offset-4 hover:text-[var(--color-accent)] hover:underline">
-              muhammad.hasif.faisal@gmail.com
+            <a href={siteConfig.links.email} className="text-[var(--color-text-1)] underline-offset-4 hover:text-[var(--color-accent)] hover:underline">
+              {siteConfig.email}
             </a>
           </div>
           <button

@@ -30,7 +30,7 @@ export function NavMonster({ scopeRef }: { scopeRef: React.RefObject<HTMLElement
     if (!scope || !el) return;
 
     let raf = 0;
-    const NAV_H = 56; // h-14
+    const NAV_H = 64; // h-16
     const FLOOR_Y = NAV_H - 14; // baseline for feet
     const PAD = 80; // patrol left/right padding from edges
     const PATROL_SPEED_PX_PER_S = 28;
@@ -45,6 +45,9 @@ export function NavMonster({ scopeRef }: { scopeRef: React.RefObject<HTMLElement
     let attacking = false;
     let attackTimer = 0;
     let prevTs = performance.now();
+    let lastPaintTs = 0;
+    let scopeWidth = scope.clientWidth;
+    let scopeRect = scope.getBoundingClientRect();
     let paused = document.hidden;
     const onVisibility = () => {
       paused = document.hidden;
@@ -57,9 +60,15 @@ export function NavMonster({ scopeRef }: { scopeRef: React.RefObject<HTMLElement
         raf = requestAnimationFrame(tick);
         return;
       }
+      const frameInterval = mouseInside ? 1000 / 60 : 1000 / 30;
+      if (ts - lastPaintTs < frameInterval) {
+        raf = requestAnimationFrame(tick);
+        return;
+      }
+      lastPaintTs = ts;
       const dt = Math.min(0.05, (ts - prevTs) / 1000);
       prevTs = ts;
-      const w = scope.clientWidth;
+      const w = scopeWidth;
       const minX = PAD;
       const maxX = Math.max(PAD + 20, w - PAD);
 
@@ -130,24 +139,30 @@ export function NavMonster({ scopeRef }: { scopeRef: React.RefObject<HTMLElement
     };
 
     const onMove = (e: PointerEvent) => {
-      const r = scope.getBoundingClientRect();
-      cursorX = e.clientX - r.left;
-      cursorY = e.clientY - r.top;
+      cursorX = e.clientX - scopeRect.left;
+      cursorY = e.clientY - scopeRect.top;
       mouseInside = true;
     };
     const onLeave = () => {
       mouseInside = false;
     };
     const onEnter = (e: PointerEvent) => {
-      const r = scope.getBoundingClientRect();
-      cursorX = e.clientX - r.left;
-      cursorY = e.clientY - r.top;
+      scopeRect = scope.getBoundingClientRect();
+      scopeWidth = scopeRect.width;
+      cursorX = e.clientX - scopeRect.left;
+      cursorY = e.clientY - scopeRect.top;
       mouseInside = true;
+    };
+
+    const onResize = () => {
+      scopeRect = scope.getBoundingClientRect();
+      scopeWidth = scopeRect.width;
     };
 
     scope.addEventListener("pointermove", onMove, { passive: true });
     scope.addEventListener("pointerenter", onEnter);
     scope.addEventListener("pointerleave", onLeave);
+    window.addEventListener("resize", onResize, { passive: true });
     raf = requestAnimationFrame(tick);
 
     return () => {
@@ -155,6 +170,7 @@ export function NavMonster({ scopeRef }: { scopeRef: React.RefObject<HTMLElement
       scope.removeEventListener("pointermove", onMove);
       scope.removeEventListener("pointerenter", onEnter);
       scope.removeEventListener("pointerleave", onLeave);
+      window.removeEventListener("resize", onResize);
       document.removeEventListener("visibilitychange", onVisibility);
     };
   }, [enabled, scopeRef]);

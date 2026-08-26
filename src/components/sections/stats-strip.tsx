@@ -10,7 +10,7 @@ import { awards } from "@/content/awards";
 export function StatsStrip() {
   const stats = [
     { value: projects.length,        suffix: "", label: "PROJECTS",    code: "PRJ" },
-    { value: experience.length,      suffix: "", label: "ROLES · 6 ORGS", code: "ROL" },
+    { value: experience.length,      suffix: "", label: "ROLES",        code: "ROL" },
     { value: certifications.length,  suffix: "", label: "CERTS",       code: "CRT" },
     { value: awards.length,          suffix: "", label: "AWARDS",      code: "AWD" },
   ];
@@ -30,7 +30,6 @@ export function StatsStrip() {
               </div>
               <div className="font-display text-4xl text-[var(--color-text-0)] md:text-5xl">
                 <StatCounter value={s.value} suffix={s.suffix} />
-                <span className="text-[var(--color-accent)]">+</span>
               </div>
             </div>
           ))}

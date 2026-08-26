@@ -8,101 +8,81 @@ export type Role = {
   location?: string;
   summary: string;
   highlights: string[];
-  awards?: string[];
   tech?: string[];
+  links?: { label: string; href: string }[];
+  repositoryNote?: string;
 };
 
 export const experience: Role[] = [
   {
-    company: "Singapore Institute of Technology · FSSD Project",
+    company: "Singapore Institute of Technology · Future Ship & Systems Design",
     orgKey: "sit",
-    title: "Student Researcher & Web Application Developer",
+    title: "Assistant Research and Full-Stack Developer · Maritime Data & Analytics",
     type: "Full-Time",
     start: "03/2026",
     end: null,
-    location: "Remote · Singapore",
+    location: "Hybrid · Singapore",
     summary:
-      "Building an end to end data platform that converts raw maritime alarm data into real time vessel health monitoring and fault diagnosis tooling for the Future Ship & System Design (FSSD) research initiative.",
+      "Developing an end-to-end maritime condition-monitoring and fault-diagnosis platform that turns electric-harbour-craft SCADA, sensor, and alarm data into near-real-time vessel-health monitoring, explainable diagnostics, and engineering decision support.",
     highlights: [
-      "Architecting the full stack fault diagnosis web application in Python, Flask/Django, Vue.js, and React",
-      "Engineering Pandas based ETL pipelines that clean, structure, and stream high volume sensor data into the analytics layer",
-      "Designing interactive Apache ECharts dashboards that translate operational alarm streams into stakeholder facing diagnostic insights",
-      "Accelerating issue triage for maritime engineers by surfacing fault cascades in near real time",
+      "Build the full-stack platform with Python, Django REST Framework, SQL Server, React, and TypeScript, spanning multi-vessel data models, authenticated APIs, configurable FMECA, historical replay, dashboards, and fault-evidence views.",
+      "Engineer reliable ingestion and transformation pipelines for high-volume battery and propulsion telemetry, handling sparse signals, duplicates, missing or sentinel values, subsystem mapping, and batched persistence across multi-million-row datasets while improving a local replay benchmark by 87%.",
+      "Collaborate with maritime researchers and engineers to translate operational requirements into maintainable data models, APIs, diagnostic workflows, and interfaces with an emphasis on traceability, performance, and usability.",
     ],
-    tech: ["Python", "Flask", "Django", "Vue.js", "React", "Pandas", "Apache ECharts"],
+    repositoryNote: "Code maintained in private SIT repositories.",
+    tech: ["Python", "Django REST Framework", "SQL Server", "Pandas", "React", "TypeScript", "REST APIs", "Docker", "Pytest"],
   },
   {
-    company: "Singapore Institute of Technology · Centre of Immersification",
+    company: "Singapore Institute of Technology · Centre for Immersification",
     orgKey: "sit",
-    title: "Student Researcher & Software Engineer",
+    title: "Assistant Research and Software Engineer",
     type: "Full-Time",
     start: "08/2025",
     end: "12/2025",
     location: "Hybrid · Singapore",
     summary:
-      "Engineered frontend and backend features for R3CAP, an open source platform for near real time 3D reconstruction, collaborative scene authoring, and digital twin creation.",
+      "Contributed to R3CAP, an open-source platform for capturing, reconstructing, editing, annotating, and collaboratively exploring 3D digital twins across desktop and WebXR environments.",
     highlights: [
-      "Built frontend and backend features in Python and Babylon.js across scene editing, deletion, and real time mesh replacement",
-      "Integrated next generation 3D reconstruction and auto-labelling engines, enabling dynamic mesh replacement and real time semantic segmentation in collaborative WebXR environments",
-      "Contributed to research outputs supporting CHI '25 and DIS '26 academic submissions through prototype development, experimental evaluation, and technical documentation",
+      "Developed a Python and FastAPI edge server with a React, TypeScript, and Babylon.js client for scene authoring, spatial annotations, object and mesh operations, shared rooms, persistence, camera controls, and browser-based 3D interaction.",
+      "Built modular engine and asynchronous job workflows across RTAB-Map, COLMAP, Blender, and experimental 3D Gaussian Splatting and Gaussian Grouping pipelines, including status, retry, recovery, coordinate alignment, APIs, tests, and documentation.",
+      "Produced prototype engineering and technical documentation used by the research team in submissions to ACM CHI and DIS.",
     ],
-    tech: ["Python", "Babylon.js", "WebXR", "GCP", "Three.js"],
+    links: [{ label: "R3CAP public repository", href: "https://github.com/singaporetech/r3cap" }],
+    repositoryNote: "Additional contributions were maintained in a private SIT repository.",
+    tech: ["Python", "FastAPI", "React", "TypeScript", "Babylon.js", "WebXR", "MongoDB", "RTAB-Map", "COLMAP", "Blender", "Pytest"],
   },
   {
     company: "Singapore Police Force · Contingency Planning Division",
     orgKey: "spf",
-    title: "Section Leader, Operations Department · National Service Inspector",
+    title: "Section Leader · Police National Service Inspector",
     type: "National Service",
     start: "11/2024",
     end: "08/2025",
-    location: "Hybrid · Singapore",
+    location: "On-site · Singapore",
     summary:
-      "Drove technology projects within the Contingency Planning Division, including the MBFT personnel tracking system jointly developed with HTX and Security Command, and the VIP Security Key Operations System, supporting high security deployments and ArcGIS based dashboards used to plan, coordinate, and monitor General Election 2025 and National Day Parade 2025.",
+      "Led personnel, task allocation, readiness, and cross-agency coordination for technology-enabled contingency planning supporting major national operations including GE2025 and NDP2025.",
     highlights: [
-      "Co-developed the MBFT personnel tracking system with HTX and Security Command for high security deployments",
-      "Built the VIP Security Key Operations System for tracking and auditing high-sensitivity key custody",
-      "Developed UiPath RPA scripts and dynamic Excel/VBA tools that automated crowd recording and ballot box delivery tracking across 1,900+ polling stations deployed for GE2025, eliminating an estimated 30+ analyst hours per polling cycle and processing thousands of operational data points per shift",
-      "Enhanced the VoteQ election operations platform with GovTech, integrating ArcGIS spatial analytics, CCTV analytics, and facial recognition workflows into operational planning to strengthen real time crowd monitoring and situational awareness",
-      "Designed ArcGIS based operational dashboards used by command leadership during GE2025 and NDP2025",
+      "Developed Python, UiPath RPA, Excel/VBA, ArcGIS, and dashboard workflows for data collection, validation, personnel accountability, logistics, geospatial planning, and command reporting, saving an estimated 30+ analyst hours per operational cycle.",
+      "Translated operational requirements into reliable digital workflows and coordinated stakeholders in high-accountability environments where accuracy, readiness, and timely escalation were critical.",
     ],
-    awards: ["Best Operational Fitness (Officer Cadet Course)", "Vice Chairperson, Officer Cadet Course"],
-    tech: ["ArcGIS", "UiPath", "Python", "Excel VBA", "CCTV Analytics"],
+    tech: ["Python", "UiPath", "Excel VBA", "ArcGIS", "GIS", "Data Validation", "Dashboards"],
   },
   {
-    company: "HTX (Home Team Science & Technology Agency) · HTSOC",
+    company: "HTX · Home Team Security Operations Centre",
     orgKey: "htx",
-    title: "Cyber Security Engineer · National Service",
+    title: "Cyber Security Engineer · Police National Service",
     type: "National Service",
     start: "01/2024",
     end: "06/2024",
     location: "On-site · Singapore",
     summary:
-      "Handpicked from Police National Service to operate within HTX's Security Operations Centre (HTSOC), supporting digital defence, incident response, and high profile national engagements.",
+      "Supported Security Operations Centre monitoring and incident response through SIEM triage, threat hunting, classification, escalation, digital forensics, evidence preservation, and repeatable response workflows.",
     highlights: [
-      "Conducted continuous security monitoring, threat hunting, and incident triage",
-      "Led forensic investigations and coordinated response playbooks for rapid threat mitigation and evidence preservation",
-      "Developed Python automation scripts for SOC reporting and dashboard generation, accelerating insight delivery for analysts and improving operational visibility across cyber operations",
-      "Delivered cybersecurity briefings and live demonstrations during the HTX TechX Summit and ministerial visits, translating complex technical concepts for non technical stakeholders",
+      "Developed Python and pandas workflows for analyst reporting and operational dashboards, improving the consistency and accessibility of security insights.",
+      "Prepared technical documentation and delivered cybersecurity demonstrations during the HTX TechX Summit and ministerial visits, translating complex workflows for non-technical stakeholders.",
+      "Collaborated in a high-trust environment requiring sound judgement, precise documentation, and disciplined escalation.",
     ],
-    awards: ["Best Operational Fitness (Police Basic Course)", "Best Trainee (Police Basic Course)"],
-    tech: ["Python", "SIEM", "DFIR", "Pandas"],
-  },
-  {
-    company: "Deloitte Consulting",
-    orgKey: "deloitte",
-    title: "AI & Data Analytics Consultant · Intern",
-    type: "Internship",
-    start: "07/2022",
-    end: "02/2023",
-    location: "Hybrid · Singapore",
-    summary:
-      "Supported end to end consulting engagements for a regional maritime shipping client, spanning proposal development, data validation, time-series forecasting, and predictive model deployment for client facing deliverables.",
-    highlights: [
-      "Enhanced ARIMA based forecasting models with feature engineering and benchmarked accuracy lifts using gradient boosting (XGBoost, LightGBM) within scikit-learn workflows, improving forecasting accuracy by approximately 12% over baseline ARIMA on client datasets",
-      "Wrote SQL queries and Python ETL scripts to clean, validate, and structure relational datasets, accelerating model iteration and analyst productivity across the consulting team",
-      "Translated analytical findings into client recommendations and proposal artefacts presented to stakeholders during consulting sprints",
-    ],
-    tech: ["Python", "ARIMA", "XGBoost", "LightGBM", "scikit-learn", "SQL"],
+    tech: ["SIEM", "Threat Hunting", "Incident Response", "Digital Forensics", "Python", "Pandas"],
   },
   {
     company: "Ministry of Manpower",
@@ -113,11 +93,39 @@ export const experience: Role[] = [
     end: "07/2023",
     location: "Hybrid · Singapore",
     summary:
-      "Captured employment trends and stakeholder perspectives in support of workforce-development initiatives, aligned to government data quality standards.",
+      "Conducted structured surveys, interviews, and stakeholder outreach to gather workforce, employment, and labour-market insights while maintaining confidentiality and data-quality standards.",
     highlights: [
-      "Designed and rolled out a structured survey and interview framework for employment trends and stakeholder perspectives",
-      "Collected, validated, and synthesised quantitative and qualitative workforce data into reports informing labour market research and public sector employment policy",
+      "Collected, validated, reconciled, and synthesised quantitative and qualitative information, resolving inconsistent submissions into analysis-ready records for workforce research.",
     ],
-    tech: ["Survey Design", "Qualitative Research", "Data Validation"],
+    tech: ["Data Collection", "Data Validation", "Data Quality", "Interviewing", "Stakeholder Engagement"],
+  },
+  {
+    company: "Deloitte Consulting",
+    orgKey: "deloitte",
+    title: "Artificial Intelligence and Data Analyst Intern",
+    type: "Internship",
+    start: "07/2022",
+    end: "02/2023",
+    location: "Hybrid · Singapore",
+    summary:
+      "Supported end-to-end analytics and consulting work for a regional maritime client, covering requirements, proposals, SQL, data validation, exploratory analysis, forecasting, model evaluation, and client deliverables.",
+    highlights: [
+      "Built Python, pandas, and SQL workflows; engineered time-series features; and evaluated ARIMA, XGBoost, and LightGBM approaches using clearly defined validation metrics.",
+      "Translated analytical findings into visualisations, recommendations, technical documentation, and presentations for project stakeholders.",
+    ],
+    tech: ["Python", "SQL", "Pandas", "Time-Series Forecasting", "ARIMA", "XGBoost", "LightGBM"],
+  },
+  {
+    company: "Hitachi Asia",
+    orgKey: "hitachi",
+    title: "Logistics Assistant",
+    type: "Contract",
+    start: "07/2021",
+    end: "09/2021",
+    location: "On-site · Singapore",
+    summary:
+      "Supported hardware assembly, pre-deployment quality checks, inventory accuracy, and supply-chain readiness for server and computing equipment using internal stock systems.",
+    highlights: [],
+    tech: ["Inventory Management", "Quality Assurance", "Hardware Logistics"],
   },
 ];
